@@ -3,11 +3,3 @@ node_modules
 .polywrap
 target
 workflows/output.json
-
-src/wrap/*
-
-# These files have been manually modified
-!src/wrap/array_definition/
-!src/wrap/array_definition/*
-!src/wrap/map_definition/
-!src/wrap/map_definition/*
