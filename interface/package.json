@@ -1,0 +1,7 @@
+{
+  "name": "templates-interface",
+  "private": true,
+  "dependencies": {
+    "polywrap": "~0.10.2"
+  }
+}
