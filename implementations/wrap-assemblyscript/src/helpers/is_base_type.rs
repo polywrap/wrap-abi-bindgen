@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use handlebars::handlebars_helper;
 
 lazy_static! {
     static ref BASE_TYPES: HashSet<&'static str> = {
@@ -15,8 +16,10 @@ lazy_static! {
     };
 }
 
-pub type BaseType = &'static str;
-
-pub fn is_base_type(type_: &str) -> bool {
-    BASE_TYPES.contains(type_)
+pub fn is_base_type_fn(value: &String) -> bool {
+    BASE_TYPES.contains(value.as_str())
 }
+
+handlebars_helper!(is_base_type: |value: str| {
+    is_base_type_fn(&value.to_string())
+});
