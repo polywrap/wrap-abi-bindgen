@@ -3,7 +3,8 @@ use handlebars::handlebars_helper;
 use super::apply_optional::apply_optional_fn;
 use super::to_wasm::to_wasm_fn;
 
-pub fn to_wasm_map_fn(type_str: &String, optional: bool) -> Result<String, String> {
+pub fn to_wasm_map_fn(value: &str, optional: bool) -> Result<String, String> {
+    let type_str = String::from(value);
     let first_open_bracket_idx = type_str.find('<').unwrap_or(0);
     let last_close_bracket_idx = type_str.rfind('>').unwrap_or(0);
 

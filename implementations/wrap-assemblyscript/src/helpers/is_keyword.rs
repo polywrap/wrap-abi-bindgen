@@ -201,10 +201,10 @@ lazy_static! {
 
 pub type Keyword = &'static str;
 
-pub fn is_keyword_fn(keyword: &String) -> bool {
-    KEYWORDS.contains(keyword.as_str())
+pub fn is_keyword_fn(keyword: &str) -> bool {
+    KEYWORDS.contains(keyword)
 }
 
 handlebars_helper!(is_keyword: |value: str| {
-    is_keyword_fn(&value.to_string())
+    is_keyword_fn(&value)
 });

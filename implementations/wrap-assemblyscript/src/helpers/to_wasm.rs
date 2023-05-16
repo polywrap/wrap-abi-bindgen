@@ -5,8 +5,8 @@ use super::to_wasm_map::to_wasm_map_fn;
 use super::detect_keyword::detect_keyword_fn;
 use super::apply_optional::apply_optional_fn;
 
-pub fn to_wasm_fn(value: &String) -> String {
-    let mut type_str: String = value.clone();
+pub fn to_wasm_fn(value: &str) -> String {
+    let mut type_str = String::from(value);
     let mut is_enum = false;
     let mut optional = false;
 
@@ -52,5 +52,5 @@ pub fn to_wasm_fn(value: &String) -> String {
 }
 
 handlebars_helper!(to_wasm: |value: str| {
-    to_wasm_fn(&value.to_string()).as_str()
+    to_wasm_fn(&value)
 });

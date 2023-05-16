@@ -3,8 +3,8 @@ use handlebars::handlebars_helper;
 use super::to_wasm::to_wasm_fn;
 use super::detect_keyword::detect_keyword_fn;
 
-pub fn to_wasm_init_fn(value: &String) -> String {
-    let mut type_str: String = value.clone();
+pub fn to_wasm_init_fn(value: &str) -> String {
+    let mut type_str = String::from(value);
 
     if type_str.chars().last() == Some('!') {
         type_str = (type_str[0..type_str.len() - 1]).to_string();
@@ -75,5 +75,5 @@ pub fn to_wasm_init_fn(value: &String) -> String {
 }
 
 handlebars_helper!(to_wasm_init: |value: str| {
-    to_wasm_init_fn(&value.to_string()).as_str()
+    to_wasm_init_fn(&value.to_string())
 });

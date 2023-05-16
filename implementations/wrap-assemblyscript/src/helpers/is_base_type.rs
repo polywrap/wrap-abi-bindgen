@@ -16,10 +16,10 @@ lazy_static! {
     };
 }
 
-pub fn is_base_type_fn(value: &String) -> bool {
-    BASE_TYPES.contains(value.as_str())
+pub fn is_base_type_fn(value: &str) -> bool {
+    BASE_TYPES.contains(value)
 }
 
 handlebars_helper!(is_base_type: |value: str| {
-    is_base_type_fn(&value.to_string())
+    is_base_type_fn(&value)
 });
