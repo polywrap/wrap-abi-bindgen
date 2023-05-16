@@ -56,3 +56,14 @@ handlebars_helper!(to_wasm: |value: Value| {
     let value_str = value.as_str().unwrap();
     to_wasm_fn(value_str)
 });
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn array_to_wasm() {
+        let res = to_wasm_fn("[[[[UInt32!]]!]]");
+        assert_eq!(res, "Array<Array<Array<Array<u32> | null>> | null> | null");
+    }
+}

@@ -31,6 +31,33 @@ impl ModuleTrait for Module {
             )
         });
 
+        let abi = args.wrap_abi.as_object().unwrap();
+        let objects = abi.get("objectTypes").unwrap().as_array().unwrap();
+
+        for object in objects.iter() {
+            let dir = Directory {
+                name: object.get("type").unwrap().as_str().unwrap().to_string(),
+                files: vec!(
+                    File {
+                        name: "index.ts".to_string(),
+                        data: renderer.render(
+                            "object_type/index.ts",
+                            object
+                        )
+                    },
+                    File {
+                        name: "serialization.ts".to_string(),
+                        data: renderer.render(
+                            "object_type/serialization.ts",
+                            object
+                        )
+                    }
+                ),
+                dirs: vec!()
+            };
+            output.dirs.push(dir);
+        }
+
         Ok(output)
     }
 }

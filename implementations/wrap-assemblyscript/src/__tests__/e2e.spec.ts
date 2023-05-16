@@ -35,6 +35,6 @@ describe("e2e", () => {
     console.log(result);
     expect(result.ok).toBeTruthy();
     if (!result.ok) return;
-    console.log(result.value);
+    console.log((result.value as any).dirs[0].files);
   });
 });

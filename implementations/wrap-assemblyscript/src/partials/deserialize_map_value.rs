@@ -1,28 +1,28 @@
 lazy_static! {
   static ref NAME: String = "deserialize_map_value".to_string();
-  static ref SOURCE: String = r#"{{#if scalar}}
-return reader.read{{to_msgpack (to_graphql_type)}}();
-{{/if}}
-{{#if array}}
-return reader.read{{to_msgpack (to_graphql_type)}}((reader: Read): {{#if item}}{{to_wasm (to_graphql_type)}}{{/if}} => {
+  static ref SOURCE: String = r#"{{#with scalar}}
+return reader.read{{to_msgpack (to_graphql_type this)}}();
+{{/with}}
+{{#with array}}
+return reader.read{{to_msgpack (to_graphql_type this)}}((reader: Read): {{#with item}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
   {{> deserialize_array}}
 });
-{{/if}}
-{{#if map}}
-return reader.read{{to_msgpack (to_graphql_type)}}((reader: Read): {{#if key}}{{to_wasm (to_graphql_type)}}{{/if}} => {
-  return reader.read{{#if key}}{{to_msgpack (to_graphql_type)}}{{/if}}();
-}, (reader: Read): {{#if value}}{{to_wasm (to_graphql_type)}}{{/if}} => {
+{{/with}}
+{{#with map}}
+return reader.read{{to_msgpack (to_graphql_type this)}}((reader: Read): {{#with key}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
+  return reader.read{{#with key}}{{to_msgpack (to_graphql_type this)}}{{/with}}();
+}, (reader: Read): {{#with value}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
   {{> deserialize_map_value}}
 });
-{{/if}}
-{{#if enum}}
+{{/with}}
+{{#with enum}}
 {{> deserialize_enum}}
 return value;
-{{/if}}
-{{#if object}}
+{{/with}}
+{{#with object}}
 {{> deserialize_object}}
 return object;
-{{/if}}
+{{/with}}
 "#.to_string();
 }
 

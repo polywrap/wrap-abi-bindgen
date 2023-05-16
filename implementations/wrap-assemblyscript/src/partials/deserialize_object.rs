@@ -3,7 +3,7 @@ lazy_static! {
   static ref SOURCE: String = r#"{{#if required}}
 const object = Types.{{detect_keyword type}}.read(reader);
 {{else}}
-let object: {{to_wasm (to_graphql_type)}} = null;
+let object: {{to_wasm (to_graphql_type this)}} = null;
 if (!reader.isNextNil()) {
   object = Types.{{detect_keyword type}}.read(reader);
 }

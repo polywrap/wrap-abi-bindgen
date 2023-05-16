@@ -2,11 +2,13 @@ use handlebars::Handlebars;
 
 mod apply_optional;
 mod array_has_length;
+mod array_length;
 mod detect_keyword;
 mod is_base_type;
 mod is_keyword;
 mod is_not_first;
 mod is_not_last;
+mod to_graphql_type;
 mod to_msgpack;
 mod to_wasm_array;
 mod to_wasm_init;
@@ -21,6 +23,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "array_has_length",
         Box::new(array_has_length::array_has_length)
+    );
+    handlebars.register_helper(
+        "array_length",
+        Box::new(array_length::array_length)
     );
     handlebars.register_helper(
         "detect_keyword",
@@ -41,6 +47,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "is_not_last",
         Box::new(is_not_last::is_not_last)
+    );
+    handlebars.register_helper(
+        "to_graphql_type",
+        Box::new(to_graphql_type::to_graphql_type)
     );
     handlebars.register_helper(
         "to_msgpack",

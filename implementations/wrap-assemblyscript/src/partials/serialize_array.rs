@@ -1,26 +1,26 @@
 lazy_static! {
   static ref NAME: String = "serialize_array".to_string();
-  static ref SOURCE: String = r#"{{#if scalar}}
-writer.write{{to_msg_pack (to_graphql_type)}}(item);
-{{/if}}
-{{#if array}}
-writer.write{{to_msg_pack (to_graphql_type)}}(item, (writer: Write, item: {{#if item}}{{to_wasm (to_graphql_type)}}{{/if}}): void => {
+  static ref SOURCE: String = r#"{{#with scalar}}
+writer.write{{to_msgpack (to_graphql_type this)}}(item);
+{{/with}}
+{{#with array}}
+writer.write{{to_msgpack (to_graphql_type this)}}(item, (writer: Write, item: {{#with item}}{{to_wasm (to_graphql_type this)}}{{/with}}): void => {
   {{> serialize_array}}
 });
-{{/if}}
-{{#if map}}
-writer.write{{to_msg_pack to_graphql_type}}(item, (writer: Write, key: {{#if key}}{{to_wasm (to_graphql_type)}}{{/if}}) => {
-  writer.write{{to_msg_pack (to_graphql_type)}}(key);
-}, (writer: Write, value: {{#if value}}{{to_wasm (to_graphql_type)}}{{/if}}): void => {
+{{/with}}
+{{#with map}}
+writer.write{{to_msgpack (to_graphql_type this)}}(item, (writer: Write, key: {{#with key}}{{to_wasm (to_graphql_type this)}}{{/with}}) => {
+  writer.write{{to_msgpack (to_graphql_type this)}}(key);
+}, (writer: Write, value: {{#with value}}{{to_wasm (to_graphql_type this)}}{{/with}}): void => {
   {{> serialize_map_value}}
 });
-{{/if}}
-{{#if enum}}
+{{/with}}
+{{#with enum}}
 {{> serialize_enum}}
-{{/if}}
-{{#if object}}
+{{/with}}
+{{#with object}}
 {{> serialize_object}}
-{{/if}}
+{{/with}}
 "#.to_string();
 }
 
