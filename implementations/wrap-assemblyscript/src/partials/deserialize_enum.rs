@@ -1,16 +1,15 @@
 lazy_static! {
   static ref NAME: String = "deserialize_enum".to_string();
-  static ref SOURCE: String = r#"{{#required}}
-let value: Types.{{#detectKeyword}}{{type}}{{/detectKeyword}};
+  static ref SOURCE: String = r#"{{#if required}}
+let value: Types.{{detect_keyword type}};
 if (reader.isNextString()) {
   value = Types.get{{type}}Value(reader.readString());
 } else {
   value = reader.readInt32();
   Types.sanitize{{type}}Value(value);
 }
-{{/required}}
-{{^required}}
-let value: Box<Types.{{#detectKeyword}}{{type}}{{/detectKeyword}}> | null;
+{{else}}
+let value: Box<Types.{{detect_keyword type}}> | null;
 if (!reader.isNextNil()) {
   if (reader.isNextString()) {
     value = Box.from(
@@ -25,7 +24,7 @@ if (!reader.isNextNil()) {
 } else {
   value = null;
 }
-{{/required}}
+{{/if}}
 "#.to_string();
 }
 

@@ -1,4 +1,5 @@
 use handlebars::Handlebars;
+use serde::Serialize;
 
 use crate::partials;
 use crate::templates;
@@ -36,5 +37,12 @@ impl<'reg> Renderer<'reg> {
         Renderer {
             instance: handlebars
         }
+    }
+
+    pub fn render<T>(self: &Renderer<'reg>, name: &str, data: &T) -> String
+    where
+        T: Serialize,
+    {
+        self.instance.render(name, data).unwrap()
     }
 }

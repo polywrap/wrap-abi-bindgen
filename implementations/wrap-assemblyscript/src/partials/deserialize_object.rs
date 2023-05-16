@@ -1,14 +1,13 @@
 lazy_static! {
   static ref NAME: String = "deserialize_object".to_string();
-  static ref SOURCE: String = r#"{{#required}}
-const object = Types.{{#detectKeyword}}{{type}}{{/detectKeyword}}.read(reader);
-{{/required}}
-{{^required}}
-let object: {{#toWasm}}{{toGraphQLType}}{{/toWasm}} = null;
+  static ref SOURCE: String = r#"{{#if required}}
+const object = Types.{{detect_keyword type}}.read(reader);
+{{else}}
+let object: {{to_wasm (to_graphql_type)}} = null;
 if (!reader.isNextNil()) {
-  object = Types.{{#detectKeyword}}{{type}}{{/detectKeyword}}.read(reader);
+  object = Types.{{detect_keyword type}}.read(reader);
 }
-{{/required}}
+{{/if}}
 "#.to_string();
 }
 

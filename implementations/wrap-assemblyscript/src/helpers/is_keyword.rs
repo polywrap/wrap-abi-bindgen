@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 lazy_static! {
     static ref KEYWORDS: HashSet<&'static str> = {
@@ -199,12 +200,11 @@ lazy_static! {
     };
 }
 
-pub type Keyword = &'static str;
-
 pub fn is_keyword_fn(keyword: &str) -> bool {
     KEYWORDS.contains(keyword)
 }
 
-handlebars_helper!(is_keyword: |value: str| {
-    is_keyword_fn(&value)
+handlebars_helper!(is_keyword: |value: Value| {
+    let value_str = value.as_str().unwrap();
+    is_keyword_fn(value_str)
 });

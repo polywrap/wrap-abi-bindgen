@@ -1,4 +1,5 @@
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 pub fn to_msgpack_fn(value: &str) -> String {
     let mut value_str = String::from(value);
@@ -25,6 +26,7 @@ pub fn to_msgpack_fn(value: &str) -> String {
     }
 }
 
-handlebars_helper!(to_msgpack: |value: str| {
-    to_msgpack_fn(&value)
+handlebars_helper!(to_msgpack: |value: Value| {
+    let value_str = value.as_str().unwrap();
+    to_msgpack_fn(value_str)
 });

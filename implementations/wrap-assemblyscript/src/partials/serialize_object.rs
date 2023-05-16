@@ -1,15 +1,14 @@
 lazy_static! {
   static ref NAME: String = "serialize_object".to_string();
-  static ref SOURCE: String = r#"{{#required}}
-Types.{{#detectKeyword}}{{type}}{{/detectKeyword}}.write(writer, item);
-{{/required}}
-{{^required}}
+  static ref SOURCE: String = r#"{{#if required}}
+Types.{{detect_keyword type}}.write(writer, item);
+{{else}}
 if (item) {
-  Types.{{#detectKeyword}}{{type}}{{/detectKeyword}}.write(writer, item as Types.{{#detectKeyword}}{{type}}{{/detectKeyword}});
+  Types.{{detect_keyword type}}.write(writer, item as Types.{{detect_keyword type}});
 } else {
   writer.writeNil();
 }
-{{/required}}
+{{/if}}
 "#.to_string();
 }
 

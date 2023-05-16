@@ -1,4 +1,5 @@
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 use super::to_wasm::to_wasm_fn;
 use super::detect_keyword::detect_keyword_fn;
@@ -74,6 +75,7 @@ pub fn to_wasm_init_fn(value: &str) -> String {
     }
 }
 
-handlebars_helper!(to_wasm_init: |value: str| {
-    to_wasm_init_fn(&value.to_string())
+handlebars_helper!(to_wasm_init: |value: Value| {
+    let value_str = value.as_str().unwrap();
+    to_wasm_init_fn(value_str)
 });

@@ -1,0 +1,153 @@
+"""
+WRAP ABI Types
+"""
+
+type WithKind {
+  kind: Int!
+}
+
+type WithComment {
+  comment: String
+}
+
+type GenericDefinition implements WithKind {
+  type: String!
+  name: String
+  required: Boolean
+}
+
+type PropertyDefinition implements WithComment & AnyDefinition & GenericDefinition & WithKind { }
+
+type AnyDefinition implements GenericDefinition & WithKind {
+  array: ArrayDefinition
+  scalar: ScalarDefinition
+  map: MapDefinition
+  object: ObjectRef
+  enum: EnumRef
+  unresolvedObjectOrEnum: UnresolvedObjectOrEnumRef
+}
+
+type ArrayDefinition implements AnyDefinition & GenericDefinition & WithKind {
+  item: GenericDefinition
+}
+
+type ScalarDefinition {
+  kind: Int!
+  type: ScalarType!
+  name: String
+  required: Boolean
+}
+
+enum ScalarType {
+  UInt,
+  UInt8,
+  UInt16,
+  UInt32,
+  Int,
+  Int8,
+  Int16,
+  Int32,
+  String,
+  Boolean,
+  Bytes,
+  BigInt,
+  BigNumber,
+  JSON
+}
+
+type MapDefinition implements AnyDefinition & GenericDefinition & WithKind & WithComment {
+  key: MapKeyDefinition
+}
+
+type MapKeyDefinition implements AnyDefinition & WithKind {
+  type: MapKeyType
+  name: String
+  required: Boolean
+}
+
+enum MapKeyType {
+  UInt,
+  UInt8,
+  UInt16,
+  UInt32,
+  Int,
+  Int8,
+  Int16,
+  Int32,
+  String
+}
+
+type ObjectRef implements GenericDefinition & WithKind { }
+
+type EnumRef implements GenericDefinition & WithKind { }
+
+type ImportedModuleRef {
+  type: String
+}
+
+type UnresolvedObjectOrEnumRef implements GenericDefinition & WithKind { }
+
+type InterfaceImplementedDefinition implements GenericDefinition & WithKind { }
+
+type ObjectDefinition implements GenericDefinition & WithKind & WithComment {
+  properties: [PropertyDefinition!]
+  interfaces: [InterfaceImplementedDefinition!]
+}
+
+type ModuleDefinition implements GenericDefinition & WithKind & WithComment {
+  methods: [MethodDefinition!]
+  imports: [ImportedModuleRef!]
+  interfaces: [InterfaceImplementedDefinition!]
+}
+
+type EnvRequired {
+  required: Boolean
+}
+
+type MethodDefinition implements GenericDefinition & WithKind & WithComment {
+  arguments: [PropertyDefinition!]
+  env: EnvRequired
+  return: PropertyDefinition
+}
+
+type EnumDefinition implements GenericDefinition & WithKind & WithComment {
+  constants: [String!]
+}
+
+type CapabilityEnabled {
+  enabled: Boolean!
+}
+
+type CapabilityDefinition {
+  getImplementations: CapabilityEnabled
+}
+
+type InterfaceDefinition implements GenericDefinition & WithKind & ImportedDefinition {
+  capabilities: CapabilityDefinition
+}
+
+type ImportedObjectDefinition implements ObjectDefinition & GenericDefinition & WithKind & ImportedDefinition & WithComment { }
+
+type ImportedModuleDefinition implements GenericDefinition & WithKind & ImportedDefinition & WithComment {
+  methods: [MethodDefinition!]
+  isInterface: Boolean
+}
+
+type ImportedEnumDefinition implements EnumDefinition & GenericDefinition & WithKind & WithComment & ImportedDefinition { }
+
+type ImportedEnvDefinition implements ImportedObjectDefinition & ObjectDefinition & GenericDefinition & WithKind & ImportedDefinition & WithComment { }
+
+type EnvDefinition implements ObjectDefinition & GenericDefinition & WithKind & WithComment { }
+
+type WrapAbi {
+  version: String
+  objectTypes: [ObjectDefinition!]
+  moduleType: ModuleDefinition
+  enumTypes: [EnumDefinition!]
+  interfaceTypes: [InterfaceDefinition!]
+  importedObjectTypes: [ImportedObjectDefinition!]
+  importedModuleTypes: [ImportedModuleDefinition!]
+  importedEnumTypes: [ImportedEnumDefinition!]
+  importedEnvTypes: [ImportedEnvDefinition!]
+  envType: EnvDefinition
+}

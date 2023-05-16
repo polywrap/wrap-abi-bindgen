@@ -1,4 +1,5 @@
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 use super::is_keyword::is_keyword_fn;
 
@@ -12,6 +13,7 @@ pub fn detect_keyword_fn(value: &str) -> String {
     }
 }
 
-handlebars_helper!(detect_keyword: |value: str| {
-    detect_keyword_fn(&value)
+handlebars_helper!(detect_keyword: |value: Value| {
+    let value_str = value.as_str().unwrap();
+    detect_keyword_fn(value_str)
 });

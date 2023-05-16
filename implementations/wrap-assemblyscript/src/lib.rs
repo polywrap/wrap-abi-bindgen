@@ -13,24 +13,24 @@ use renderer::Renderer;
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
         let renderer = Renderer::new();
+        let mut output = Output::new();
 
+        output.files.push(File {
+            name: "index.ts".to_string(),
+            data: renderer.render(
+                "index.ts",
+                &args.wrap_abi
+            )
+        });
 
-        Ok(Output::new())
+        output.files.push(File {
+            name: "entry.ts".to_string(),
+            data: renderer.render(
+                "entry.ts",
+                &args.wrap_abi
+            )
+        });
+
+        Ok(output)
     }
 }
-
-/*
-for (template of templates.abi) {
-    let res = render(template, abi, functions);
-    output.files.insert(res);
-}
-
-for (object of abi.objects) {
-    let dir = Directory { name: object.name };
-    for (template of templates.object) {
-        let res = render(template, object, functions);
-        dir.files.insert(res);
-    }
-    output.dirs.insert(dir);
-}
-*/

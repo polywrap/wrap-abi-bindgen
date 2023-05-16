@@ -1,4 +1,5 @@
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 use super::to_wasm_array::to_wasm_array_fn;
 use super::to_wasm_map::to_wasm_map_fn;
@@ -51,6 +52,7 @@ pub fn to_wasm_fn(value: &str) -> String {
     apply_optional_fn(&type_str, optional, is_enum)
 }
 
-handlebars_helper!(to_wasm: |value: str| {
-    to_wasm_fn(&value)
+handlebars_helper!(to_wasm: |value: Value| {
+    let value_str = value.as_str().unwrap();
+    to_wasm_fn(value_str)
 });

@@ -1,4 +1,5 @@
 use handlebars::handlebars_helper;
+use serde_json::{Value};
 
 use super::apply_optional::apply_optional_fn;
 use super::to_wasm::to_wasm_fn;
@@ -28,6 +29,7 @@ pub fn to_wasm_map_fn(value: &str, optional: bool) -> Result<String, String> {
     Ok(apply_optional_fn(&format!("Map<{}, {}>", wasm_key_type, wasm_val_type), optional, false))
 }
 
-handlebars_helper!(to_wasm_map: |value: str, optional: bool| {
-    to_wasm_map_fn(&value.to_string(), optional).unwrap()
+handlebars_helper!(to_wasm_map: |value: Value, optional: bool| {
+    let value_str = value.as_str().unwrap();
+    to_wasm_map_fn(value_str, optional).unwrap()
 });

@@ -1,11 +1,10 @@
 lazy_static! {
   static ref NAME: String = "serialize_enum".to_string();
-  static ref SOURCE: String = r#"{{#required}}
+  static ref SOURCE: String = r#"{{#if required}}
 writer.writeInt32(item);
-{{/required}}
-{{^required}}
+{{else}}
 writer.writeOptionalInt32(item);
-{{/required}}
+{{/if}}
 "#.to_string();
 }
 

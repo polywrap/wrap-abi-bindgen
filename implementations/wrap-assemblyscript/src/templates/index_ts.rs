@@ -1,60 +1,56 @@
 lazy_static! {
   static ref NAME: String = "index.ts".to_string();
-  static ref SOURCE: String = r#"{{#moduleType}}
-{{#methods.length}}
+  static ref SOURCE: String = r#"{{#with moduleType}}
+{{#if (array_has_length methods)}}
 import {
-  {{#methods}}
-  Args_{{#detectKeyword}}{{name}}{{/detectKeyword}}{{^last}},{{/last}}
-  {{/methods}}
+  {{#each methods}}
+  Args_{{detect_keyword name}}{{#if (is_not_last @index ../methods)}},{{/if}}
+  {{/each}}
 } from "./{{type}}";
-{{/methods.length}}
-{{/moduleType}}
-{{#moduleType}}
-{{#methods.length}}
+{{/if}}
+{{#if (array_has_length methods)}}
 export {
-  {{#methods}}
-  Args_{{#detectKeyword}}{{name}}{{/detectKeyword}}{{^last}},{{/last}}
-  {{/methods}}
+  {{#each methods}}
+  Args_{{detect_keyword name}}{{#if (is_not_last @index ../methods)}},{{/if}}
+  {{/each}}
 };
-{{/methods.length}}
-{{/moduleType}}
-{{#moduleType}}
+{{/if}}
 export { ModuleBase } from "./Module";
-{{/moduleType}}
-{{#objectTypes}}
-export { {{#detectKeyword}}{{type}}{{/detectKeyword}} } from "./{{type}}";
-{{/objectTypes}}
-{{#enumTypes}}
+{{/with}}
+{{#each objectTypes}}
+export { {{detect_keyword type}} } from "./{{type}}";
+{{/each}}
+{{#each enumTypes}}
 export {
-  {{#detectKeyword}}{{type}}{{/detectKeyword}},
+  {{detect_keyword type}},
   get{{type}}Key,
   get{{type}}Value,
   sanitize{{type}}Value
 } from "./{{type}}";
-{{/enumTypes}}
-{{#importedModuleTypes}}
-export { {{#detectKeyword}}{{type}}{{/detectKeyword}} } from "./imported/{{type}}";
-{{/importedModuleTypes}}
-{{#importedObjectTypes}}
-export { {{#detectKeyword}}{{type}}{{/detectKeyword}} } from "./imported/{{type}}";
-{{/importedObjectTypes}}
-{{#importedEnvTypes}}
-export { {{#detectKeyword}}{{type}}{{/detectKeyword}} } from "./imported/{{type}}";
-{{/importedEnvTypes}}
-{{#importedEnumTypes}}
+{{/each}}
+{{#each importedModuleTypes}}
+export { {{detect_keyword type}} } from "./imported/{{type}}";
+{{/each}}
+{{#each importedObjectTypes}}
+export { {{detect_keyword type}} } from "./imported/{{type}}";
+{{/each}}
+{{#each importedEnvTypes}}
+export { {{detect_keyword type}} } from "./imported/{{type}}";
+{{/each}}
+{{#each importedEnumTypes}}
 export {
-  {{#detectKeyword}}{{type}}{{/detectKeyword}},
+  {{detect_keyword type}},
   get{{type}}Key,
   get{{type}}Value,
   sanitize{{type}}Value
 } from "./imported/{{type}}";
-{{/importedEnumTypes}}
-{{#interfaceTypes}}
-export { {{#detectKeyword}}{{namespace}}{{/detectKeyword}} } from "./{{namespace}}";
-{{/interfaceTypes}}
-{{#envType}}
+{{/each}}
+{{#each interfaceTypes}}
+export { {{detect_keyword namespace}} } from "./{{namespace}}";
+{{/each}}
+{{#if envType}}
 export { Env } from "./Env";
-{{/envType}}
+{{/if}}
 "#.to_string();
 }
 

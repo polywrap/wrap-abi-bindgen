@@ -8,5 +8,3 @@ source:
   import_abis:
     - uri: wrap://ens/wraps.eth:abi-bindgen@0.1
       abi: ../../interface/build/wrap.info
-extensions:
-  build: ./polywrap.build.yaml

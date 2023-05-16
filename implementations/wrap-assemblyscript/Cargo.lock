@@ -334,6 +334,7 @@ dependencies = [
  "polywrap-wasm-rs",
  "regex",
  "serde",
+ "serde_json",
 ]
 
 [[package]]

@@ -1,4 +1,6 @@
-import {
+lazy_static! {
+  static ref NAME: String = "entry.ts".to_string();
+  static ref SOURCE: String = r#"import {
   wrap_invoke_args,
   wrap_invoke_result,
   wrap_invoke_error,
@@ -6,15 +8,15 @@ import {
   InvokeArgs
 } from "@polywrap/wasm-as";
 
-{{#moduleType}}
-{{#methods.length}}
+{{#with moduleType}}
+{{#if (array_has_length methods)}}
 import {
-  {{#methods}}
-  {{name}}Wrapped{{^last}},{{/last}}
-  {{/methods}}
+  {{#each methods}}
+  {{name}}Wrapped{{#if (is_not_last @index ../methods)}},{{/if}}
+  {{/each}}
 } from "./{{type}}/wrapped";
-{{/methods.length}}
-{{/moduleType}}
+{{/if}}
+{{/with}}
 
 import { Module } from "../index";
 
@@ -25,13 +27,13 @@ export function _wrap_invoke(method_size: u32, args_size: u32, env_size: u32): b
     args_size
   );
   let result: ArrayBuffer;
-  {{#moduleType}}
-  {{#methods}}
-  {{^first}}else {{/first}}if (args.method == "{{name}}") {
+  {{#with moduleType}}
+  {{#each methods}}
+  {{#if (is_not_first @index)}}else {{/if}}if (args.method == "{{name}}") {
     result = {{name}}Wrapped(module, args.args, env_size);
   }
-  {{/methods}}
-  {{/moduleType}}
+  {{/each}}
+  {{/with}}
   else {
     wrap_invoke_error(
       `Could not find invoke function "${args.method}"`
@@ -54,4 +56,15 @@ export function wrapAbort(
     line,
     column
   );
+}
+"#.to_string();
+}
+
+use super::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
 }
