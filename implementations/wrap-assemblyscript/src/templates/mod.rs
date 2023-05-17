@@ -1,5 +1,7 @@
 mod index_ts;
 mod entry_ts;
+mod enum_type;
+mod interface_type;
 mod module_type;
 mod object_type;
 
@@ -12,6 +14,8 @@ pub fn load_templates() -> Vec<Template> {
     vec!(
         index_ts::load(),
         entry_ts::load(),
+        enum_type::index_ts::load(),
+        interface_type::index_ts::load(),
         module_type::index_ts::load(),
         module_type::module_ts::load(),
         module_type::serialization_ts::load(),
