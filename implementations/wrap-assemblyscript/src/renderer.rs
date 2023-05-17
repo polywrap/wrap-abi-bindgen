@@ -1,4 +1,7 @@
-use handlebars::Handlebars;
+use handlebars::{
+    Handlebars,
+    no_escape
+};
 use serde::Serialize;
 
 use crate::partials;
@@ -12,6 +15,9 @@ pub struct Renderer<'reg> {
 impl<'reg> Renderer<'reg> {
     pub fn new() -> Renderer<'reg> {
         let mut handlebars: Handlebars = Handlebars::new();
+
+        // Remove the HTML escape function
+        handlebars.register_escape_fn(no_escape);
 
         // Register all partials
         let partials = partials::load_partials();

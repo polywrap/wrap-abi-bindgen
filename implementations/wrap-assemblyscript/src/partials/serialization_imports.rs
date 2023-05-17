@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "serialize_imports".to_string();
+  static ref NAME: String = "serialization_imports".to_string();
   static ref SOURCE: String = r#"import {
   Read,
   ReadDecoder,

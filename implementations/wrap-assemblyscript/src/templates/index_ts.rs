@@ -7,13 +7,13 @@ import {
   Args_{{detect_keyword name}}{{#if (is_not_last @index ../methods)}},{{/if}}
   {{/each}}
 } from "./{{type}}";
-{{/if}}
-{{#if (array_has_length methods)}}
+
 export {
   {{#each methods}}
   Args_{{detect_keyword name}}{{#if (is_not_last @index ../methods)}},{{/if}}
   {{/each}}
 };
+
 {{/if}}
 export { ModuleBase } from "./Module";
 {{/with}}
