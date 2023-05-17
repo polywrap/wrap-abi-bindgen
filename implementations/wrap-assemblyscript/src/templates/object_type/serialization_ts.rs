@@ -69,7 +69,6 @@ export function deserialize{{type}}(buffer: ArrayBuffer): {{detect_keyword type}
 
 export function read{{type}}(reader: Read): {{detect_keyword type}} {
   let numFields = reader.readMapLength();
-
   {{#each properties}}
   {{#if object}}{{#with object}}
   {{#if required}}
@@ -78,12 +77,8 @@ export function read{{type}}(reader: Read): {{detect_keyword type}} {
   let _{{name}}: {{to_wasm (to_graphql_type this)}} = {{to_wasm_init (to_graphql_type this)}};
   {{/if}}
   {{/with}}{{else}}
-  let _{{name}}: {{to_wasm (to_graphql_type this)}} = {{to_wasm_init (to_graphql_type this)}};
-  {{/if}}
-  {{#if required}}
-  let _{{name}}Set: bool = false;
-  {{/if}}
-  {{/each}}
+  let _{{name}}: {{to_wasm (to_graphql_type this)}} = {{to_wasm_init (to_graphql_type this)}};{{/if}}{{#if required}}
+  let _{{name}}Set: bool = false;{{/if}}{{/each}}
 
   while (numFields > 0) {
     numFields--;

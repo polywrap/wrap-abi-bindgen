@@ -48,7 +48,7 @@ describe("e2e", () => {
       fs.writeFileSync(receivedPath, JSON.stringify(received, null, 2));
       fs.writeFileSync(expectedPath, JSON.stringify(expected, null, 2));
 
-      const differences = diff(expected, received);
+      const differences = diff(expected, received, { expand: false });
 
       if (differences && !differences.includes("Compared values have no visual difference")) {
         fail(differences);
