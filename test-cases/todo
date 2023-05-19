@@ -1,0 +1,13 @@
+- object
+  - props: scalar, generic (map), optional / required, enums, objects, arrays
+  - circular defs
+    - self-ref
+    - multi-layer ref
+- enum def
+- env
+  - same as obj
+- module
+  - args: scalar, generic (map), optional / required, enums, objects, arrays
+  - ret: scalar, generic (map), optional / required, enums, objects, arrays
+- interface
+- imported: objects, enums, env, modules, interface
