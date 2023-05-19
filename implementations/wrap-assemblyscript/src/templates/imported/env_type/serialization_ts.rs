@@ -1,15 +1,15 @@
 lazy_static! {
-  static ref NAME: String = "object_type/serialization.ts".to_string();
+  static ref NAME: String = "imported/env_type/serialization.ts".to_string();
   static ref SOURCE: String = r#"{{> serialization_imports}}
 import { {{detect_keyword type}} } from "./";
-import * as Types from "..";
+import * as Types from "../..";
 
 export function serialize{{type}}(type: {{detect_keyword type}}): ArrayBuffer {
-  const sizerContext: Context = new Context("Serializing (sizing) object-type: {{type}}");
+  const sizerContext: Context = new Context("Serializing (sizing) imported env-type: {{type}}");
   const sizer = new WriteSizer(sizerContext);
   write{{type}}(sizer, type);
   const buffer = new ArrayBuffer(sizer.length);
-  const encoderContext: Context = new Context("Serializing (encoding) object-type: {{type}}");
+  const encoderContext: Context = new Context("Serializing (encoding) imported env-type: {{type}}");
   const encoder = new WriteEncoder(buffer, sizer, encoderContext);
   write{{type}}(encoder, type);
   return buffer;
@@ -20,7 +20,7 @@ export function write{{type}}(writer: Write, type: {{detect_keyword type}}): voi
 }
 
 export function deserialize{{type}}(buffer: ArrayBuffer): {{detect_keyword type}} {
-  const context: Context = new Context("Deserializing object-type {{type}}");
+  const context: Context = new Context("Deserializing imported env-type {{type}}");
   const reader = new ReadDecoder(buffer, context);
   return read{{type}}(reader);
 }
