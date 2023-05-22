@@ -1,7 +1,7 @@
 [package]
-name = "plugin-rust-wrap-abi-bindgen"
+name = "plugin-python-wrap-abi-bindgen"
 version = "0.1.0"
-description = "Generates Rust plugin bindings from a WRAP ABI"
+description = "Generates Python plugin bindings from a WRAP ABI"
 authors = ["Polywrap"]
 repository = "https://github.com/polywrap/wrap-abi-bindgen"
 license = "MIT"

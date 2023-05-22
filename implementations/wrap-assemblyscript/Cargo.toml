@@ -1,7 +1,7 @@
 [package]
 name = "wrap-assemblyscript-wrap-abi-bindgen"
 version = "0.1.0"
-description = "Generates AssemblyScript wrap binddings from a WRAP ABI"
+description = "Generates AssemblyScript wrap bindings from a WRAP ABI"
 authors = ["Polywrap"]
 repository = "https://github.com/polywrap/wrap-abi-bindgen"
 license = "MIT"
