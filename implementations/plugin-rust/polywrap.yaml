@@ -1,6 +1,6 @@
 format: 0.3.0
 project:
-  name: wrap-assemblyscript-wrap-abi-bindgen
+  name: plugin-rust-wrap-abi-bindgen
   type: wasm/rust
 source:
   module: ./Cargo.toml

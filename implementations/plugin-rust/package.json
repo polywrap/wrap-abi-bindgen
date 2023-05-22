@@ -1,5 +1,5 @@
 {
-  "name": "wrap-assemblyscript-wrap-abi-bindgen",
+  "name": "plugin-rust-wrap-abi-bindgen",
   "private": true,
   "scripts": {
     "codegen": "npx polywrap codegen",

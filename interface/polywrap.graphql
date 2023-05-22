@@ -1,10 +1,15 @@
 type Module {
   generateBindings( 
-    abi: JSON!
-    version: String!
-    projectName: String!
+    wrapInfo: WrapInfo!
     context: JSON
   ): Output!
+}
+
+type WrapInfo {
+  version: String!
+  name: String!
+  type: String!
+  abi: JSON!
 }
 
 type Output {
