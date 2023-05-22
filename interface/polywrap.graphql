@@ -1,6 +1,7 @@
 type Module {
-  generateBindings(
-    wrapAbi: JSON!
+  generateBindings( 
+    abi: JSON!
+    version: String!
     projectName: String!
     context: JSON
   ): Output!

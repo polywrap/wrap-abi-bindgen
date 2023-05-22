@@ -1,0 +1,31 @@
+directive @imported(
+  uri: String!
+  namespace: String!
+  nativeType: String!
+) on OBJECT | ENUM
+
+type Module implements Interface_Module & Another_Module {
+  moduleMethod(
+    arg: String!
+  ): [Int]!
+}
+
+type Interface_Module @imported(
+  uri: "interface.uri.eth",
+  namespace: "Interface",
+  nativeType: "Module"
+) {
+  abstractMethod(
+    arg: UInt8!
+  ): String!
+}
+
+type Another_Module @imported(
+  uri: "another.uri.eth",
+  namespace: "Another",
+  nativeType: "Module"
+) {
+  anotherMethod(
+    arg: UInt8!
+  ): String!
+}

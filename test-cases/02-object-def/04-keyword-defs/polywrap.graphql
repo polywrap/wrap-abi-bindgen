@@ -1,0 +1,7 @@
+type if {
+  else: String!
+}
+
+type match {
+  case: Bytes!
+}

@@ -1,0 +1,54 @@
+type Module {
+  strRet(arg: String!): String!
+  optStrRet(arg: String!): String
+  uRet(arg: String!): UInt!
+  optURet(arg: String!): UInt
+  u8Ret(arg: String!): UInt8!
+  u16Ret(arg: String!): UInt16!
+  u32Ret(arg: String!): UInt32!
+  iRet(arg: String!): Int!
+  i8Ret(arg: String!): Int8!
+  i16Ret(arg: String!): Int16!
+  i32Ret(arg: String!): Int32!
+  bigintRet(arg: String!): BigInt!
+  optBigintRet(arg: String!): BigInt
+  bignumberRet(arg: String!): BigNumber!
+  optBignumberRet(arg: String!): BigNumber
+  jsonRet(arg: String!): JSON!
+  optJsonRet(arg: String!): JSON
+  bytesRet(arg: String!): Bytes!
+  optBytesRet(arg: String!): Bytes
+  booleanRet(arg: String!): Boolean!
+  optBooleanRet(arg: String!): Boolean
+  enumRet(arg: String!): Baz!
+  optEnumRet(arg: String!): Baz
+  objectRet(arg: String!): Bar!
+  optObjectRet(arg: String!): Bar
+  mapRet(arg: String!): Map! @annotate(type: "Map<String!, Int!>!")
+  mapOfArrRet(arg: String!): Map! @annotate(type: "Map<String!, [Int!]!>!")
+  mapOfObjRet(arg: String!): Map! @annotate(type: "Map<String!, Bar!>!")
+  mapOfOptObjRet(arg: String!): Map! @annotate(type: "Map<String!, Bar>!")
+  mapOfArrOfObjRet(arg: String!): Map! @annotate(type: "Map<String!, [Bar!]!>!")
+  arrOfURet(arg: String!): [UInt!]!
+  optArrOfURet(arg: String!): [UInt!]
+  optArrOfOptURet(arg: String!): [UInt]
+  arrOfArrOfURet(arg: String!): [[UInt!]!]!
+  arrOfOptArrOfU32Ret(arg: String!): [[UInt32]]!
+  arrOfOptArrOfArrOfU32Ret(arg: String!): [[[UInt32!]!]]!
+  optArrOfOptArrOfArrOfOptArrOfU32Ret(arg: String!): [[[[UInt32!]]!]]
+  arrOfMapRet(arg: String!): [Map!]! @annotate(type: "Map<String!, Int!>!")
+  optArrOfMapRet(arg: String!): [Map!] @annotate(type: "Map<String!, Int!>")
+  arrOfObjRet(arg: String!): [Bar!]!
+  optArrOfOptObjRet(arg: String!): [Bar]
+  arrOfEnumRet(arg: String!): [Baz!]!
+  optArrOfOptEnumRet(arg: String!): [Baz]
+}
+
+type Bar {
+  str: String!
+}
+
+enum Baz {
+  CONSTANT_0,
+  CONSTANT_1
+}

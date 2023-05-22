@@ -1,0 +1,37 @@
+scalar UInt
+scalar UInt8
+scalar UInt16
+scalar UInt32
+scalar Int
+scalar Int8
+scalar Int16
+scalar Int32
+scalar Bytes
+scalar BigInt
+scalar BigNumber
+scalar JSON
+scalar Map
+
+directive @imported(
+  uri: String!
+  namespace: String!
+  nativeType: String!
+) on OBJECT | ENUM
+
+type TestImport_Object @imported(
+  uri: "testimport.uri.eth",
+  namespace: "TestImport",
+  nativeType: "Object"
+) {
+  prop: String!
+  nested: TestImport_NestedObject!
+}
+
+type TestImport_NestedObject @imported(
+  uri: "testimport.uri.eth",
+  namespace: "TestImport",
+  nativeType: "NestedObject"
+) {
+  foo: [String!]!
+  circular: TestImport_Object
+}

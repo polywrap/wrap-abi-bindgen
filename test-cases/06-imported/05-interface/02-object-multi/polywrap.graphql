@@ -1,0 +1,26 @@
+directive @imported(
+  uri: String!
+  namespace: String!
+  nativeType: String!
+) on OBJECT | ENUM
+
+type ImplementationObject implements Interface_Object & Interface_Object2 {
+  anotherProp: String
+}
+
+type Interface_Object @imported(
+  uri: "interface.uri.eth",
+  namespace: "Interface",
+  nativeType: "Object"
+) {
+  str: String!
+  uint8: UInt8!
+}
+
+type Interface_Object2 @imported(
+  uri: "interface.uri.eth",
+  namespace: "Interface",
+  nativeType: "Object2"
+) {
+  str2: String!
+}

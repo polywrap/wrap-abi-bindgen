@@ -1,0 +1,11 @@
+type Foo {
+  object: Bar!
+  optObject: Bar
+  selfRef: Foo!
+  optSelfRef: Foo
+}
+
+type Bar {
+  obj: Foo!
+  optObj: Foo
+}

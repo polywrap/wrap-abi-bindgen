@@ -1,0 +1,11 @@
+type Foo {
+  str: String!
+}
+
+type Bar {
+  optStr: String!
+}
+
+type Baz implements Foo & Bar {
+  u: UInt!
+}

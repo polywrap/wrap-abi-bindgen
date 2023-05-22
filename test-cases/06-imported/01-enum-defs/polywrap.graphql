@@ -1,0 +1,14 @@
+directive @imported(
+  uri: String!
+  namespace: String!
+  nativeType: String!
+) on OBJECT | ENUM
+
+enum TestImport_Enum @imported(
+  namespace: "TestImport",
+  uri: "testimport.uri.eth",
+  nativeType: "Enum"
+) {
+  TEXT
+  BYTES
+}

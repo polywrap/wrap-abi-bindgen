@@ -1,0 +1,27 @@
+scalar UInt
+scalar UInt8
+scalar UInt16
+scalar UInt32
+scalar Int
+scalar Int8
+scalar Int16
+scalar Int32
+scalar Bytes
+scalar BigInt
+scalar BigNumber
+scalar JSON
+scalar Map
+
+type Foo {
+  object: Bar!
+  optObject: Bar
+}
+
+type Bar {
+  obj: Baz!
+  optObj: Baz
+}
+
+type Baz {
+  bytes: Bytes!
+}

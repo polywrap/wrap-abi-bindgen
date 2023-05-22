@@ -1,0 +1,10 @@
+type Module {
+  module(arg: String!): String!
+  function(arg: String!): String!
+  func(arg: String!): String!
+  if(arg: String!): String!
+  function1(module: String!): String!
+  function2(function: String!): String!
+  function3(func: String!): String!
+  function4(if: String!): String!
+}

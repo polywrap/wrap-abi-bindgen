@@ -1,0 +1,7 @@
+type Foo {
+  str: String!
+}
+
+type Bar implements Foo {
+  optStr: String
+}

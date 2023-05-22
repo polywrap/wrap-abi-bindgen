@@ -1,0 +1,19 @@
+directive @imported(
+  uri: String!
+  namespace: String!
+  nativeType: String!
+) on OBJECT | ENUM
+
+type TestImport_Module @imported(
+  uri: "testimport.uri.eth",
+  namespace: "TestImport",
+  nativeType: "Module"
+) {
+  importedMethod(
+    str: String!
+    optStr: String
+    u: UInt!
+    optU: UInt
+    uArrayArray: [[UInt]]!
+  ): String!
+}

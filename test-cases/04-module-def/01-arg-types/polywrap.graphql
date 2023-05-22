@@ -1,0 +1,65 @@
+type Module {
+  scalarArgs(
+    str: String!
+    optStr: String
+    u: UInt!
+    optU: UInt
+    u8: UInt8!
+    u16: UInt16!
+    u32: UInt32!
+    i: Int!
+    i8: Int8!
+    i16: Int16!
+    i32: Int32!
+    bigint: BigInt!
+    optBigint: BigInt
+    bignumber: BigNumber!
+    optBignumber: BigNumber
+    json: JSON!
+    optJson: JSON
+    bytes: Bytes!
+    optBytes: Bytes
+    boolean: Boolean!
+    optBoolean: Boolean
+  ): String!
+
+  refArgs(
+    enum: Baz!
+    optEnum: Baz
+    object: Bar!
+    optObject: Bar
+  ): String!
+
+  mapArgs(
+    map: Map! @annotate(type: "Map<String!, Int!>!")
+    mapOfArr: Map! @annotate(type: "Map<String!, [Int!]!>!")
+    mapOfObj: Map! @annotate(type: "Map<String!, Bar!>!")
+    mapOfOptObj: Map! @annotate(type: "Map<String!, Bar>!")
+    mapOfArrOfObj: Map! @annotate(type: "Map<String!, [Bar!]!>!")
+  ): String!
+
+  arrArgs(
+    arrOfU: [UInt!]!
+    optArrOfU: [UInt!]
+    optArrOfOptU: [UInt]
+    arrOfArrOfU: [[UInt!]!]!
+    arrOfOptArrOfU32: [[UInt32]]!
+    arrOfOptArrOfArrOfU32: [[[UInt32!]!]]!
+    optArrOfOptArrOfArrOfOptArrOfU32: [[[[UInt32!]]!]]
+    arrOfMap: [Map!]! @annotate(type: "Map<String!, Int!>!")
+    optArrOfMap: [Map!] @annotate(type: "Map<String!, Int!>")
+    arrOfObj: [Bar!]!
+    optArrOfOptObj: [Bar]
+    arrOfEnum: [Baz!]!
+    optArrOfOptEnum: [Baz]
+  ): String!
+}
+
+type Bar {
+  str: String!
+}
+
+enum Baz {
+  CONSTANT_0,
+  CONSTANT_1
+}

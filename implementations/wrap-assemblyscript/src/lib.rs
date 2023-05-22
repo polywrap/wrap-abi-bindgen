@@ -12,6 +12,13 @@ use renderer::Renderer;
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
+        // First, ensure version is "0.1"
+        if args.version != "0.1" {
+            return Err(
+                format!("Unsupported ABI Version - {}; Supported - 0.1", args.version)
+            );
+        }
+
         let renderer = Renderer::new();
         let mut output = Output::new();
 
@@ -19,7 +26,7 @@ impl ModuleTrait for Module {
             name: "index.ts".to_string(),
             data: renderer.render(
                 "index.ts",
-                &args.wrap_abi
+                &args.abi
             )
         });
 
@@ -27,11 +34,11 @@ impl ModuleTrait for Module {
             name: "entry.ts".to_string(),
             data: renderer.render(
                 "entry.ts",
-                &args.wrap_abi
+                &args.abi
             )
         });
 
-        let abi = args.wrap_abi.as_object().unwrap();
+        let abi = args.abi.as_object().unwrap();
 
         if let Some(object_types) = abi.get("objectTypes") {
             let objects = object_types.as_array().unwrap();

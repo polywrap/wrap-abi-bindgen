@@ -1,4 +1,4 @@
 - circular prop types in codegen
 - multiple layer inheritance
-- band-aid: easier way to apply apply patch to codegen dir
+- band-aid: easier way to apply patch to codegen dir
 - band-aid: append nested parent interfaces

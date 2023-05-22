@@ -1,0 +1,7 @@
+enum Foo {
+  if,
+  else,
+  function,
+  func,
+  return
+}

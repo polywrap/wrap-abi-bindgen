@@ -1,0 +1,17 @@
+enum Foo {
+  CONSTANT_0,
+  CONSTANT_1,
+  constant_2,
+  constant3,
+  Foo,
+  Bar
+}
+
+enum Bar {
+  CONSTANT_0,
+  CONSTANT_1,
+  constant_2,
+  constant3,
+  Bar,
+  Foo
+}
