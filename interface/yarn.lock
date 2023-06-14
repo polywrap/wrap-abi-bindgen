@@ -2404,7 +2404,7 @@ picomatch@^2.0.4, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-polywrap@~0.10.2:
+polywrap@~0.10.3:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/polywrap/-/polywrap-0.10.3.tgz#3c476b2116fa4a0351406df0cc86165bff8edff5"
   integrity sha512-3VC+CKaLgYLjsnvJGK9TAhYESXpFOk2BrtQAnkK2J+/B0ppqT0DfNLcHeutOjqPQ/9TMmXbLQ7ljnAov2hzyMQ==
