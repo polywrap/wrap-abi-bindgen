@@ -155,7 +155,7 @@ class {{detect_keyword (to_upper type)}}:
 class {{detect_keyword (to_upper namespace)}}:
     URI: Uri = Uri.from_str("{{uri}}")
 
-    {{#each capabilities}}
+    {{#with capabilities}}
     {{#with getImplementations}}
     {{#if enabled}}
     def get_implementations(
@@ -164,8 +164,8 @@ class {{detect_keyword (to_upper namespace)}}:
         impls = client.getImplementations(self.uri)
         return [impl.uri for impl in impls]
     {{/if}}
-    {{/with getImplementations}}
-    {{/each}}
+    {{/with}}
+    {{/with}}
 {{/each}}
 
 ### Interface END ###
