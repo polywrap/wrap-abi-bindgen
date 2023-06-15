@@ -19,7 +19,7 @@ TConfig = TypeVar("TConfig")
 {{#each methods}}
 Args{{to_upper name}} = TypedDict("Args{{to_upper name}}", {
     {{#each arguments}}
-    "{{name}}": {{to_python (to_graphql_type this)}}{{#if (is_not_last ../arguments)}},{{/if}}
+    "{{name}}": {{to_python (to_graphql_type this)}}{{#if (is_not_last @index ../arguments)}},{{/if}}
     {{/each}}
 })
 
@@ -47,7 +47,7 @@ class Module(Generic[TConfig], PluginModule[TConfig]):
         {{#if env}}{{#with env}}env: {{#if required}}{{else}}Optional[{{/if}}Env{{#if required}}{{else}}] = None{{/if}}{{/with}}{{else}}env: None{{/if}}
     ) -> {{#with return}}{{to_python (to_graphql_type this)}}{{/with}}:
         pass
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}

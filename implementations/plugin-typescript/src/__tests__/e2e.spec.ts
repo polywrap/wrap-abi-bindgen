@@ -1,4 +1,4 @@
-import { Output } from "./wrap";
+import {Output, WrapInfo} from "./wrap";
 import { loadTestCases, TestCase } from "./cases";
 import { orderOutput } from "./output";
 
@@ -27,13 +27,17 @@ describe("e2e", () => {
     it(testCase.name, async () => {
       const abi = parseSchema(testCase.input);
 
+      const wrapInfo: WrapInfo = {
+        version: "0.1",
+        name: testCase.name,
+        type: "plugin",
+        abi: JSON.stringify(abi),
+      }
+
       const result = await client.invoke<Output>({
         uri: wrapperUri,
         method: "generateBindings",
-        args: {
-          wrapAbi: JSON.stringify(abi),
-          projectName: testCase.name
-        }
+        args: { wrapInfo }
       });
 
       if (!result.ok) fail(result.error);

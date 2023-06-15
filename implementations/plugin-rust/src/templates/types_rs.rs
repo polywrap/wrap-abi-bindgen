@@ -133,7 +133,7 @@ impl<'a> {{detect_keyword (to_upper type)}}<'a> {
 
         Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}decode(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
     }
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}
@@ -171,7 +171,7 @@ impl {{detect_keyword (to_upper type)}} {
 
         Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}decode(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
     }
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}

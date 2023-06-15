@@ -119,7 +119,7 @@ class {{detect_keyword (to_upper type)}}:
                 args=args,
             )
         )
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}
@@ -139,7 +139,7 @@ class {{detect_keyword (to_upper type)}}:
                 args=args,
             )
         )
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}

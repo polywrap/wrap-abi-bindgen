@@ -24,7 +24,7 @@ pub trait Module: PluginModule {
   {{#with moduleType}}
   {{#each methods}}
   fn {{detect_keyword (to_lower name)}}(&mut self, args: &Args{{to_upper name}}, invoker: Arc<dyn Invoker>{{#with env}}, env: {{#if required}}{{else}}Option<{{/if}}Env{{#if required}}{{else}}>{{/if}}{{/with}}) -> Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, PluginError>;
-  {{#if (is_not_last ../methods)}}
+  {{#if (is_not_last @index ../methods)}}
 
   {{/if}}
   {{/each}}

@@ -27,8 +27,8 @@ fn _to_typescript(value: &str, undefinable: bool) -> String {
     match type_val.as_str() {
         "JSON" => type_val = "Types.Json".to_string(),
         _ => {
-            if type_val.contains("Enum_") {
-                type_val = type_val.replace("Enum_", "");
+            if type_val.contains("Enum_Enum_") {
+                type_val = type_val.replace("Enum_Enum_", "Enum_");
             }
             type_val = _detect_keyword(&type_val);
             type_val = format!("Types.{}", type_val)
@@ -86,19 +86,4 @@ fn apply_undefinable(type_val: &str, undefinable: bool) -> String {
     }
 }
 
-fn first_upper(s: &str) -> String {
-    let mut c = s.chars();
-    match c.next() {
-        None => String::new(),
-        Some(f) => f.to_uppercase().chain(c).collect(),
-    }
-}
-
-fn first_lower(s: &str) -> String {
-    let mut c = s.chars();
-    match c.next() {
-        None => String::new(),
-        Some(f) => f.to_lowercase().chain(c).collect(),
-    }
-}
 

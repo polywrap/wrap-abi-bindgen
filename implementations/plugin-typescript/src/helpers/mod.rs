@@ -8,6 +8,7 @@ mod is_not_first;
 mod is_not_last;
 mod to_graphql_type;
 mod to_typescript;
+mod pretty;
 
 pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
@@ -37,6 +38,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "to_graphql_type",
         Box::new(to_graphql_type::to_graphql_type)
+    );
+    handlebars.register_helper(
+        "pretty",
+        Box::new(pretty::pretty)
     );
     handlebars.register_helper(
         "to_typescript",

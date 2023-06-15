@@ -54,13 +54,13 @@ export interface {{detect_keyword type}} {
 {{#each enumTypes}}
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
+  {{this}},
   {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
+  | "{{this}}"
   {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
@@ -83,13 +83,13 @@ export interface {{detect_keyword type}} {
 /* URI: "{{uri}}" */
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
+  {{this}},
   {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
+  | "{{this}}"
   {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
@@ -130,7 +130,7 @@ export class {{detect_keyword type}} {
       args: (args as unknown) as Record<string, unknown>,
     });
   }
-  {{#if (is_not_last ../methods)}}
+  {{#if (is_not_last @index ../methods)}}
 
   {{/if}}
   {{/each}}
@@ -148,7 +148,7 @@ export const {{type}} = {
       method: "{{name}}",
       args: (args as unknown) as Record<string, unknown>,
     });
-  }{{#if (is_not_last ../methods)}},
+  }{{#if (is_not_last @index ../methods)}},
 
   {{/if}}
   {{/each}}
@@ -162,7 +162,7 @@ export const {{type}} = {
 export class {{detect_keyword namespace}} {
   static uri: Uri = Uri.from("{{uri}}");
 
-  {{#each capabilities}}
+  {{#with capabilities}}
   {{#with getImplementations}}
   {{#if enabled}}
   public static async getImplementations(
@@ -177,9 +177,9 @@ export class {{detect_keyword namespace}} {
   }
   {{/if}}
   {{/with}}
-  {{/each}}
+  {{/with}}
 }
-{{/each interfaceTypes}}
+{{/each}}
 "#.to_string();
 }
 

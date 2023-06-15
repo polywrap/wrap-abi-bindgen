@@ -36,14 +36,14 @@ export interface {{detect_keyword type}} {
 
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
-  {{/each constants}}
+  {{this}},
+  {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
-  {{/each constants}}
+  | "{{this}}"
+  {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
 {{/each}}
@@ -70,13 +70,13 @@ export interface {{detect_keyword type}} {
 /* URI: "{{uri}}" */
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
+  {{this}},
   {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
+  | "{{this}}"
   {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
@@ -111,7 +111,7 @@ export const {{type}} = {
       method: "{{name}}",
       args: (args as unknown) as Record<string, unknown>,
     });
-  }{{#if (is_not_last ../methods)}},
+  }{{#if (is_not_last @index ../methods)}},
 
   {{/if}}
   {{/each}}

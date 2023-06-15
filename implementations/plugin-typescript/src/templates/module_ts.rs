@@ -28,7 +28,7 @@ export abstract class Module<TConfig> extends PluginModule<TConfig{{#with envTyp
     client: CoreClient,
     {{#if env}}{{#with env}}env{{#if required}}{{else}}?{{/if}}: Types.Env{{#if required}}{{else}} | null{{/if}}{{/with}}{{else}}env?: null{{/if}}
   ): MaybeAsync<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>;
-  {{#if (is_not_last ../methods)}}
+  {{#if (is_not_last @index ../methods)}}
 
   {{/if}}
   {{/each}}
