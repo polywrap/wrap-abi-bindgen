@@ -1,9 +1,9 @@
 lazy_static! {
   static ref NAME: String = "deserialize_properties".to_string();
-  static ref SOURCE: String = r#"let numFields = reader.readMapLength();
-  {{#each properties}}
-  {{#if object}}{{#with object}}
-  {{#if required}}
+  static ref SOURCE: String = r#"  let numFields = reader.readMapLength();
+{{#each properties}}
+{{#if object}}{{#with object}}
+{{#if required}}
   let _{{name}}: {{to_wasm (to_graphql_type this)}} | null = null;
   {{else}}
   let _{{name}}: {{to_wasm (to_graphql_type this)}} = {{to_wasm_init (to_graphql_type this)}};

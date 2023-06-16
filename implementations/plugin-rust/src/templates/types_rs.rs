@@ -43,7 +43,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum {{detect_keyword (to_upper type)}} {
     {{#each constants}}
-    {{serde_rename_if_case_mismatch name}}{{detect_keyword .}},
+    {{serde_rename_if_case_mismatch name}}{{detect_keyword this}},
     {{/each}}
     _MAX_
 }
@@ -80,7 +80,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum {{detect_keyword (to_upper type)}} {
     {{#each constants}}
-    {{serde_rename_if_case_mismatch name}}{{detect_keyword .}},
+    {{serde_rename_if_case_mismatch name}}{{detect_keyword this}},
     {{/each}}
     _MAX_
 }

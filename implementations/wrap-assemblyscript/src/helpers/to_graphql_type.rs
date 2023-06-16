@@ -84,7 +84,7 @@ pub fn to_graphql_type_fn(obj: &Map<String, Value>, prefixed: bool) -> String {
         Some(x) => x.as_bool().unwrap(),
         None => false
     };
-    let kind = DefinitionKind::from((obj.get("kind").unwrap().as_u64().unwrap() as u32));
+    let kind = DefinitionKind::from(obj.get("kind").unwrap().as_u64().unwrap() as u32);
 
     match kind {
         DefinitionKind::Object

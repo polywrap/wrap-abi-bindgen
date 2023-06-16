@@ -16,7 +16,7 @@ export function serialize{{type}}(type: {{detect_keyword type}}): ArrayBuffer {
 }
 
 export function write{{type}}(writer: Write, type: {{detect_keyword type}}): void {
-  {{> serialize_properties}}
+{{> serialize_properties}}
 }
 
 export function deserialize{{type}}(buffer: ArrayBuffer): {{detect_keyword type}} {
@@ -31,7 +31,7 @@ export function read{{type}}(reader: Read): {{detect_keyword type}} {
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {
