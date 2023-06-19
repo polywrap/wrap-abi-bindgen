@@ -37,7 +37,7 @@ export class {{detect_keyword type}} {
   ): Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, string> {
     const argsBuf = serialize{{name}}Args(args);
     const result = wrap_subinvokeImplementation(
-      "{{uri}}",
+      "{{../uri}}",
       this.uri,
       "{{name}}",
       argsBuf
@@ -69,7 +69,7 @@ export class {{detect_keyword type}} {
   ): Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, string> {
     const argsBuf = serialize{{name}}Args(args);
     const result = wrap_subinvoke(
-      "{{uri}}",
+      "{{../uri}}",
       "{{name}}",
       argsBuf
     );

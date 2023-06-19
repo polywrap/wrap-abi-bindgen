@@ -40,7 +40,7 @@ pub fn to_wasm_fn(value: &str) -> String {
         "BigNumber" => type_str = "BigNumber".to_owned(),
         "JSON" => type_str = "JSON.Value".to_owned(),
         _ => {
-            if type_str.contains("Enum_") {
+            if type_str.starts_with("Enum_") {
                 type_str = type_str.replacen("Enum_", "", 1);
                 is_enum = true;
             }

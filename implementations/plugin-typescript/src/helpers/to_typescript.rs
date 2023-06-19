@@ -27,8 +27,8 @@ fn _to_typescript(value: &str, undefinable: bool) -> String {
     match type_val.as_str() {
         "JSON" => type_val = "Types.Json".to_string(),
         _ => {
-            if type_val.contains("Enum_Enum_") {
-                type_val = type_val.replace("Enum_Enum_", "Enum_");
+            if type_val.starts_with("Enum_") {
+                type_val = type_val.replacen("Enum_", "", 1);
             }
             type_val = _detect_keyword(&type_val);
             type_val = format!("Types.{}", type_val)

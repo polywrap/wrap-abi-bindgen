@@ -173,5 +173,5 @@ pub fn to_graphql_type_fn(obj: &Map<String, Value>, prefixed: bool) -> String {
 
 handlebars_helper!(to_graphql_type: |value: Value| {
     let obj = value.as_object().unwrap();
-    to_graphql_type_fn(&obj, false)
+    to_graphql_type_fn(&obj, true)
 });

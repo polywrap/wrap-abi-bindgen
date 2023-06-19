@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "imported/module_type/index.ts".to_string();
+  static ref NAME: String = "imported/module_type/serialization.ts".to_string();
   static ref SOURCE: String = r#"{{#if (array_has_length methods)}}
 {{> serialization_imports}}
 import * as Types from "../..";

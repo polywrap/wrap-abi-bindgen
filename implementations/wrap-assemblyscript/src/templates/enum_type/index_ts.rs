@@ -17,11 +17,11 @@ export function sanitize{{type}}Value(value: i32): void {
 export function get{{type}}Value(key: string): {{detect_keyword type}} {
   {{#each constants}}
   if (key == "{{detect_keyword this}}") {
-    return {{detect_keyword type}}.{{detect_keyword this}};
+    return {{detect_keyword ../type}}.{{detect_keyword this}};
   }
   {{/each}}
 
-  throw new Error("Invalid key for enum '{{detect_keyword type}}': " + key);
+  throw new Error("Invalid key for enum '{{detect_keyword ../type}}': " + key);
 }
 
 export function get{{type}}Key(value: {{detect_keyword type}}): string {
@@ -29,10 +29,10 @@ export function get{{type}}Key(value: {{detect_keyword type}}): string {
 
   switch (value) {
     {{#each constants}}
-    case {{detect_keyword type}}.{{detect_keyword this}}: return "{{detect_keyword this}}";
+    case {{detect_keyword ../type}}.{{detect_keyword this}}: return "{{detect_keyword this}}";
     {{/each}}
     default:
-      throw new Error("Invalid value for enum '{{detect_keyword type}}': " + value.toString());
+      throw new Error("Invalid value for enum '{{detect_keyword ../type}}': " + value.toString());
   }
 }
 "#.to_string();

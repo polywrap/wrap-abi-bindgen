@@ -1,6 +1,6 @@
 lazy_static! {
   static ref NAME: String = "deserialize_result".to_string();
-  static ref SOURCE: String = r#"const reader = new ReadDecoder(buffer, context);
+  static ref SOURCE: String = r#"  const reader = new ReadDecoder(buffer, context);
 
   {{#with return}}
   reader.context().push("{{name}}", "{{to_wasm (to_graphql_type this)}}", "reading function output");

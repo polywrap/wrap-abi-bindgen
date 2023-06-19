@@ -91,6 +91,165 @@ impl ModuleTrait for Module {
             output.dirs.push(dir);
         }
 
+        if let Some(enum_types) = abi.get("enumTypes") {
+            let enums = enum_types.as_array().unwrap();
+
+            for it in enums.iter() {
+                let dir = Directory {
+                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("enum_type/index.ts", it)
+                        },
+                    ),
+                    dirs: vec!()
+                };
+                output.dirs.push(dir);
+            }
+        }
+
+
+
+        if let Some(interface_types) = abi.get("interfaceTypes") {
+            let interfaces = interface_types.as_array().unwrap();
+
+            for it in interfaces.iter() {
+                let dir = Directory {
+                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("interface_type/index.ts", it)
+                        },
+                    ),
+                    dirs: vec!()
+                };
+                output.dirs.push(dir);
+            }
+        }
+
+        // imported dirs go within subdirectory
+        let mut imported = Directory {
+            name: "imported".to_string(),
+            files: vec![],
+            dirs: vec![],
+        };
+
+        if let Some(imported_object_types) = abi.get("importedObjectTypes") {
+            let objects = imported_object_types.as_array().unwrap();
+
+            for object in objects.iter() {
+                let dir = Directory {
+                    name: object.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("imported/object_type/index.ts", object)
+                        },
+                        File {
+                            name: "serialization.ts".to_string(),
+                            data: renderer.render("imported/object_type/serialization.ts", object)
+                        }
+                    ),
+                    dirs: vec!()
+                };
+                imported.dirs.push(dir);
+            }
+        }
+
+        if let Some(imported_module_types) = abi.get("importedModuleTypes") {
+            let modules = imported_module_types.as_array().unwrap();
+
+            for it in modules.iter() {
+                let dir = Directory {
+                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("imported/module_type/index.ts", it)
+                        },
+                        File {
+                            name: "serialization.ts".to_string(),
+                            data: renderer.render("imported/module_type/serialization.ts", it)
+                        }
+                    ),
+                    dirs: vec!()
+                };
+                imported.dirs.push(dir);
+            }
+        }
+
+        if let Some(imported_enum_types) = abi.get("importedEnumTypes") {
+            let enums = imported_enum_types.as_array().unwrap();
+
+            for it in enums.iter() {
+                let dir = Directory {
+                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("imported/enum_type/index.ts", it)
+                        },
+                    ),
+                    dirs: vec!()
+                };
+                imported.dirs.push(dir);
+            }
+        }
+
+        if let Some(imported_env_types) = abi.get("importedEnvTypes") {
+            let envs = imported_env_types.as_array().unwrap();
+
+            for it in envs.iter() {
+                let dir = Directory {
+                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    files: vec!(
+                        File {
+                            name: "index.ts".to_string(),
+                            data: renderer.render("imported/env_type/index.ts", it)
+                        },
+                        File {
+                            name: "serialization.ts".to_string(),
+                            data: renderer.render("imported/env_type/serialization.ts", it)
+                        }
+                    ),
+                    dirs: vec!()
+                };
+                imported.dirs.push(dir);
+            }
+        }
+
+        // add imported dirs to output
+        if abi.get("importedObjectTypes").is_some() ||
+            abi.get("importedModuleTypes").is_some() ||
+            abi.get("importedEnumTypes").is_some() ||
+            abi.get("importedEnvTypes").is_some() {
+            imported.files.push(File {
+                name: "index.ts".to_string(),
+                data: renderer.render("imported/index.ts", &wrap_info.abi)
+            });
+            output.dirs.push(imported);
+        }
+
+        if let Some(env_type) = abi.get("envType") {
+            let dir = Directory {
+                name: "Env".to_string(),
+                files: vec!(
+                    File {
+                        name: "index.ts".to_string(),
+                        data: renderer.render("env_type/index.ts", env_type)
+                    },
+                    File {
+                        name: "serialization.ts".to_string(),
+                        data: renderer.render("env_type/serialization.ts", env_type)
+                    },
+                ),
+                dirs: vec!()
+            };
+            output.dirs.push(dir);
+        }
+
         Ok(output)
     }
 }
