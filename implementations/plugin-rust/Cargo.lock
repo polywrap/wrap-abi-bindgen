@@ -218,6 +218,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "plugin-rust-wrap-abi-bindgen"
+version = "0.1.0"
+dependencies = [
+ "handlebars",
+ "lazy_static",
+ "polywrap-wasm-rs",
+ "regex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "polywrap-wasm-rs"
 version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -323,18 +335,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
-]
-
-[[package]]
-name = "template-wasm-rs"
-version = "0.1.0"
-dependencies = [
- "handlebars",
- "lazy_static",
- "polywrap-wasm-rs",
- "regex",
- "serde",
- "serde_json",
 ]
 
 [[package]]

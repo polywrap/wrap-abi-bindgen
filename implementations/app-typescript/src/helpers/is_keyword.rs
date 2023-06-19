@@ -8,17 +8,13 @@ handlebars_helper!(is_keyword: |val: Value| {
 
 pub fn _is_keyword(s: &str) -> bool {
     match s {
-        "as" | "break" | "const" | "continue" | "crate"
-        | "else" | "enum" | "extern" | "false" | "fn"
-        | "for" | "if" | "impl" | "in" | "let" | "loop"
-        | "match" | "mod" | "move" | "mut" | "pub" | "ref"
-        | "return" | "self" | "static" | "struct" | "super"
-        | "trait" | "true" | "type" | "unsafe" | "use" | "where"
-        | "while" | "async" | "await" | "dyn" | "abstract"
-        | "become" | "box" | "do" | "final" | "macro"
-        | "override" | "priv" | "typeof" | "unsized"
-        | "virtual" | "yield" | "try" | "macro_rules"
-        | "union" => true,
+        "break" | "case" | "catch" | "class" | "const" | "continue" | "debugger"
+        | "default" | "delete" | "do" | "else" | "export" | "extends" | "false"
+        | "finally" | "for" | "function" | "if" | "import" | "in" | "instanceof"
+        | "new" | "null" | "return" | "super" | "switch" | "this" | "throw"
+        | "true" | "try" | "typeof" | "var" | "void" | "while" | "with" | "yield"
+        | "let" | "await" | "enum" | "implements" | "interface" | "package"
+        | "private" | "protected" | "public" | "static" | "arguments" | "eval" => true,
         _ => false,
     }
 }
