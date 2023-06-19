@@ -3,6 +3,7 @@ lazy_static! {
   static ref SOURCE: String = r#"import {
   Read,
   Write,
+  Box,
   BigInt,
   BigNumber,
   JSON,
