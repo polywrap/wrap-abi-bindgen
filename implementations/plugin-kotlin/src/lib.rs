@@ -4,8 +4,6 @@ extern crate lazy_static;
 pub mod wrap;
 pub use wrap::*;
 
-// use polywrap_wasm_rs::JSON;
-
 pub mod templates;
 pub mod helpers;
 mod renderer;
@@ -27,23 +25,23 @@ impl ModuleTrait for Module {
         let mut output = Output::new();
 
         output.files.push(File {
-            name: "module.ts".to_string(),
+            name: "module.kt".to_string(),
             data: renderer.render(
                 "module.ts",
-                &wrap_info.abi
+                &wrap_info
             )
         });
 
         output.files.push(File {
-            name: "types.ts".to_string(),
+            name: "types.kt".to_string(),
             data: renderer.render(
                 "types.ts",
-                &wrap_info.abi
+                &wrap_info
             )
         });
 
         output.files.push(File {
-            name: "wrap.info.ts".to_string(),
+            name: "wrap.info.kt".to_string(),
             data: renderer.render(
                 "wrap.info.ts",
                 &wrap_info

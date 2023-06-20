@@ -3,8 +3,9 @@ lazy_static! {
   static ref SOURCE: String = r#"/// NOTE: This is an auto-generated file.
 ///       All modifications will be overwritten.
 
-package {{pkg}}
+package {{to_package_id name}}
 
+{{#with abi}}
 import io.polywrap.core.Invoker
 import io.polywrap.core.msgpack.msgPackDecode
 import io.polywrap.core.msgpack.msgPackEncode
@@ -17,9 +18,9 @@ import kotlinx.serialization.serializer
 {{#each methods}}
 
 @Serializable
-data class Args{{toClassName name}}(
+data class Args{{to_class_name name}}(
     {{#each arguments}}
-    val {{detectKeyword name}}: {{#nullableDefault}}{{toKotlin toGraphQLType}}{{/nullableDefault}},
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
 )
 {{/each}}
@@ -29,23 +30,23 @@ data class Args{{toClassName name}}(
 abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) {
 
   final override val methods: Map<String, PluginMethod> = mapOf(
-  {{#mwith oduleType}}
+  {{#with moduleType}}
   {{#each methods}}
       "{{name}}" to ::__{{name}},
   {{/each}}
-  {{/moduleType}}
+  {{/with}}
   )
 
-  {{#moduleType}}
+  {{#with moduleType}}
   {{#each methods}}
-  abstract suspend fun {{detectKeyword name}}(
-      args: Args{{toClassName name}},{{#if env}}{{#with env}}
+  abstract suspend fun {{detect_keyword name}}(
+      args: Args{{to_class_name name}},{{#if env}}{{#with env}}
       env: Env{{#if required}}{{else}}? = null{{/if}},{{/with}}{{/if}}
       invoker: Invoker
-  ): {{#with return}}{{toKotlin (toGraphQLType this)}}{{/with}}
+  ): {{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}
 
   {{/each}}
-  {{/with moduleType}}
+  {{/with}}
   {{#with moduleType}}
   {{#each methods}}
   private suspend fun __{{name}}(
@@ -53,8 +54,8 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
       encodedEnv: ByteArray?,
       invoker: Invoker
     ): ByteArray {
-        val args: Args{{toClassName name}} = encodedArgs?.let {
-            msgPackDecode(Args{{toClassName name}}.serializer(), it).getOrNull()
+        val args: Args{{to_class_name name}} = encodedArgs?.let {
+            msgPackDecode(Args{{to_class_name name}}.serializer(), it).getOrNull()
                 ?: throw Exception("Failed to decode args in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing args in invocation to plugin method '{{name}}'")
         {{#if env}}
@@ -63,7 +64,7 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
                 ?: throw Exception("Failed to decode env in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing env in invocation to plugin method '{{name}}'")
         {{/if}}
-        val response = {{detectKeyword name}}(args, {{#if env}}env, {{/if}}invoker)
+        val response = {{detect_keyword name}}(args, {{#if env}}env, {{/if}}invoker)
         return msgPackEncode(serializer(), response)
   }
   {{#if (is_not_last @index ../methods)}}
@@ -72,6 +73,7 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
   {{/each}}
   {{/with}}
 }
+{{/with}}
 "#.to_string();
 }
 

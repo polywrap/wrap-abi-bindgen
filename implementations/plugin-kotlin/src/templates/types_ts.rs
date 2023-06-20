@@ -3,8 +3,9 @@ lazy_static! {
   static ref SOURCE: String = r#"/// NOTE: This is an auto-generated file.
 ///       All modifications will be overwritten.
 
-package {{pkg}}
+package {{to_package_id name}}
 
+{{#with abi}}
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
@@ -20,7 +21,7 @@ typealias Json = String
 @Serializable
 data class Env(
     {{#each properties}}
-    val {{detectKeyword name}}: {{nullableDefault (toKotlin toGraphQLType)}},
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
 )
 {{/with}}
@@ -29,9 +30,9 @@ data class Env(
 /// Objects START ///
 {{#each objectTypes}}
 @Serializable
-data class {{toClassName type}}(
+data class {{to_class_name type}}(
     {{#each properties}}
-    val {{detectKeyword name}}: {{nullableDefault (toKotlin toGraphQLType)}},
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
 )
 
@@ -41,10 +42,10 @@ data class {{toClassName type}}(
 /// Enums START ///
 {{#each enumTypes}}
 @Serializable
-enum class {{toClassName type}} {
-    {{#constants}}
-    {{detectKeywordStrict this}}{{#if (is_not_last @index ../constants)}},{{/if}}
-    {{/constants}}
+enum class {{to_class_name type}} {
+    {{#each constants}}
+    {{detect_keyword_strict this}}{{#if (is_not_last @index ../constants)}},{{/if}}
+    {{/each}}
 }
 
 {{/each}}
@@ -54,9 +55,9 @@ enum class {{toClassName type}} {
 {{#each importedObjectTypes}}
 /* URI: "{{uri}}" */
 @Serializable
-data class {{toClassName type}}(
+data class {{to_class_name type}}(
     {{#each properties}}
-    val {{detectKeyword name}}: {{nullableDefault (toKotlin toGraphQLType)}},
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
 )
 
@@ -64,10 +65,10 @@ data class {{toClassName type}}(
 {{#each importedEnumTypes}}
 /* URI: "{{uri}}" */
 @Serializable
-enum class {{toClassName type}} {
-    {{#constants}}
-    {{detectKeywordStrict this}}{{#if (is_not_last @index ../constants)}},{{/if}}
-    {{/constants}}
+enum class {{to_class_name type}} {
+    {{#each constants}}
+    {{detect_keyword_strict this}}{{#if (is_not_last @index ../constants)}},{{/if}}
+    {{/each}}
 }
 
 {{/each}}
@@ -78,16 +79,16 @@ enum class {{toClassName type}} {
 {{#each methods}}
 /* URI: "{{../uri}}" */
 @Serializable
-data class {{toClassName ../type}}Args{{toClassName name}}(
+data class {{to_class_name ../type}}Args{{to_class_name name}}(
     {{#each arguments}}
-    val {{detectKeyword name}}: {{nullableDefault (toKotlin toGraphQLType)}},
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
 )
 
 {{/each}}
 /* URI: "{{uri}}" */
 {{#if isInterface}}
-class {{toClassName type}}(uri: String) {
+class {{to_class_name type}}(uri: String) {
     companion object {
         val interfaceUri: String = "{{uri}}"
     }
@@ -95,10 +96,10 @@ class {{toClassName type}}(uri: String) {
     val uri: Uri = Uri.fromString(uri)
 
     {{#each methods}}
-    suspend fun {{detectKeyword name}}(
-        args: {{toClassName ../type}}Args{{toClassName name}},
+    suspend fun {{detect_keyword name}}(
+        args: {{to_class_name ../type}}Args{{to_class_name name}},
         invoker: Invoker
-    ): InvokeResult<{{#with return}}{{toKotlin toGraphQLType}}{{/with}}> {
+    ): InvokeResult<{{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}> {
         return invoker.invoke(
             uri = this.uri,
             method = "{{name}}",
@@ -112,12 +113,12 @@ class {{toClassName type}}(uri: String) {
 }
 
 {{else}}
-object {{toClassName type}} {
+object {{to_class_name type}} {
     {{#each methods}}
-    suspend fun {{detectKeyword name}}(
-        args: {{toClassName ../type}}Args{{toClassName name}},
+    suspend fun {{detect_keyword name}}(
+        args: {{to_class_name ../type}}Args{{to_class_name name}},
         invoker: Invoker
-    ): InvokeResult<{{#with return}}{{toKotlin toGraphQLType}}{{/with}}> {
+    ): InvokeResult<{{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}> {
         return invoker.invoke(
             uri = Uri.fromString("{{../uri}}"),
             method = "{{name}}",
@@ -135,7 +136,7 @@ object {{toClassName type}} {
 /// Imported Modules END ///
 {{#each interfaceTypes}}
 
-object {{toClassName namespace}} {
+object {{to_class_name namespace}} {
     val uri: Uri = Uri.fromString("{{uri}}");
 
     {{#with capabilities}}
@@ -152,6 +153,7 @@ object {{toClassName namespace}} {
     {{/with}}
 }
 {{/each}}
+{{/with}}
 "#.to_string();
 }
 
