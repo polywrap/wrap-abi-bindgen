@@ -8,14 +8,13 @@ handlebars_helper!(is_keyword: |val: Value| {
 
 pub fn _is_keyword(s: &str) -> bool {
     match s {
-        "break" | "case" | "catch" | "class" | "const" | "continue" | "debugger"
-        | "default" | "delete" | "do" | "else" | "export" | "extends" | "false"
-        | "finally" | "for" | "function" | "if" | "import" | "in" | "instanceof"
-        | "new" | "null" | "return" | "super" | "switch" | "this" | "throw"
-        | "true" | "try" | "typeof" | "var" | "void" | "while" | "with" | "yield"
-        | "let" | "await" | "enum" | "implements" | "interface" | "package"
-        | "private" | "protected" | "public" | "static" | "arguments" | "eval" => true,
+        "as" | "as?" | "break" | "class" | "continue" | "do" | "else" | "false"
+        | "for" | "fun" | "if" | "in" | "!in" | "interface" | "is" | "!is"
+        | "null" | "object" | "package" | "return" | "super" | "this" | "throw"
+        | "true" | "try" | "typealias" | "typeof" | "val" | "var" | "when"
+        | "while" => true,
         _ => false,
     }
 }
+
 
