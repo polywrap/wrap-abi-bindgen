@@ -10,14 +10,14 @@ handlebars_helper!(to_upper: |val: Value| {
 pub fn _to_upper(s: &str) -> String {
     let mut result = s.to_string();
     let first_char = result.chars().nth(0).unwrap();
-    let replace_char = first_char.to_uppercase().collect::<String>();
-    result = replace_at(&result, 0, &replace_char);
+    let first_upper = first_char.to_uppercase().collect::<String>();
+    result = replace_at(&result, 0, &first_upper);
     let mut i = 0;
     while i < result.len() {
         if let Some('_') = result.chars().nth(i) {
             if let Some(next_char) = result.chars().nth(i + 1) {
-                let replace_char = next_char.to_uppercase().collect::<String>();
-                result = replace_at(&result, i + 1, &replace_char);
+                let next_char_upper = next_char.to_uppercase().collect::<String>();
+                result = replace_at(&result, i + 1, &next_char_upper);
                 result = remove_at(&result, i);
             }
         }

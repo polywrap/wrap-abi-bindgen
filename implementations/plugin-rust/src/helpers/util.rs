@@ -1,22 +1,18 @@
 pub fn replace_at(s: &str, idx: usize, replacement: &str) -> String {
-    let mut chars = s.chars().collect::<Vec<_>>();
-    for (i, r) in replacement.chars().enumerate() {
-        chars[idx + i] = r;
-    }
-    chars.into_iter().collect()
+    let start = s[..idx].to_string();
+    let end = s[idx + replacement.len()..].to_string();
+    format!("{}{}{}", start, replacement, end)
 }
 
 pub fn insert_at(s: &str, idx: usize, insert: &str) -> String {
-    let mut chars = s.chars().collect::<Vec<_>>();
-    let insert_chars = insert.chars().collect::<Vec<_>>();
-    for (i, char) in insert_chars.into_iter().enumerate() {
-        chars.insert(idx + i, char);
-    }
-    chars.into_iter().collect()
+    let start = s[..idx].to_string();
+    let end = s[idx..].to_string();
+    format!("{}{}{}", start, insert, end)
 }
 
 pub fn remove_at(s: &str, idx: usize) -> String {
-    let mut chars = s.chars().collect::<Vec<_>>();
-    chars.remove(idx);
-    chars.into_iter().collect()
+    let start = s[..idx].to_string();
+    let end = s[idx + 1..].to_string();
+    format!("{}{}", start, end)
 }
+

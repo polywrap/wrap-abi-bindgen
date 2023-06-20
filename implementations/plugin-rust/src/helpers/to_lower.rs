@@ -9,14 +9,17 @@ handlebars_helper!(to_lower: |val: Value| {
 
 pub fn _to_lower(s: &str) -> String {
     let mut result = s.to_string();
-    for (i, char) in result.clone().chars().enumerate() {
+    let mut i = 0;
+    while i < result.len() {
+        let char = result.chars().nth(i).unwrap();
         if char.is_uppercase() {
-            let replace_char = char.to_lowercase().collect::<String>();
-            result = replace_at(&result, i, &replace_char);
-            if i != 0 && s.chars().nth(i - 1).unwrap() != '_' {
+            let lower = char.to_lowercase().collect::<String>();
+            result = replace_at(&result, i, &lower);
+            if i != 0 && result.chars().nth(i - 1).unwrap() != '_' {
                 result = insert_at(&result, i, "_");
             }
         }
+        i += 1;
     }
     result
 }

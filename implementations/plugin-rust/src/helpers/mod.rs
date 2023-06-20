@@ -6,6 +6,8 @@ mod detect_keyword;
 mod is_keyword;
 mod is_not_first;
 mod is_not_last;
+mod pretty;
+mod serde_annotate_if_bytes;
 mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
 mod to_lower;
@@ -39,6 +41,14 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "is_not_last",
         Box::new(is_not_last::is_not_last)
+    );
+    handlebars.register_helper(
+        "pretty",
+        Box::new(pretty::pretty)
+    );
+    handlebars.register_helper(
+        "serde_annotate_if_bytes",
+        Box::new(serde_annotate_if_bytes::serde_annotate_if_bytes)
     );
     handlebars.register_helper(
         "serde_rename_if_case_mismatch",

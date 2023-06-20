@@ -15,14 +15,14 @@ use std::sync::Arc;
 
 // Env START //
 
-{{#if envType}}
+{{#with envType}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
-{{/if}}
+{{/with}}
 // Env END //
 
 // Objects START //
@@ -31,7 +31,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -43,7 +43,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum {{detect_keyword (to_upper type)}} {
     {{#each constants}}
-    {{serde_rename_if_case_mismatch name}}{{detect_keyword this}},
+    {{detect_keyword this}},
     {{/each}}
     _MAX_
 }
@@ -56,7 +56,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -68,7 +68,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -80,7 +80,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum {{detect_keyword (to_upper type)}} {
     {{#each constants}}
-    {{serde_rename_if_case_mismatch name}}{{detect_keyword this}},
+    {{detect_keyword this}},
     {{/each}}
     _MAX_
 }
@@ -95,7 +95,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{to_upper ../type}}Args{{to_upper name}} {
     {{#each arguments}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
 

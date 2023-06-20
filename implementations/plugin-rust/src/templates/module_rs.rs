@@ -14,7 +14,7 @@ use super::types::*;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Args{{to_upper name}} {
     {{#each arguments}}
-    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
     {{/each}}
 }
 
