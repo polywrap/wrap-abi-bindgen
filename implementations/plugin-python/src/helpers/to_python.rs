@@ -3,11 +3,11 @@ use serde_json::value::Value;
 use crate::helpers::detect_keyword::_detect_keyword;
 use crate::helpers::to_upper::_to_upper;
 
-handlebars_helper!(to_kotlin: |value: Value| {
-    _to_kotlin(value.as_str().unwrap())
+handlebars_helper!(to_python: |value: Value| {
+    _to_python(value.as_str().unwrap())
 });
 
-fn _to_kotlin(value: &str) -> String {
+fn _to_python(value: &str) -> String {
     let mut type_val = value.to_string();
 
     let mut optional = false;
@@ -18,41 +18,33 @@ fn _to_kotlin(value: &str) -> String {
     }
 
     if type_val.starts_with("[") {
-        return to_kotlin_array(&type_val, optional).unwrap();
+        return to_python_array(&type_val, optional).unwrap();
     }
 
     if type_val.starts_with("Map<") {
-        return to_kotlin_map(&type_val, optional).unwrap();
+        return to_python_map(&type_val, optional).unwrap();
     }
 
     type_val = match type_val.as_str() {
-        "Int" | "Int32" => "Int".to_string(),
-        "Int8" => "Byte".to_string(),
-        "Int16" => "Short".to_string(),
-        "Int64" => "Long".to_string(),
-        "UInt" | "UInt32" => "UInt".to_string(),
-        "UInt8" => "UByte".to_string(),
-        "UInt16" => "UShort".to_string(),
-        "UInt64" => "ULong".to_string(),
-        "String" => "String".to_string(),
-        "Boolean" => "Boolean".to_string(),
-        "Bytes" => "ByteArray".to_string(),
-        "BigInt" => "BigInt".to_string(),
-        "BigNumber" => "BigNumber".to_string(),
-        "JSON" => "Json".to_string(),
+        "Int" | "Int8" | "Int16" | "Int32" | "Int64" |
+        "UInt" | "UInt8" | "UInt16" | "UInt32" | "UInt64" => "int".to_string(),
+        "String" | "BigInt" | "BigNumber" | "JSON" => "str".to_string(),
+        "Boolean" => "bool".to_string(),
+        "Bytes" => "bytes".to_string(),
         _ => {
             if type_val.starts_with("Enum_") {
                 type_val = type_val.replacen("Enum_", "", 1);
             }
             type_val = _to_upper(&type_val);
-            _detect_keyword(&type_val)
+            type_val = _detect_keyword(&type_val);
+            format!("\"{}\"", type_val)
         }
     };
 
     apply_optional(&type_val, optional)
 }
 
-fn to_kotlin_array(value: &str, optional: bool) -> Result<String, String> {
+fn to_python_array(value: &str, optional: bool) -> Result<String, String> {
     let mut iter = value.char_indices();
 
     let first_bracket = match iter.find(|&(_, c)| c == '[').map(|(i, _)| i) {
@@ -65,13 +57,13 @@ fn to_kotlin_array(value: &str, optional: bool) -> Result<String, String> {
     };
 
     let inner_type = &value[(first_bracket+1)..last_bracket];
-    let kt_type = _to_kotlin(inner_type);
+    let py_type = _to_python(inner_type);
 
-    let kt_array = format!("List<{}>", kt_type);
-    Ok(apply_optional(&kt_array, optional))
+    let py_array = format!("list[{}]", py_type);
+    Ok(apply_optional(&py_array, optional))
 }
 
-fn to_kotlin_map(value: &str, optional: bool) -> Result<String, String> {
+fn to_python_map(value: &str, optional: bool) -> Result<String, String> {
     let first_open_bracket_idx = match value.find('<') {
         Some(idx) => idx,
         None => return Err(format!("Invalid Map: {}", value)),
@@ -91,17 +83,18 @@ fn to_kotlin_map(value: &str, optional: bool) -> Result<String, String> {
     let key_type = key_val_types[..first_comma_idx].trim();
     let val_type = key_val_types[(first_comma_idx+1)..].trim();
 
-    let kt_key_type = _to_kotlin(key_type);
-    let kt_val_type = _to_kotlin(val_type);
-
-    let kt_map = format!("MsgPackMap<{}, {}>", kt_key_type, kt_val_type);
-    Ok(apply_optional(&kt_map, optional))
+    let py_key_type = _to_python(key_type);
+    let py_val_type = _to_python(val_type);
+    
+    let py_map = format!("GenericMap[{}, {}]", py_key_type, py_val_type);
+    Ok(apply_optional(&py_map, optional))
 }
 
 fn apply_optional(value: &str, optional: bool) -> String {
     if optional {
-        format!("{}?", value)
+        format!("Optional[{}]", value)
     } else {
         value.to_string()
     }
 }
+
