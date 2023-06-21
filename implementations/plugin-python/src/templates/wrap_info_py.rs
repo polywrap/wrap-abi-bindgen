@@ -9,7 +9,7 @@ import json
 from polywrap_manifest import WrapManifest
 
 abi = json.loads("""
-{{abi}}
+{{pretty abi}}
 """)
 
 manifest = WrapManifest.parse_obj({

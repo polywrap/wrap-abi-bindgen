@@ -5,6 +5,7 @@ mod array_length;
 mod detect_keyword;
 mod is_not_first;
 mod is_not_last;
+mod pretty;
 mod to_graphql_type;
 mod to_lower;
 mod to_python;
@@ -33,6 +34,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "is_not_last",
         Box::new(is_not_last::is_not_last)
+    );
+    handlebars.register_helper(
+        "pretty",
+        Box::new(pretty::pretty)
     );
     handlebars.register_helper(
         "to_graphql_type",

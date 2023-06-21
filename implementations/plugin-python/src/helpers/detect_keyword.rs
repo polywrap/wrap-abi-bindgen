@@ -8,7 +8,7 @@ handlebars_helper!(detect_keyword: |val: Value| {
 
 pub fn _detect_keyword(type_val: &str) -> String {
     if _is_keyword(type_val) {
-        return format!("_{}", type_val);
+        return format!("r_{}", type_val);
     }
     type_val.to_string()
 }
@@ -29,18 +29,18 @@ fn _is_keyword(s: &str) -> bool {
         | "BlockingIOError" | "BrokenPipeError" | "BufferError" | "BytesWarning"
         | "ChildProcessError" | "ConnectionAbortedError" | "ConnectionError"
         | "ConnectionRefusedError" | "ConnectionResetError" | "DeprecationWarning"
-        | "EOFError" | "Ellipsis" | "EnvironmentError" | "Exception" | "False"
+        | "EOFError" | "Ellipsis" | "EnvironmentError" | "Exception"
         | "FileExistsError" | "FileNotFoundError" | "FloatingPointError" | "FutureWarning"
         | "GeneratorExit" | "IOError" | "ImportError" | "ImportWarning"
         | "IndentationError" | "IndexError" | "InterruptedError" | "IsADirectoryError"
         | "KeyError" | "KeyboardInterrupt" | "LookupError" | "MemoryError"
-        | "ModuleNotFoundError" | "NameError" | "None" | "NotADirectoryError"
+        | "ModuleNotFoundError" | "NameError" | "NotADirectoryError"
         | "NotImplemented" | "NotImplementedError" | "OSError" | "OverflowError"
         | "PendingDeprecationWarning" | "PermissionError" | "ProcessLookupError"
         | "RecursionError" | "ReferenceError" | "ResourceWarning" | "RuntimeError"
         | "RuntimeWarning" | "StopAsyncIteration" | "StopIteration" | "SyntaxError"
         | "SyntaxWarning" | "SystemError" | "SystemExit" | "TabError" | "TimeoutError"
-        | "True" | "TypeError" | "UnboundLocalError" | "UnicodeDecodeError"
+        | "TypeError" | "UnboundLocalError" | "UnicodeDecodeError"
         | "UnicodeEncodeError" | "UnicodeError" | "UnicodeTranslateError"
         | "UnicodeWarning" | "UserWarning" | "ValueError" | "Warning" | "ZeroDivisionError"
         | "__build_class__" | "__debug__" | "__doc__" | "__import__" | "__loader__"

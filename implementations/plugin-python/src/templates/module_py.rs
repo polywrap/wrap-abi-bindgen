@@ -9,13 +9,14 @@ from typing import TypeVar, Generic, TypedDict, Optional
 
 from .types import *
 
-from polywrap_core import InvokerClient, UriPackageOrWrapper
+from polywrap_core import InvokerClient
 from polywrap_plugin import PluginModule
 from polywrap_msgpack import GenericMap
 
 TConfig = TypeVar("TConfig")
 
 {{#with moduleType}}
+
 {{#each methods}}
 Args{{to_upper name}} = TypedDict("Args{{to_upper name}}", {
     {{#each arguments}}
@@ -24,8 +25,8 @@ Args{{to_upper name}} = TypedDict("Args{{to_upper name}}", {
 })
 
 {{/each}}
-{{/with}}
 
+{{/with}}
 class Module(Generic[TConfig], PluginModule[TConfig]):
     def __new__(cls, *args, **kwargs):
         # NOTE: This is used to dynamically add WRAP ABI compatible methods to the class
@@ -36,14 +37,14 @@ class Module(Generic[TConfig], PluginModule[TConfig]):
         {{/each}}
         {{/with}}
         return instance
-
     {{#with moduleType}}
+
     {{#each methods}}
     @abstractmethod
-    async def {{detect_keyword (to_lower name)}}(
+    def {{detect_keyword (to_lower name)}}(
         self,
         args: Args{{to_upper name}},
-        client: InvokerClient[UriPackageOrWrapper],
+        client: InvokerClient,
         {{#if env}}{{#with env}}env: {{#if required}}{{else}}Optional[{{/if}}Env{{#if required}}{{else}}] = None{{/if}}{{/with}}{{else}}env: None{{/if}}
     ) -> {{#with return}}{{to_python (to_graphql_type this)}}{{/with}}:
         pass
