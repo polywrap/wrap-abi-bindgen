@@ -1,0 +1,10 @@
+format: 0.3.0
+project:
+  name: wrap-rust-wrap-abi-bindgen
+  type: wasm/rust
+source:
+  module: ./Cargo.toml
+  schema: ./polywrap.graphql
+  import_abis:
+    - uri: wrap://ens/wraps.eth:abi-bindgen@0.1
+      abi: ../../interface/build/wrap.info
