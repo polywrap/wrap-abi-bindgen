@@ -1,0 +1,55 @@
+{
+  "folders": [
+      {
+        "name": "root",
+        "path": "."
+      },
+      {
+        "name": "interface",
+        "path": "interface"
+      },
+      {
+        "name": "app-python",
+        "path": "implementations/app-python"
+      },
+      {
+          "name": "app-rust",
+          "path": "implementations/app-rust"
+      },
+      {
+        "name": "app-typescript",
+        "path": "implementations/app-typescript"
+      },
+      {
+        "name": "plugin-kotlin",
+        "path": "implementations/plugin-kotlin"
+      },
+      {
+        "name": "plugin-python",
+        "path": "implementations/plugin-python"
+      },
+      {
+        "name": "plugin-rust",
+        "path": "implementations/plugin-rust"
+      },
+      {
+        "name": "plugin-typescript",
+        "path": "implementations/plugin-typescript"
+      },
+      {
+        "name": "wrap-assemblyscript",
+        "path": "implementations/wrap-assemblyscript"
+      },
+      {
+        "name": "wrap-rust",
+        "path": "implementations/wrap-rust"
+      },
+  ],
+  "settings": {
+      "files.exclude": {
+        "**/interface/*": true,
+        "**/implementations/*": true
+      },
+      "liveServer.settings.multiRootWorkspaceName": "root",
+  }
+}
