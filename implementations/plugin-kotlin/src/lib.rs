@@ -27,7 +27,7 @@ impl ModuleTrait for Module {
         output.files.push(File {
             name: "module.kt".to_string(),
             data: renderer.render(
-                "module.ts",
+                "module.kt",
                 &wrap_info
             )
         });
@@ -35,7 +35,7 @@ impl ModuleTrait for Module {
         output.files.push(File {
             name: "types.kt".to_string(),
             data: renderer.render(
-                "types.ts",
+                "types.kt",
                 &wrap_info
             )
         });
@@ -43,7 +43,7 @@ impl ModuleTrait for Module {
         output.files.push(File {
             name: "wrap.info.kt".to_string(),
             data: renderer.render(
-                "wrap.info.ts",
+                "wrap.info.kt",
                 &wrap_info
             )
         });

@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "wrap.info.ts".to_string();
+  static ref NAME: String = "wrap.info.kt".to_string();
   static ref SOURCE: String = r#"/// NOTE: This is an auto-generated file.
 ///       All modifications will be overwritten.
 

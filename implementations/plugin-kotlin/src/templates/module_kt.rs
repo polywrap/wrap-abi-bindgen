@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "module.ts".to_string();
+  static ref NAME: String = "module.kt".to_string();
   static ref SOURCE: String = r#"/// NOTE: This is an auto-generated file.
 ///       All modifications will be overwritten.
 
