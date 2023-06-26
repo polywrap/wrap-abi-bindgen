@@ -62,14 +62,12 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
         {{else}}
         val args: Args{{to_class_name name}} = Args{{to_class_name name}}()
         {{/if}}
-        {{#if env}}{{#if (array_has_length properties)}}
+        {{#if env}}
         val env: Env = encodedEnv?.let {
             msgPackDecode(Env.serializer(), it).getOrNull()
                 ?: throw Exception("Failed to decode env in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing env in invocation to plugin method '{{name}}'")
-        {{else}}
-        val env: Env = Env()
-        {{/if}}{{/if}}
+        {{/if}}
         val response = {{detect_keyword name}}(args, {{#if env}}env, {{/if}}invoker)
         return msgPackEncode(serializer(), response)
   }
