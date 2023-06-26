@@ -19,7 +19,7 @@ typealias Json = String
 /// Env START ///
 {{#with envType}}
 @Serializable
-data class Env(
+{{#if (array_has_length properties)}}data{{/if}} class Env(
     {{#each properties}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
@@ -30,7 +30,7 @@ data class Env(
 /// Objects START ///
 {{#each objectTypes}}
 @Serializable
-data class {{to_class_name type}}(
+{{#if (array_has_length properties)}}data{{/if}} class {{to_class_name type}}(
     {{#each properties}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
@@ -55,7 +55,7 @@ enum class {{to_class_name type}} {
 {{#each importedObjectTypes}}
 /* URI: "{{uri}}" */
 @Serializable
-data class {{to_class_name type}}(
+{{#if (array_has_length properties)}}data{{/if}} class {{to_class_name type}}(
     {{#each properties}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
@@ -79,7 +79,7 @@ enum class {{to_class_name type}} {
 {{#each methods}}
 /* URI: "{{../uri}}" */
 @Serializable
-data class {{to_class_name ../type}}Args{{to_class_name name}}(
+{{#if (array_has_length arguments)}}data{{/if}} class {{to_class_name ../type}}Args{{to_class_name name}}(
     {{#each arguments}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}

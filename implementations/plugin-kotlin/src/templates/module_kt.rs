@@ -18,7 +18,7 @@ import kotlinx.serialization.serializer
 {{#each methods}}
 
 @Serializable
-data class Args{{to_class_name name}}(
+{{#if (array_has_length arguments)}}data{{/if}} class Args{{to_class_name name}}(
     {{#each arguments}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
@@ -54,16 +54,22 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
       encodedEnv: ByteArray?,
       invoker: Invoker
     ): ByteArray {
+        {{#if (array_has_length arguments)}}
         val args: Args{{to_class_name name}} = encodedArgs?.let {
             msgPackDecode(Args{{to_class_name name}}.serializer(), it).getOrNull()
                 ?: throw Exception("Failed to decode args in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing args in invocation to plugin method '{{name}}'")
-        {{#if env}}
+        {{else}}
+        val args: Args{{to_class_name name}} = Args{{to_class_name name}}()
+        {{/if}}
+        {{#if env}}{{#if (array_has_length properties)}}
         val env: Env = encodedEnv?.let {
             msgPackDecode(Env.serializer(), it).getOrNull()
                 ?: throw Exception("Failed to decode env in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing env in invocation to plugin method '{{name}}'")
-        {{/if}}
+        {{else}}
+        val env: Env = Env()
+        {{/if}}{{/if}}
         val response = {{detect_keyword name}}(args, {{#if env}}env, {{/if}}invoker)
         return msgPackEncode(serializer(), response)
   }
