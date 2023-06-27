@@ -64,7 +64,6 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: '${{ steps.nvm.outputs.NVMRC }}'
-        working-directory: ./interface
 
       - name: Install dependencies
         run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
@@ -73,15 +72,6 @@ jobs:
       - name: Build
         run: yarn build
         working-directory: ./interface
-
-      - name: Read .nvmrc
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
-        id: nvm
-
-      - name: Setup Node.js
-        uses: actions/setup-node@master
-        with:
-          node-version: '${{ steps.nvm.outputs.NVMRC }}'
 
       - name: Install dependencies
         run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
