@@ -60,13 +60,13 @@ abstract class Module<TConfig>(config: TConfig) : PluginModule<TConfig>(config) 
                 ?: throw Exception("Failed to decode args in invocation to plugin method '{{name}}'")
         } ?: throw Exception("Missing args in invocation to plugin method '{{name}}'")
         {{else}}
-        val args: Args{{to_class_name name}} = Args{{to_class_name name}}()
+        val args = Args{{to_class_name name}}()
         {{/if}}
         {{#if env}}
-        val env: Env = encodedEnv?.let {
+        val env: Env{{#with env}}{{#if required}}{{else}}?{{/if}}{{/with}} = encodedEnv?.let {
             msgPackDecode(Env.serializer(), it).getOrNull()
                 ?: throw Exception("Failed to decode env in invocation to plugin method '{{name}}'")
-        } ?: throw Exception("Missing env in invocation to plugin method '{{name}}'")
+        }{{#with env}}{{#if required}} ?: throw Exception("Missing env in invocation to plugin method '{{../name}}'"){{/if}}{{/with}}
         {{/if}}
         val response = {{detect_keyword name}}(args, {{#if env}}env, {{/if}}invoker)
         return msgPackEncode(serializer(), response)
