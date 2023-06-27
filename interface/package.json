@@ -1,7 +1,11 @@
 {
-  "name": "templates-interface",
+  "name": "wrap-abi-bindgen-interface",
   "private": true,
   "dependencies": {
     "polywrap": "~0.10.3"
+  },
+  "scripts": {
+    "codegen": "npx polywrap codegen",
+    "build": "npx polywrap build"
   }
 }
