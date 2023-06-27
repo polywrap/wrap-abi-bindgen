@@ -6,7 +6,7 @@ function joinByString() {
   printf "%s" "$first" "${@/#/$separator}"
 }
 
-packages_arr=($(ls packages))
+packages_arr=($(ls implementations))
 # classic for-loop
 for ((idx=0; idx < ${#packages_arr[@]}; ++idx)); do
     # act on ${packages_arr[$idx]}
