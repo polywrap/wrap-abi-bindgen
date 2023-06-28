@@ -87,7 +87,6 @@ jobs:
       - name: Read .nvmrc
         run: echo ::set-output name=NVMRC::$(cat .nvmrc)
         id: nvm
-        working-directory: ./interface
 
       - name: Setup Node.js
         uses: actions/setup-node@master
@@ -96,6 +95,10 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
+        working-directory: ./interface
+
+      - name: Build
+        run: yarn build
         working-directory: ./interface
 
       - name: Build
