@@ -17,11 +17,11 @@ fn _to_typescript(value: &str, undefinable: bool) -> String {
     }
 
     if type_val.starts_with("[") {
-        return to_typescript_array(&type_val, optional);
+        return to_typescript_array(&type_val, optional).unwrap();
     }
 
     if type_val.starts_with("Map<") {
-        return to_typescript_map(&type_val, optional);
+        return to_typescript_map(&type_val, optional).unwrap();
     }
 
     match type_val.as_str() {
@@ -42,32 +42,50 @@ fn _to_typescript(value: &str, undefinable: bool) -> String {
     }
 }
 
-fn to_typescript_array(type_val: &str, optional: bool) -> String {
-    let mut iter = type_val.char_indices();
+fn to_typescript_array(value: &str, optional: bool) -> Result<String, String> {
+    let mut iter = value.char_indices();
 
-    let first_bracket = iter.find(|&(_, c)| c == '[').map(|(i, _)| i).unwrap();
-    let last_bracket = iter.rfind(|&(_, c)| c == ']').map(|(i, _)| i).unwrap();
+    let first_bracket = match iter.find(|&(_, c)| c == '[').map(|(i, _)| i) {
+        Some(idx) => idx,
+        None => return Err(format!("Invalid Array: {}", value)),
+    };
+    let last_bracket = match iter.rfind(|&(_, c)| c == ']').map(|(i, _)| i) {
+        Some(idx) => idx,
+        None => return Err(format!("Invalid Array: {}", value)),
+    };
 
-    let inner_type = &type_val[(first_bracket+1)..last_bracket];
+    let inner_type = &value[(first_bracket+1)..last_bracket];
     let ts_type = _to_typescript(inner_type, false);
 
-    apply_optional(&format!("Array<{}>", ts_type), optional)
+    let ts_array = format!("Array<{}>", ts_type);
+    Ok(apply_optional(&ts_array, optional))
 }
 
-fn to_typescript_map(type_val: &str, optional: bool) -> String {
-    let open_angle_bracket_idx = type_val.find('<').unwrap();
-    let close_angle_bracket_idx = type_val.rfind('>').unwrap();
+fn to_typescript_map(value: &str, optional: bool) -> Result<String, String> {
+    let first_open_bracket_idx = match value.find('<') {
+        Some(idx) => idx,
+        None => return Err(format!("Invalid Map: {}", value)),
+    };
+    let last_close_bracket_idx = match value.rfind('>') {
+        Some(idx) => idx,
+        None => return Err(format!("Invalid Map: {}", value)),
+    };
 
-    let key_val_types = &type_val[(open_angle_bracket_idx+1)..close_angle_bracket_idx];
+    let key_val_types = &value[(first_open_bracket_idx + 1)..last_close_bracket_idx];
 
-    let first_comma_idx = key_val_types.find(',').unwrap();
+    let first_comma_idx = match key_val_types.find(',') {
+        Some(idx) => idx,
+        None => return Err(format!("Invalid Map: {}", value)),
+    };
+
     let key_type = key_val_types[..first_comma_idx].trim();
-    let val_type = key_val_types[(first_comma_idx+1)..].trim();
+    let val_type = key_val_types[(first_comma_idx + 1)..].trim();
 
     let ts_key_type = _to_typescript(key_type, false);
     let ts_val_type = _to_typescript(val_type, true);
 
-    apply_optional(&format!("Map<{}, {}>", ts_key_type, ts_val_type), optional)
+    let ts_map = format!("Map<{}, {}>", ts_key_type, ts_val_type);
+    Ok(apply_optional(&ts_map, optional))
 }
 
 fn apply_optional(type_val: &str, optional: bool) -> String {

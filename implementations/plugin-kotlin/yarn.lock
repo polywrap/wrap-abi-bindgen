@@ -1336,7 +1336,7 @@
     graphql "15.5.0"
     mustache "4.0.1"
 
-"@polywrap/schema-parse@0.10.5":
+"@polywrap/schema-parse@0.10.5", "@polywrap/schema-parse@~0.10.5":
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/@polywrap/schema-parse/-/schema-parse-0.10.5.tgz#7a67d975fa66f7d051adb3adbc78ae3a98e8a09b"
   integrity sha512-jtqPjS1LzYhtchZwivNcAND+l3ILcLtnMkZlcnMMTfbgEc6tWJRLiCS6JlHnQK+BuxccSW5G8Khxwde6HPCvYg==
@@ -4815,7 +4815,7 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-polywrap@0.10.5:
+polywrap@~0.10.5:
   version "0.10.5"
   resolved "https://registry.yarnpkg.com/polywrap/-/polywrap-0.10.5.tgz#e49faaa0d917df6779c2cad0d70a3941bccc1f07"
   integrity sha512-1/dQCiI+JQH55hO0fsT3RX3p5vCDV8tdjzFeJLQRU7WolKaN9qTw0GFo1PThnnIdpFLMp+jtDCPAgImmamZqJQ==

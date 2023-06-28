@@ -19,7 +19,7 @@ use std::sync::Arc;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 {{/with}}
@@ -31,7 +31,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -56,7 +56,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -68,7 +68,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 {{/each}}
@@ -95,7 +95,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{to_upper ../type}}Args{{to_upper name}} {
     {{#each arguments}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
@@ -114,7 +114,7 @@ impl<'a> {{detect_keyword (to_upper type)}}<'a> {
     }
 
     {{#each methods}}
-    pub fn {{to_lower name}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}) -> Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, PluginError> {
+    pub fn {{to_lower name}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
         let uri = self.uri;
         let serialized_args = serialize(args.clone()).unwrap();
         let result = invoker.invoke_raw(
@@ -151,7 +151,7 @@ impl {{detect_keyword (to_upper type)}} {
 
     {{#each methods}}
     let uri = {{to_upper ../type}}::URI;
-    pub fn {{detect_keyword (to_lower name)}}(args: &{{to_upper ../type}}Args{{to_upper name}}, invoker: Arc<dyn Invoker>) -> Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, PluginError> {
+    pub fn {{detect_keyword (to_lower name)}}(args: &{{to_upper ../type}}Args{{to_upper name}}, invoker: Arc<dyn Invoker>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
         let serialized_args = serialize(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let uri = Uri::try_from(uri).unwrap();

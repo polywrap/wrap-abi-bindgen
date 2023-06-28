@@ -12,7 +12,7 @@ mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
 mod to_lower;
 mod to_upper;
-mod to_wasm;
+mod to_rust;
 
 // helpers for helpers
 mod util;
@@ -67,7 +67,7 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(to_upper::to_upper)
     );
     handlebars.register_helper(
-        "to_wasm",
-        Box::new(to_wasm::to_wasm)
+        "to_rust",
+        Box::new(to_rust::to_rust)
     );
 }
