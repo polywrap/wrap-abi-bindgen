@@ -1,0 +1,129 @@
+name: CD
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: ./interface
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read .nvmrc
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: nvm
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+      - name: Install dependencies
+        run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        run: yarn deploy
+
+      - name: Check for changes in URI.txt
+        run: |
+          git diff --name-only | grep ^URI.txt$
+          echo "changed=$?" >> $GITHUB_ENV
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add deployments" -a
+        if: env.changed == 0
+
+      - name: Push changes
+        run: |
+          git branch -c main artifacts_interface_${{ github.run_id }}
+          git push origin artifacts_interface_${{ github.run_id }}
+        if: env.changed == 0
+
+      - name: Create PR
+        run: |
+          gh pr create --title "New deployment artifacts" --body "" --base main --head artifacts_interface_${{ github.run_id }}
+        if: env.changed == 0
+
+  getImplementations:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ env.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - id: set-matrix
+        run: echo "matrix=$(./scripts/getImplementations.sh)" >> $GITHUB_ENV
+
+  implementations-cd:
+    runs-on: ubuntu-latest
+    needs:
+      - interface
+      - getImplementations
+    strategy:
+      matrix: ${{fromJSON(needs.getImplementations.outputs.matrix)}}
+    defaults:
+      run:
+        working-directory: ./implementations/${{ matrix.package }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read .nvmrc
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: nvm
+        working-directory: ./interface
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+
+      - name: Install dependencies
+        run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
+        working-directory: ./interface
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        run: yarn deploy
+
+      - name: Check for changes in URI.txt
+        run: |
+          git diff --name-only | grep ^URI.txt$
+          echo "changed=$?" >> $GITHUB_ENV
+
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add deployments" -a
+        if: env.changed == 0
+
+      - name: Push changes
+        run: |
+          git branch -c main artifacts_${{ matrix.package }}_${{ github.run_id }}
+          git push origin artifacts_${{ matrix.package }}_${{ github.run_id }}
+        if: env.changed == 0
+
+      - name: Create PR
+        run: |
+          gh pr create --title "New deployment artifacts" --body "" --base main --head artifacts_${{ matrix.package }}_${{ github.run_id }}
+        if: env.changed == 0
