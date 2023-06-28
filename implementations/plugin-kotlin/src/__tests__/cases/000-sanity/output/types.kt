@@ -176,7 +176,7 @@ class TestImportModule(uri: String) {
         val interfaceUri: String = "testimport.uri.eth"
     }
 
-    val uri: Uri = Uri.fromString(uri)
+    val uri: Uri = Uri(uri)
 
     suspend fun importedMethod(
         args: TestImportModuleArgsImportedMethod,
@@ -215,12 +215,9 @@ class TestImportModule(uri: String) {
 /// Imported Modules END ///
 
 object TestImport {
-    val uri: Uri = Uri.fromString("testimport.uri.eth");
+    val uri: Uri = Uri("testimport.uri.eth");
 
-    suspend fun getImplementations(invoker: Invoker): List<String> {
-        val implementations = invoker.getImplementations(this.uri)
-        val uriStrings = implementations.map { it.toStringUri() }
-        implementations.forEach { it.close() }
-        return uriStrings
+    suspend fun getImplementations(invoker: Invoker): Result<List<Uri>> {
+        return invoker.getImplementations(this.uri)
     }
 }

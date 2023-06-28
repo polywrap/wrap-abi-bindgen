@@ -93,7 +93,7 @@ class {{to_class_name type}}(uri: String) {
         val interfaceUri: String = "{{uri}}"
     }
 
-    val uri: Uri = Uri.fromString(uri)
+    val uri: Uri = Uri(uri)
 
     {{#each methods}}
     suspend fun {{detect_keyword name}}(
@@ -120,7 +120,7 @@ object {{to_class_name type}} {
         invoker: Invoker
     ): InvokeResult<{{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}> {
         return invoker.invoke(
-            uri = Uri.fromString("{{../uri}}"),
+            uri = Uri("{{../uri}}"),
             method = "{{name}}",
             args = args
         );
@@ -137,16 +137,13 @@ object {{to_class_name type}} {
 {{#each interfaceTypes}}
 
 object {{to_class_name namespace}} {
-    val uri: Uri = Uri.fromString("{{uri}}");
+    val uri: Uri = Uri("{{uri}}");
 
     {{#with capabilities}}
     {{#with getImplementations}}
     {{#if enabled}}
-    suspend fun getImplementations(invoker: Invoker): List<String> {
-        val implementations = invoker.getImplementations(this.uri)
-        val uriStrings = implementations.map { it.toStringUri() }
-        implementations.forEach { it.close() }
-        return uriStrings
+    suspend fun getImplementations(invoker: Invoker): Result<List<Uri>> {
+        return invoker.getImplementations(this.uri)
     }
     {{/if}}
     {{/with}}
