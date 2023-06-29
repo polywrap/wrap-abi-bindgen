@@ -1,6 +1,5 @@
 use handlebars::handlebars_helper;
 use serde_json::{Value};
-use crate::helpers::util::{remove_at, replace_at};
 
 handlebars_helper!(to_upper: |val: Value| {
     let str = val.as_str().unwrap();
@@ -24,4 +23,16 @@ pub fn _to_upper(s: &str) -> String {
         i += 1;
     }
     result
+}
+
+fn replace_at(s: &str, idx: usize, replacement: &str) -> String {
+    let start = s[..idx].to_string();
+    let end = s[idx + replacement.len()..].to_string();
+    format!("{}{}{}", start, replacement, end)
+}
+
+fn remove_at(s: &str, idx: usize) -> String {
+    let start = s[..idx].to_string();
+    let end = s[idx + 1..].to_string();
+    format!("{}{}", start, end)
 }
