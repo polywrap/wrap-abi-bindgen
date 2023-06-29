@@ -1,6 +1,7 @@
 type Module {
   generateBindings( 
     wrapInfo: WrapInfo!
+    """Add additional data for the bindings generation"""
     context: JSON
   ): Output!
 }

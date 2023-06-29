@@ -1,7 +1,0 @@
-detect_keyword
-serde_rename_if_case_mismatch
-detect_keyword
-to_wasm
-to_lower
-to_upper
-to_graphql_type

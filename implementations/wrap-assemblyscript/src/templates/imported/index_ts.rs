@@ -15,7 +15,7 @@ export * from "./{{type}}";
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

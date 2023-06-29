@@ -10,7 +10,7 @@ pub fn get_manifest() -> WrapManifest {
     name: "{{name}}".to_string(),
     type_: "{{type}}".to_string(),
     version: "{{version}}".to_string(),
-    abi: from_value::<WrapManifestAbi>(json!({{abi}})).unwrap()
+    abi: from_value::<WrapManifestAbi>(json!({{pretty abi}})).unwrap()
   }
 }
 "#.to_string();

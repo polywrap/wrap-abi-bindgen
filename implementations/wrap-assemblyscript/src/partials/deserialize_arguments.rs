@@ -31,7 +31,7 @@ lazy_static! {
       reader.context().push(field, "{{to_wasm (to_graphql_type this)}}", "type found, reading property");
       {{#with scalar}}
       _{{name}} = reader.read{{to_msgpack (to_graphql_type this)}}();
-      {{/with }}
+      {{/with}}
       {{#with array}}
       _{{name}} = reader.read{{to_msgpack (to_graphql_type this)}}((reader: Read): {{#with item}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
         {{> deserialize_array}}

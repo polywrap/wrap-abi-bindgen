@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import InvokerClient, Uri, UriPackageOrWrapper
+from polywrap_core import InvokerClient, Uri
 from polywrap_msgpack import GenericMap
 
 
@@ -38,8 +38,8 @@ from polywrap_msgpack import GenericMap
 ### Enums START ###
 {{#each enumTypes}}
 class {{detect_keyword (to_upper type)}}(IntEnum):
-    {{#each members}}
-    {{detect_keyword name}} = {{value}}, "{{value}}", "{{name}}"
+    {{#each constants}}
+    {{detect_keyword this}} = {{@index}}, "{{@index}}", "{{this}}"
     {{/each}}
 
     def __new__(cls, value: int, *aliases: str):
@@ -70,8 +70,8 @@ class {{detect_keyword (to_upper type)}}(IntEnum):
 {{#each importedEnumTypes}}
 # URI: "{{uri}}" #
 class {{detect_keyword (to_upper type)}}(IntEnum):
-    {{#each members}}
-    {{detect_keyword name}} = {{value}}, "{{value}}", "{{name}}"
+    {{#each constants}}
+    {{detect_keyword this}} = {{@index}}, "{{@index}}", "{{this}}"
     {{/each}}
 
     def __new__(cls, value: int, *aliases: str):
@@ -107,19 +107,17 @@ class {{detect_keyword (to_upper type)}}:
         self.uri = uri
 
     {{#each methods}}
-    async def {{detect_keyword (to_lower name)}}(
+    def {{detect_keyword (to_lower name)}}(
         self,
         args: {{to_upper ../type}}Args{{to_upper name}},
-        client: InvokerClient[UriPackageOrWrapper]
+        client: InvokerClient
     ) -> {{#with return}}{{to_python (to_graphql_type this)}}{{/with}}:
         return client.invoke(
-            InvokeOptions(
-                uri=self.uri,
-                method="{{name}}",
-                args=args,
-            )
+            uri=self.uri,
+            method="{{name}}",
+            args=args,
         )
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}
@@ -128,18 +126,16 @@ class {{detect_keyword (to_upper type)}}:
 class {{detect_keyword (to_upper type)}}:
     {{#each methods}}
     @staticmethod
-    async def {{detect_keyword (to_lower name)}}(
+    def {{detect_keyword (to_lower name)}}(
         args: {{to_upper ../type}}Args{{to_upper name}},
-        client: InvokerClient[UriPackageOrWrapper]
+        client: InvokerClient
     ) -> {{#with return}}{{to_python (to_graphql_type this)}}{{/with}}:
         return client.invoke(
-            InvokeOptions(
-                uri=Uri.from_str("{{../uri}}"),
-                method="{{name}}",
-                args=args,
-            )
+            uri=Uri.from_str("{{../uri}}"),
+            method="{{name}}",
+            args=args,
         )
-    {{#if (is_not_last ../methods)}}
+    {{#if (is_not_last @index ../methods)}}
 
     {{/if}}
     {{/each}}
@@ -155,17 +151,17 @@ class {{detect_keyword (to_upper type)}}:
 class {{detect_keyword (to_upper namespace)}}:
     URI: Uri = Uri.from_str("{{uri}}")
 
-    {{#each capabilities}}
+    {{#with capabilities}}
     {{#with getImplementations}}
     {{#if enabled}}
     def get_implementations(
-        client: InvokerClient[UriPackageOrWrapper]
+        client: InvokerClient
     ) -> list[str]:
         impls = client.getImplementations(self.uri)
         return [impl.uri for impl in impls]
     {{/if}}
-    {{/with getImplementations}}
-    {{/each}}
+    {{/with}}
+    {{/with}}
 {{/each}}
 
 ### Interface END ###

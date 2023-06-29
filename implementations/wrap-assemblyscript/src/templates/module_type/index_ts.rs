@@ -12,12 +12,13 @@ export {
   Args_{{detect_keyword name}}{{#if (is_not_last @index ../methods)}},{{/if}}
   {{/each}}
 };
+
 export { ModuleBase } from "./module";
 {{/if}}
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

@@ -2,7 +2,7 @@ lazy_static! {
   static ref NAME: String = "imported/enum_type/index.ts".to_string();
   static ref SOURCE: String = r#"export enum {{detect_keyword type}} {
   {{#each constants}}
-  {{detect_keyword .}},
+  {{detect_keyword this}},
   {{/each}}
   _MAX_
 }
@@ -16,8 +16,8 @@ export function sanitize{{type}}Value(value: i32): void {
 
 export function get{{type}}Value(key: string): {{detect_keyword type}} {
   {{#each constants}}
-  if (key == "{{detect_keyword .}}") {
-    return {{detect_keyword type}}.{{detect_keyword .}};
+  if (key == "{{detect_keyword this}}") {
+    return {{detect_keyword ../type}}.{{detect_keyword this}};
   }
   {{/each}}
 
@@ -29,7 +29,7 @@ export function get{{type}}Key(value: {{detect_keyword type}}): string {
 
   switch (value) {
     {{#each constants}}
-    case {{detect_keyword type}}.{{detect_keyword .}}: return "{{detect_keyword .}}";
+    case {{detect_keyword ../type}}.{{detect_keyword this}}: return "{{detect_keyword this}}";
     {{/each}}
     default:
       throw new Error("Invalid value for enum '{{detect_keyword type}}': " + value.toString());
@@ -38,7 +38,7 @@ export function get{{type}}Key(value: {{detect_keyword type}}): string {
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

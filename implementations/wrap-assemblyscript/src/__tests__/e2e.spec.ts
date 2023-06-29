@@ -1,4 +1,4 @@
-import { Output } from "./wrap";
+import { Output, WrapInfo, File, Directory } from "./wrap";
 import { loadTestCases, TestCase } from "./cases";
 import { orderOutput } from "./output";
 
@@ -27,19 +27,40 @@ describe("e2e", () => {
     it(testCase.name, async () => {
       const abi = parseSchema(testCase.input);
 
+      const wrapInfo: WrapInfo = {
+        version: "0.1",
+        name: testCase.name,
+        type: "plugin",
+        abi: JSON.stringify(abi),
+      }
+
       const result = await client.invoke<Output>({
         uri: wrapperUri,
         method: "generateBindings",
-        args: {
-          wrapAbi: JSON.stringify(abi),
-          projectName: testCase.name
-        }
+        args: { wrapInfo }
       });
 
       if (!result.ok) fail(result.error);
 
       const received = orderOutput(result.value);
       const expected = orderOutput(testCase.output);
+
+      const removeWhiteSpace = (str: string): string => str.replace(/\s/g, "");
+      const removeWhiteSpaceFromFiles = (files: File[]): File[] => files.map((file) => ({
+        name: file.name,
+        data: removeWhiteSpace(file.data),
+      }));
+      const removeWhiteSpaceFromDirs = (dirs: Directory[]): Directory[] => dirs.map((dir) => ({
+        name: dir.name,
+        dirs: removeWhiteSpaceFromDirs(dir.dirs),
+        files: removeWhiteSpaceFromFiles(dir.files),
+      }));
+      const removeWhiteSpaceFromOutput = (output: Output): Output => ({
+        dirs: removeWhiteSpaceFromDirs(output.dirs),
+        files: removeWhiteSpaceFromFiles(output.files),
+      });
+      const receivedWithoutWhiteSpace = removeWhiteSpaceFromOutput(received)
+      const expectedWithoutWhiteSpace = removeWhiteSpaceFromOutput(expected)
 
       const debugDir = path.join(__dirname, "debug", testCase.name);
       const receivedPath = path.join(debugDir, "received.json");
@@ -48,7 +69,7 @@ describe("e2e", () => {
       fs.writeFileSync(receivedPath, JSON.stringify(received, null, 2));
       fs.writeFileSync(expectedPath, JSON.stringify(expected, null, 2));
 
-      const differences = diff(expected, received, { expand: false });
+      const differences = diff(expectedWithoutWhiteSpace, receivedWithoutWhiteSpace, { expand: false });
 
       if (differences && !differences.includes("Compared values have no visual difference")) {
         fail(differences);

@@ -3,6 +3,7 @@ extern crate lazy_static;
 
 pub mod wrap;
 pub use wrap::*;
+use polywrap_wasm_rs::JSON;
 
 pub mod templates;
 pub mod helpers;
@@ -11,7 +12,7 @@ use renderer::Renderer;
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
-        let version = args.wrap_info.version;
+        let version = &args.wrap_info.version;
 
         // First, ensure version is "0.1"
         if version != "0.1" {
@@ -28,7 +29,7 @@ impl ModuleTrait for Module {
             name: "mod.rs".to_string(),
             data: renderer.render(
                 "mod.rs",
-                &None
+                &None::<JSON::Value>
             )
         });
 

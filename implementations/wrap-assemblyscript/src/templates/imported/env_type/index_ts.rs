@@ -3,6 +3,7 @@ lazy_static! {
   static ref SOURCE: String = r#"import {
   Read,
   Write,
+  Box,
   BigInt,
   BigNumber,
   JSON,
@@ -43,7 +44,7 @@ export class {{detect_keyword type}} {
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

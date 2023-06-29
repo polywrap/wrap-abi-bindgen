@@ -6,8 +6,7 @@ lazy_static! {
 pub mod types;
 #[path = "wrap.info.rs"]
 pub mod wrap_info;
-pub mod module;
-"#.to_string();
+pub mod module;"#.to_string();
 }
 
 use super::Template;

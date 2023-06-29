@@ -2,6 +2,8 @@
 extern crate lazy_static;
 
 pub mod wrap;
+
+use polywrap_wasm_rs::JSON;
 pub use wrap::*;
 
 pub mod templates;
@@ -11,7 +13,7 @@ use renderer::Renderer;
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
-        let version = args.wrap_info.version;
+        let version = &args.wrap_info.version;
 
         // First, ensure version is "0.1"
         if version != "0.1" {
@@ -28,7 +30,7 @@ impl ModuleTrait for Module {
             name: "__init__.py".to_string(),
             data: renderer.render(
                 "__init__.py",
-                &None
+                &None::<JSON::Value>
             )
         });
 

@@ -8,7 +8,7 @@ export const manifest: WrapManifest = {
   name: "{{name}}",
   type: "{{type}}",
   version: "{{version}}",
-  abi: {{abi}}
+  abi: {{pretty abi}}
 }
 "#.to_string();
 }

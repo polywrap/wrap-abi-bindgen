@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "imported/module_type/index.ts".to_string();
+  static ref NAME: String = "imported/module_type/serialization.ts".to_string();
   static ref SOURCE: String = r#"{{#if (array_has_length methods)}}
 {{> serialization_imports}}
 import * as Types from "../..";
@@ -13,7 +13,7 @@ export class Args_{{detect_keyword name}} {
 
 export function deserialize{{name}}Args(argsBuf: ArrayBuffer): Args_{{detect_keyword name}} {
   const context: Context = new Context("Deserializing imported module-type: {{name}} Args");
-  {{> deserialize_arguments}}
+{{> deserialize_arguments}}
 }
 
 export function serialize{{name}}Args(args: Args_{{detect_keyword name}}): ArrayBuffer {
@@ -31,7 +31,7 @@ export function write{{name}}Args(
   writer: Write,
   args: Args_{{detect_keyword name}}
 ): void {
-  {{> serialize_arguments}}
+{{> serialize_arguments}}
 }
 
 export function serialize{{name}}Result(result: {{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}): ArrayBuffer {
@@ -46,12 +46,12 @@ export function serialize{{name}}Result(result: {{#with return}}{{to_wasm (to_gr
 }
 
 export function write{{name}}Result(writer: Write, result: {{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}): void {
-  {{> serialize_result}}
+{{> serialize_result}}
 }
 
 export function deserialize{{name}}Result(buffer: ArrayBuffer): {{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}} {
   const context: Context = new Context("Deserializing imported module-type: {{name}} Result");
-  {{> deserialize_result}}
+{{> deserialize_result}}
 }
 {{#if (is_not_last @index ../methods)}}
 
@@ -61,7 +61,7 @@ export function deserialize{{name}}Result(buffer: ArrayBuffer): {{#with return}}
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

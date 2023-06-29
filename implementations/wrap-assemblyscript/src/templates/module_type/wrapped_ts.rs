@@ -17,7 +17,7 @@ export function {{name}}Wrapped(module: ModuleBase, argsBuf: ArrayBuffer, env_si
   {{#with env}}
   {{#if required}}
   if (env_size == 0) {
-    throw new Error("Environment is not set, and it is required by method '{{name}}'")
+    throw new Error("Environment is not set, and it is required by method '{{../name}}'")
   }
   
   const envBuf = wrap_load_env(env_size);
@@ -51,7 +51,7 @@ export function {{name}}Wrapped(module: ModuleBase, argsBuf: ArrayBuffer, env_si
 "#.to_string();
 }
 
-use super::super::Template;
+use crate::templates::Template;
 
 pub fn load() -> Template {
     Template {

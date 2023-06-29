@@ -36,14 +36,14 @@ export interface {{detect_keyword type}} {
 
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
-  {{/each constants}}
+  {{this}},
+  {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
-  {{/each constants}}
+  | "{{this}}"
+  {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
 {{/each}}
@@ -70,13 +70,13 @@ export interface {{detect_keyword type}} {
 /* URI: "{{uri}}" */
 export enum {{type}}Enum {
   {{#each constants}}
-  {{.}},
+  {{this}},
   {{/each}}
 }
 
 export type {{type}}String =
   {{#each constants}}
-  | "{{.}}"
+  | "{{this}}"
   {{/each}}
 
 export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
@@ -90,8 +90,8 @@ export type {{detect_keyword type}} = {{type}}Enum | {{type}}String;
 {{#each importedModuleTypes}}
 {{#each methods}}
 
-/* URI: "{{parent.uri}}" */
-export interface {{parent.type}}_Args_{{name}} {
+/* URI: "{{../uri}}" */
+export interface {{../type}}_Args_{{name}} {
   {{#each arguments}}
   {{name}}{{#if required}}{{else}}?{{/if}}: {{to_typescript (to_graphql_type this)}};
   {{/each}}
@@ -102,19 +102,20 @@ export interface {{parent.type}}_Args_{{name}} {
 export const {{type}} = {
   {{#each methods}}
   {{name}}: async (
-    args: {{parent.type}}_Args_{{name}},
+    args: {{../type}}_Args_{{name}},
     client: CoreClient,
-    uri: string = "{{parent.uri}}"
+    uri: string = "{{../uri}}"
   ): Promise<InvokeResult<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>> => {
     return client.invoke<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>({
       uri: Uri.from(uri),
       method: "{{name}}",
       args: (args as unknown) as Record<string, unknown>,
     });
-  }{{#if (is_not_last ../methods)}},
+  }{{#if (is_not_last @index ../methods)}},
 
   {{/if}}
   {{/each}}
+
 };
 {{/each}}
 
