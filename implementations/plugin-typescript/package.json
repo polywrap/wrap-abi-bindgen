@@ -3,10 +3,12 @@
   "private": true,
   "scripts": {
     "codegen": "npx polywrap codegen",
-    "build": "npx polywrap build",
+    "build": "yarn build:interface && yarn build:wrap",
     "deploy": "npx polywrap deploy",
     "test": "yarn test:codegen && jest --passWithNoTests --runInBand --verbose",
-    "test:codegen": "npx polywrap codegen -m ./src/__tests__/polywrap.yaml -g ./src/__tests__/wrap"
+    "test:codegen": "npx polywrap codegen -m ./src/__tests__/polywrap.yaml -g ./src/__tests__/wrap",
+    "build:wrap": "npx polywrap build",
+    "build:interface": "cd ../../interface && yarn install && yarn build && cd ../implementations/plugin-typescript"
   },
   "devDependencies": {
     "@types/jest": "26.0.8",

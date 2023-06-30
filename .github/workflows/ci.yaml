@@ -66,14 +66,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
-        working-directory: ./interface
-
-      - name: Build
-        run: yarn build
-        working-directory: ./interface
-
-      - name: Install dependencies
-        run: yarn install --nonInteractive --frozen-lockfile --prefer-offline
 
       - name: Build
         run: yarn build
