@@ -156,12 +156,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
-name = "paste"
-version = "1.0.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f746c4065a8fa3fe23974dd82f15431cc8d40779821001404d10d2e79ca7d79"
-
-[[package]]
 name = "pest"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -212,7 +206,7 @@ dependencies = [
  "handlebars",
  "lazy_static",
  "polywrap-wasm-rs",
- "polywrap_msgpack",
+ "polywrap_msgpack_serde",
  "serde",
  "serde_json",
 ]
@@ -232,13 +226,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "polywrap_msgpack"
-version = "0.1.6-beta.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9246be57087143f37a00cb244aba3d37e213ab0918fdd054f0b436bb299ca183"
+name = "polywrap_msgpack_serde"
+version = "0.1.0"
+source = "git+https://github.com/polywrap/msgpack-serde?branch=namesty/wrap#fe327c56db5e25f54c55f212fb183fe3e6e0e522"
 dependencies = [
- "rmp-serde",
- "rmpv",
+ "bigdecimal",
+ "byteorder",
+ "num-bigint",
+ "num-traits",
  "serde",
  "serde_bytes",
  "serde_json",
@@ -261,40 +256,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1b9ab9c7eadfd8df19006f1cf1a4aed13540ed5cbc047010ece5826e10825488"
 dependencies = [
  "proc-macro2",
-]
-
-[[package]]
-name = "rmp"
-version = "0.8.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44519172358fd6d58656c86ab8e7fbc9e1490c3e8f14d35ed78ca0dd07403c9f"
-dependencies = [
- "byteorder",
- "num-traits",
- "paste",
-]
-
-[[package]]
-name = "rmp-serde"
-version = "1.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5b13be192e0220b8afb7222aa5813cb62cc269ebb5cac346ca6487681d2913e"
-dependencies = [
- "byteorder",
- "rmp",
- "serde",
-]
-
-[[package]]
-name = "rmpv"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de8813b3a2f95c5138fe5925bfb8784175d88d6bff059ba8ce090aa891319754"
-dependencies = [
- "num-traits",
- "rmp",
- "serde",
- "serde_bytes",
 ]
 
 [[package]]
