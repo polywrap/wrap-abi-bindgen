@@ -152,6 +152,7 @@ export const {{type}} = {
 
   {{/if}}
   {{/each}}
+
 }
 
 {{/if}}
