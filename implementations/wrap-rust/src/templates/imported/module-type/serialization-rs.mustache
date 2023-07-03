@@ -1,0 +1,268 @@
+{{#methods.length}}
+use serde::{Serialize, Deserialize};
+use polywrap_wasm_rs::{
+    BigInt,
+    BigNumber,
+    Map,
+    Context,
+    DecodeError,
+    EncodeError,
+    Read,
+    ReadDecoder,
+    Write,
+    WriteEncoder,
+    JSON,
+};
+{{#propertyDeps.length}}
+
+{{#propertyDeps}}
+{{^isEnum}}
+use {{crate}}::{{detect_keyword (to_upper type)}};
+{{/isEnum}}
+{{#isEnum}}
+use crate::{
+    {{detect_keyword (to_upper type)}},
+    get_{{to_lower type}}_value,
+    sanitize_{{to_lower type}}_value
+};
+{{/isEnum}}
+{{/propertyDeps}}
+{{/propertyDeps.length}}
+
+{{#each methods}}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Args{{to_upper name}} {
+    {{#arguments}}
+    {{#serdeKeyword}}{{to_lower name}}{{/serdeKeyword}}pub {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: {{#toWasm}}{{toGraphQLType}}{{/toWasm}},
+    {{/arguments}}
+}
+
+pub fn deserialize_{{to_lower name}}_args(args: &[u8]) -> Result<Args{{to_upper name}}, DecodeError> {
+    let mut context = Context::new();
+    context.description = "Deserializing imported module-type: {{to_lower name}} Args".to_string();
+
+    {{#arguments.length}}
+    let mut reader = ReadDecoder::new(args, context);
+    let mut num_of_fields = reader.read_map_length()?;
+
+    {{#arguments}}
+    {{^object}}
+    let mut _{{to_lower name}}: {{#toWasm}}{{toGraphQLType}}{{/toWasm}} = {{#toWasmInit}}{{toGraphQLType}}{{/toWasmInit}};
+    {{/object}}
+    {{#object}}
+    {{#required}}
+    let mut _{{to_lower name}}: {{#toWasm}}{{toGraphQLType}}{{/toWasm}} = {{#toWasmInit}}{{toGraphQLType}}{{/toWasmInit}};
+    {{/required}}
+    {{^required}}
+    let mut _{{to_lower name}}: {{#toWasm}}{{toGraphQLType}}{{/toWasm}} = None;
+    {{/required}}
+    {{/object}}
+    {{#required}}
+    let mut _{{to_lower name}}_set = false;
+    {{/required}}
+    {{/arguments}}
+
+    while num_of_fields > 0 {
+        num_of_fields -= 1;
+        let field = reader.read_string()?;
+
+        match field.as_str() {
+            {{#arguments}}
+            "{{name}}" => {
+                reader.context().push(&field, "{{#toWasm}}{{toGraphQLType}}{{/toWasm}}", "type found, reading argument");
+                {{#scalar}}
+                _{{to_lower name}} = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}()?;
+                {{/scalar}}
+                {{#array}}
+                _{{to_lower name}} = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(|reader| {
+                    {{> deserialize_array_nobox}}
+                })?;
+                {{/array}}
+                {{#map}}
+                _{{to_lower name}} = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(|reader| {
+                    reader.read_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}()
+                }, |reader| {
+                    {{> deserialize_map_value_nobox}}
+                })?;
+                {{/map}}
+                {{#enum}}
+                {{> deserialize_enum}}
+                _{{to_lower name}} = value;
+                {{/enum}}
+                {{#object}}
+                {{> deserialize_object_refmut}}
+                _{{to_lower name}} = object;
+                {{/object}}
+                {{#required}}
+                _{{to_lower name}}_set = true;
+                {{/required}}
+                reader.context().pop();
+            }
+            {{/arguments}}
+            err => return Err(DecodeError::UnknownFieldName(err.to_string())),
+        }
+    }
+    {{#arguments}}
+    {{#required}}
+    if !_{{to_lower name}}_set {
+        return Err(DecodeError::MissingField("{{name}}: {{type}}.".to_string()));
+    }
+    {{/required}}
+    {{/arguments}}
+    {{/arguments.length}}
+
+    Ok(Args{{to_upper name}} {
+        {{#arguments}}
+        {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: _{{to_lower name}},
+        {{/arguments}}
+    })
+}
+
+pub fn serialize_{{to_lower name}}_args(args: &Args{{to_upper name}}) -> Result<Vec<u8>, EncodeError> {
+    let mut encoder_context = Context::new();
+    encoder_context.description = "Serializing (encoding) imported module-type: {{to_lower name}} Args".to_string();
+    let mut encoder = WriteEncoder::new(&[], encoder_context);
+    write_{{to_lower name}}_args(args, &mut encoder)?;
+    Ok(encoder.get_buffer())
+}
+
+pub fn write_{{to_lower name}}_args<W: Write>(args: &Args{{to_upper name}}, writer: &mut W) -> Result<(), EncodeError> {
+    {{#arguments.length}}
+    writer.write_map_length(&{{arguments.length}})?;
+    {{/arguments.length}}
+    {{^arguments}}
+    writer.write_map_length(&0)?;
+    {{/arguments}}
+    {{#arguments}}
+    writer.context().push("{{name}}", "{{#toWasm}}{{toGraphQLType}}{{/toWasm}}", "writing property");
+    writer.write_string("{{name}}")?;
+    {{#scalar}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}})?;
+    {{/scalar}}
+    {{#array}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}, |writer, item| {
+        {{> serialize_array}}
+    })?;
+    {{/array}}
+    {{#map}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}, |writer, key| {
+        writer.write_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}(key)
+    }, |writer, value| {
+        {{> serialize_map_value}}
+    })?;
+    {{/map}}
+    {{#enum}}
+    {{#required}}
+    writer.write_i32(&(args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}} as i32))?;
+    {{/required}}
+    {{^required}}
+    writer.write_optional_i32(&args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}.map(|f| f as i32))?;
+    {{/required}}
+    {{/enum}}
+    {{#object}}
+    {{#required}}
+    {{detect_keyword (to_upper type)}}::write(&args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}, writer)?;
+    {{/required}}
+    {{^required}}
+    if args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}.is_some() {
+        {{detect_keyword (to_upper type)}}::write(args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}.as_ref().as_ref().unwrap(), writer)?;
+    } else {
+        writer.write_nil()?;
+    }
+    {{/required}}
+    {{/object}}
+    writer.context().pop();
+    {{/arguments}}
+    Ok(())
+}
+
+pub fn serialize_{{to_lower name}}_result(result: {{#return}}&{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}) -> Result<Vec<u8>, EncodeError> {
+    let mut encoder_context = Context::new();
+    encoder_context.description = "Serializing (encoding) imported module-type: {{to_lower name}} Result".to_string();
+    let mut encoder = WriteEncoder::new(&[], encoder_context);
+    write_{{to_lower name}}_result(result, &mut encoder)?;
+    Ok(encoder.get_buffer())
+}
+
+pub fn write_{{to_lower name}}_result<W: Write>(result: {{#return}}&{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}, writer: &mut W) -> Result<(), EncodeError> {
+    {{#return}}
+    writer.context().push("{{name}}", "{{#toWasm}}{{toGraphQLType}}{{/toWasm}}", "writing result");
+    {{#scalar}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(result)?;
+    {{/scalar}}
+    {{#array}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&result, |writer, item| {
+        {{> serialize_array}}
+    })?;
+    {{/array}}
+    {{#map}}
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&result, |writer, key| {
+        writer.write_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}(key)
+    }, |writer, value| {
+        {{> serialize_map_value}}
+    })?;
+    {{/map}}
+    {{#enum}}
+    {{#required}}
+    writer.write_i32(&(*result as i32))?;
+    {{/required}}
+    {{^required}}
+    writer.write_optional_i32(&result.map(|f| f as i32))?;
+    {{/required}}
+    {{/enum}}
+    {{#object}}
+    {{#required}}
+    {{detect_keyword (to_upper type)}}::write(&result, writer)?;
+    {{/required}}
+    {{^required}}
+    if result.is_some() {
+        {{detect_keyword (to_upper type)}}::write(result.as_ref().unwrap(), writer)?;
+    } else {
+        writer.write_nil()?;
+    }
+    {{/required}}
+    {{/object}}
+    writer.context().pop();
+    {{/return}}
+    Ok(())
+}
+
+pub fn deserialize_{{to_lower name}}_result(result: &[u8]) -> Result<{{#return}}{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}, DecodeError> {
+    let mut context = Context::new();
+    context.description = "Deserializing imported module-type: {{to_lower name}} Result".to_string();
+    let mut reader = ReadDecoder::new(result, context);
+
+    {{#return}}
+    reader.context().push("{{name}}", "{{#toWasm}}{{toGraphQLType}}{{/toWasm}}", "reading function output");
+    {{#scalar}}
+    let res = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}()?;
+    {{/scalar}}
+    {{#array}}
+    let res = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(|reader| {
+        {{> deserialize_array_nobox}}
+    })?;
+    {{/array}}
+    {{#map}}
+    let res = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(|reader| {
+        reader.read_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}()
+    }, |reader| {
+        {{> deserialize_map_value_nobox}}
+    })?;
+    {{/map}}
+    {{#enum}}
+    {{> deserialize_enum}}
+    let res = value;
+    {{/enum}}
+    {{#object}}
+    {{> deserialize_object_refmut}}
+    let res = object;
+    {{/object}}
+    {{/return}}
+    reader.context().pop();
+    Ok(res)
+}
+{{^last}}
+
+{{/last}}
+{{/each}}
+{{/methods.length}}

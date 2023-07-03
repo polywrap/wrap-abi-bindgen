@@ -1,0 +1,16 @@
+{{#each importedObjectTypes}}
+pub mod {{to_lower type}};
+pub use {{to_lower type}}::*;
+{{/each}}
+{{#each importedEnumTypes}}
+pub mod {{to_lower type}};
+pub use {{to_lower type}}::*;
+{{/each}}
+{{#each importedModuleTypes}}
+pub mod {{to_lower type}};
+pub use {{to_lower type}}::*;
+{{/each}}
+{{#each importedEnvTypes}}
+pub mod {{to_lower type}};
+pub use {{to_lower type}}::*;
+{{/each}}

@@ -1,0 +1,21 @@
+{{#with moduleType}}
+{{#methods.length}}
+pub mod wrapped;
+pub use wrapped::{
+    {{#each methods}}
+    {{to_lower name}}_wrapped{{#if (is_not_last @index ../methods)}},{{/if}}
+    {{/each}}
+};
+pub mod serialization;
+pub use serialization::{
+    {{#each methods}}
+    deserialize_{{to_lower name}}_args,
+    serialize_{{to_lower name}}_result,
+    Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
+    {{/each}}
+};
+{{/methods.length}}
+
+pub mod module;
+pub use module::*;
+{{/with}}

@@ -1,0 +1,37 @@
+{{#with moduleType}}
+use crate::{
+    {{#each methods}}
+    Args{{to_upper name}},
+    {{/each}}
+};
+use polywrap_wasm_rs::{
+    BigInt,
+    BigNumber,
+    Map,
+    JSON,
+};
+{{#propertyDeps.length}}
+
+{{#propertyDeps}}
+{{^isEnum}}
+use {{crate}}::{{detect_keyword (to_upper type)}};
+{{/isEnum}}
+{{#isEnum}}
+use crate::{
+    {{detect_keyword (to_upper type)}},
+};
+{{/isEnum}}
+{{/propertyDeps}}
+{{/propertyDeps.length}}
+
+pub struct Module;
+
+pub trait ModuleTrait {
+  {{#each methods}}
+  fn {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}(args: Args{{to_upper name}}{{#env}}, env: {{#required}}Env{{/required}}{{^required}}Option<Env>{{/required}}{{/env}}) -> Result<{{#return}}{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}, String>;
+  {{^last}}
+
+  {{/last}}
+  {{/each}}
+}
+{{/with}}

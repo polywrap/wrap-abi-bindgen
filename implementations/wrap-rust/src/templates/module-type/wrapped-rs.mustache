@@ -1,0 +1,71 @@
+{{#with moduleType}}
+{{#methods.length}}
+use polywrap_wasm_rs::{
+  wrap_load_env
+};
+
+use crate::{
+    {{#each methods}}
+    Args{{to_upper name}},
+    deserialize_{{to_lower name}}_args,
+    serialize_{{to_lower name}}_result{{#if (is_not_last @index ../methods)}},{{/if}}
+    {{/each}}
+};
+{{/methods.length}}
+
+use crate::module::{ModuleTrait, Module};
+{{#with envType}}
+use crate::Env;
+{{/with}}
+
+{{#each methods}}
+pub fn {{to_lower name}}_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
+    {{#env}}
+    {{#required}}
+    if env_size == 0 {
+        panic!("Environment is not set, and it is required by method '{{name}}'");
+    }
+
+    let env_buf = wrap_load_env(env_size);
+    let env = Env::from_buffer(&env_buf).unwrap();
+
+    {{/required}}
+    {{^required}}
+    let mut env: Option<Env> = None;
+    if env_size > 0 {
+      let env_buf = wrap_load_env(env_size);
+      env = Some(Env::from_buffer(&env_buf).unwrap());
+    }
+
+    {{/required}}
+    {{/env}}
+    {{#arguments.length}}
+    match deserialize_{{to_lower name}}_args(args) {
+        Ok(args) => {
+    {{/arguments.length}}
+            let result = Module::{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}(Args{{to_upper name}} {
+                {{#arguments}}
+                {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}},
+                {{/arguments}}
+            }{{#env}}, env{{/env}});
+            match result {
+                Ok(res) => {
+                    serialize_{{to_lower name}}_result({{#return}}&{{/return}}res).unwrap()
+                }
+                Err(e) => {
+                    panic!("{}", e.to_string())
+                }
+            }
+    {{#arguments.length}}
+        }
+        Err(e) => {
+            panic!("{}", e.to_string())
+        }
+    }
+    {{/arguments.length}}
+}
+{{^last}}
+
+{{/last}}
+{{/each}}
+{{/with}}

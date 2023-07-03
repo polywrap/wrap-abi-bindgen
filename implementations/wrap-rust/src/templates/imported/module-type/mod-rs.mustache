@@ -1,0 +1,85 @@
+use serde::{Serialize, Deserialize};
+use polywrap_wasm_rs::{
+    BigInt,
+    BigNumber,
+    Map,
+    Read,
+    Write,
+    JSON,
+    subinvoke,
+};
+pub mod serialization;
+{{#methods.length}}
+pub use serialization::{
+    {{#each methods}}
+    deserialize_{{to_lower name}}_result,
+    serialize_{{to_lower name}}_args,
+    Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
+    {{/each}}
+};
+{{/methods.length}}
+{{#propertyDeps.length}}
+
+{{#propertyDeps}}
+use {{crate}}::{{detect_keyword (to_upper type)}};
+{{/propertyDeps}}
+{{/propertyDeps.length}}
+
+{{^isInterface}}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct {{detect_keyword (to_upper type)}} {}
+
+impl {{detect_keyword (to_upper type)}} {
+    pub const URI: &'static str = "{{uri}}";
+
+    pub fn new() -> {{detect_keyword (to_upper type)}} {
+        {{detect_keyword (to_upper type)}} {}
+    }
+
+    {{#each methods}}
+    pub fn {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}(args: &Args{{to_upper name}}) -> Result<{{#return}}{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}, String> {
+        let uri = {{#parent}}{{to_upper type}}{{/parent}}::URI;
+        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
+        let result = subinvoke::wrap_subinvoke(
+            uri,
+            "{{name}}",
+            args,
+        )?;
+        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
+    }
+    {{^last}}
+
+    {{/last}}
+    {{/each}}
+}
+{{/isInterface}}
+{{#isInterface}}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct {{detect_keyword (to_upper type)}} {
+    {{#isInterface}}uri: String{{/isInterface}}
+}
+
+impl {{detect_keyword (to_upper type)}} {
+    pub const INTERFACE_URI: &'static str = "{{uri}}";
+
+    pub fn new(uri: String) -> {{detect_keyword (to_upper type)}} {
+        {{detect_keyword (to_upper type)}} { uri }
+    }
+
+    {{#each methods}}
+    pub fn {{to_lower name}}(&self, args: &Args{{to_upper name}}) -> Result<{{#return}}{{#toWasm}}{{toGraphQLType}}{{/toWasm}}{{/return}}, String> {
+        let ref uri = self.uri;
+        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
+        let result = subinvoke::wrap_subinvoke(
+            uri.as_str(),
+            "{{name}}",
+            args,
+        )?;
+        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
+    }
+    {{^last}}
+
+    {{/last}}
+    {{/each}}
+}
+{{/isInterface}}
