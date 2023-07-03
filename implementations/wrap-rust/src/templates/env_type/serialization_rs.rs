@@ -1,34 +1,8 @@
 lazy_static! {
   static ref NAME: String = "env_type/serialization.rs".to_string();
-  static ref SOURCE: String = r#"use std::convert::TryFrom;
-use polywrap_wasm_rs::{
-    BigInt,
-    BigNumber,
-    Map,
-    Context,
-    DecodeError,
-    EncodeError,
-    Read,
-    ReadDecoder,
-    Write,
-    WriteEncoder,
-    JSON,
-};
+  static ref SOURCE: String = r#"{{> serialization_imports}}
+use std::convert::TryFrom;
 use crate::{{detect_keyword (to_upper type)}};
-{{#if (array_has_length propertyDeps)}}
-
-{{/if}}{{#each propertyDeps}}
-{{^isEnum}}
-use {{crate}}::{{detect_keyword (to_upper type)}};
-{{/isEnum}}
-{{#isEnum}}
-use crate::{
-    {{detect_keyword (to_upper type)}},
-    get_{{to_lower type}}_value,
-    sanitize_{{to_lower type}}_value
-};
-{{/isEnum}}
-{{/each}}
 
 pub fn serialize_{{to_lower type}}(args: &{{detect_keyword (to_upper type)}}) -> Result<Vec<u8>, EncodeError> {
     let mut encoder_context = Context::new();

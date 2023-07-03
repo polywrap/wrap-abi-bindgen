@@ -1,7 +1,6 @@
 lazy_static! {
   static ref NAME: String = "serialization_imports".to_string();
-  static ref SOURCE: String = r#"use std::convert::TryFrom;
-use polywrap_wasm_rs::{
+  static ref SOURCE: String = r#"use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
@@ -14,7 +13,6 @@ use polywrap_wasm_rs::{
     WriteEncoder,
     JSON,
 };
-use crate::{{detect_keyword (to_upper type)}};
 {{#if (array_has_length propertyDeps)}}
 
 {{/if}}{{#each propertyDeps}}

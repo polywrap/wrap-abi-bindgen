@@ -1,36 +1,9 @@
 lazy_static! {
   static ref NAME: String = "module_type/serialization.rs".to_string();
   static ref SOURCE: String = r#"{{#with moduleType}}
+{{> serialization_imports}}
 use serde::{Serialize, Deserialize};
 use std::convert::TryFrom;
-use polywrap_wasm_rs::{
-    BigInt,
-    BigNumber,
-    Map,
-    Context,
-    DecodeError,
-    EncodeError,
-    Read,
-    ReadDecoder,
-    Write,
-    WriteEncoder,
-    JSON,
-};
-{{#if (array_has_length propertyDeps)}}
-
-{{#each propertyDeps}}
-{{^isEnum}}
-use {{crate}}::{{detect_keyword (to_upper type)}};
-{{/isEnum}}
-{{#isEnum}}
-use crate::{
-    {{detect_keyword (to_upper type)}},
-    get_{{to_lower type}}_value,
-    sanitize_{{to_lower type}}_value
-};
-{{/isEnum}}
-{{/each}}
-{{/if}}
 
 {{#each methods}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
