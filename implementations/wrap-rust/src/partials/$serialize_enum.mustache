@@ -1,6 +1,6 @@
-{{#required}}
+{{#if required}}
 writer.write_i32(&(*item as i32))
-{{/required}}
+{{/if}}
 {{^required}}
 writer.write_optional_i32(&item.map(|f| f as i32))
-{{/required}}
+{{/if}}

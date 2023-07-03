@@ -5,7 +5,7 @@ use std::convert::TryFrom;
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum {{detect_keyword (to_upper type)}} {
     {{#constants}}
-    {{#serdeKeyword}}{{to_lower name}}{{/serdeKeyword}}{{#detectKeyword}}{{.}}{{/detectKeyword}},
+    {{serdeKeyword (to_lower name)}}{{#detectKeyword}}{{.}}{{/detectKeyword}},
     {{/constants}}
     _MAX_
 }

@@ -16,18 +16,18 @@ pub use serialization::{
     serialize_{{to_lower type}},
     write_{{to_lower type}}
 };
-{{#propertyDeps.length}}
+{{#if (array_has_length propertyDeps)}}
 
-{{#propertyDeps}}
+{{#each propertyDeps}}
 use {{crate}}::{{detect_keyword (to_upper type)}};
-{{/propertyDeps}}
-{{/propertyDeps.length}}
+{{/each}}
+{{/if}}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
-    {{#properties}}
-    {{#serdeKeyword}}{{to_lower name}}{{/serdeKeyword}}pub {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: {{#toWasm}}{{toGraphQLType}}{{/toWasm}},
-    {{/properties}}
+    {{#each properties}}
+    {{serdeKeyword (to_lower name)}}pub {{detectKeyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{/each}}
 }
 
 impl {{detect_keyword (to_upper type)}} {
@@ -35,9 +35,9 @@ impl {{detect_keyword (to_upper type)}} {
 
     pub fn new() -> {{detect_keyword (to_upper type)}} {
         {{detect_keyword (to_upper type)}} {
-            {{#properties}}
-            {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: {{#toWasmInit}}{{toGraphQLType}}{{/toWasmInit}},
-            {{/properties}}
+            {{#each properties}}
+            {{detectKeyword (to_lower name)}}: {{to_rust_init (to_graphql_type this)}},
+            {{/each}}
         }
     }
 

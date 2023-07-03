@@ -14,22 +14,22 @@ writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower
 })
 {{/map}}
 {{#enum}}
-{{#required}}
+{{#if required}}
 writer.write_i32(&(*value as i32))
-{{/required}}
+{{/if}}
 {{^required}}
 writer.write_optional_i32(&value.map(|f| f as i32))
-{{/required}}
+{{/if}}
 {{/enum}}
 {{#object}}
-{{#required}}
+{{#if required}}
 {{detect_keyword (to_upper type)}}::write(value, writer)
-{{/required}}
+{{/if}}
 {{^required}}
 if value.is_some() {
     {{detect_keyword (to_upper type)}}::write(value.as_ref().as_ref().unwrap(), writer)
 } else {
     writer.write_nil()
 }
-{{/required}}
+{{/if}}
 {{/object}}

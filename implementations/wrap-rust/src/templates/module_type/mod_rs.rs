@@ -1,5 +1,7 @@
-{{#with moduleType}}
-{{#methods.length}}
+lazy_static! {
+  static ref NAME: String = "module_type/mod.rs".to_string();
+  static ref SOURCE: String = r#"{{#with moduleType}}
+{{#if (array_has_length methods)}}
 pub mod wrapped;
 pub use wrapped::{
     {{#each methods}}
@@ -14,8 +16,19 @@ pub use serialization::{
     Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
     {{/each}}
 };
-{{/methods.length}}
+{{/if}}
 
 pub mod module;
 pub use module::*;
 {{/with}}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
+}

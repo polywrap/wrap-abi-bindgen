@@ -1,5 +1,7 @@
-{{#with moduleType}}
-{{#methods.length}}
+lazy_static! {
+  static ref NAME: String = "module_type/wrapped.rs".to_string();
+  static ref SOURCE: String = r#"{{#with moduleType}}
+{{#if (array_has_length methods)}}
 use polywrap_wasm_rs::{
   wrap_load_env
 };
@@ -11,7 +13,7 @@ use crate::{
     serialize_{{to_lower name}}_result{{#if (is_not_last @index ../methods)}},{{/if}}
     {{/each}}
 };
-{{/methods.length}}
+{{/if}}
 
 use crate::module::{ModuleTrait, Module};
 {{#with envType}}
@@ -20,8 +22,8 @@ use crate::Env;
 
 {{#each methods}}
 pub fn {{to_lower name}}_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
-    {{#env}}
-    {{#required}}
+    {{#with env}}
+    {{#if required}}
     if env_size == 0 {
         panic!("Environment is not set, and it is required by method '{{name}}'");
     }
@@ -29,43 +31,53 @@ pub fn {{to_lower name}}_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
     let env_buf = wrap_load_env(env_size);
     let env = Env::from_buffer(&env_buf).unwrap();
 
-    {{/required}}
-    {{^required}}
+    {{/else}}
     let mut env: Option<Env> = None;
     if env_size > 0 {
       let env_buf = wrap_load_env(env_size);
       env = Some(Env::from_buffer(&env_buf).unwrap());
     }
 
-    {{/required}}
-    {{/env}}
-    {{#arguments.length}}
+    {{/if}}
+    {{/with}}
+    {{#if (array_has_length arguments)}}
     match deserialize_{{to_lower name}}_args(args) {
         Ok(args) => {
-    {{/arguments.length}}
-            let result = Module::{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}(Args{{to_upper name}} {
-                {{#arguments}}
-                {{#detectKeyword}}{{to_lower name}}{{/detectKeyword}}: args.{{#detectKeyword}}{{to_lower name}}{{/detectKeyword}},
-                {{/arguments}}
-            }{{#env}}, env{{/env}});
+    {{/if}}
+            let result = Module::{{detectKeyword (to_lower name)}}(Args{{to_upper name}} {
+                {{#each arguments}}
+                {{detectKeyword (to_lower name)}}: args.{{detectKeyword (to_lower name)}},
+                {{/each}}
+            }{{#with env}}, env{{/with}});
             match result {
                 Ok(res) => {
-                    serialize_{{to_lower name}}_result({{#return}}&{{/return}}res).unwrap()
+                    serialize_{{to_lower name}}_result({{#with return}}&{{/with}}res).unwrap()
                 }
                 Err(e) => {
                     panic!("{}", e.to_string())
                 }
             }
-    {{#arguments.length}}
+    {{#if (array_has_length arguments)}}
         }
         Err(e) => {
             panic!("{}", e.to_string())
         }
     }
-    {{/arguments.length}}
+    {{/if}}
 }
-{{^last}}
+{{#if (is_not_last @index ../methods)}}
 
-{{/last}}
+{{/if}}
 {{/each}}
 {{/with}}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
+}

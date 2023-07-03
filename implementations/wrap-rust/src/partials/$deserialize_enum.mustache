@@ -1,4 +1,4 @@
-{{#required}}
+{{#if required}}
 let mut value: {{detect_keyword (to_upper type)}} = {{detect_keyword (to_upper type)}}::_MAX_;
 if reader.is_next_string()? {
     value = get_{{to_lower type}}_value(&reader.read_string()?)?;
@@ -6,9 +6,9 @@ if reader.is_next_string()? {
     value = {{detect_keyword (to_upper type)}}::try_from(reader.read_i32()?)?;
     sanitize_{{to_lower type}}_value(value as i32)?;
 }
-{{/required}}
+{{/if}}
 {{^required}}
-let mut value: {{#toWasm}}{{toGraphQLType}}{{/toWasm}} = None;
+let mut value: {{to_rust (to_graphql_type this)}} = None;
 if !reader.is_next_nil()? {
     if reader.is_next_string()? {
         value = Some(get_{{to_lower type}}_value(&reader.read_string()?)?);
@@ -19,4 +19,4 @@ if !reader.is_next_nil()? {
 } else {
     value = None;
 }
-{{/required}}
+{{/if}}
