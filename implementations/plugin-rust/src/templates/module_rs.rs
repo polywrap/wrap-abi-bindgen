@@ -14,7 +14,7 @@ use super::types::*;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Args{{to_upper name}} {
     {{#each arguments}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_wasm (to_graphql_type this)}},
+    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
@@ -23,7 +23,7 @@ pub struct Args{{to_upper name}} {
 pub trait Module: PluginModule {
   {{#with moduleType}}
   {{#each methods}}
-  fn {{detect_keyword (to_lower name)}}(&mut self, args: &Args{{to_upper name}}, invoker: Arc<dyn Invoker>{{#with env}}, env: {{#if required}}{{else}}Option<{{/if}}Env{{#if required}}{{else}}>{{/if}}{{/with}}) -> Result<{{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}}, PluginError>;
+  fn {{detect_keyword (to_lower name)}}(&mut self, args: &Args{{to_upper name}}, invoker: Arc<dyn Invoker>{{#with env}}, env: {{#if required}}{{else}}Option<{{/if}}Env{{#if required}}{{else}}>{{/if}}{{/with}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError>;
   {{#if (is_not_last @index ../methods)}}
 
   {{/if}}

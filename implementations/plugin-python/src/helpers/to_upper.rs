@@ -9,7 +9,7 @@ handlebars_helper!(to_upper: |val: Value| {
 
 pub fn _to_upper(s: &str) -> String {
     let mut result = s.to_string();
-    let first_char = result.chars().nth(0).unwrap();
+    let first_char = result.chars().nth(0).unwrap_or_else(|| panic!("Tried to call to_upper on an empty string"));
     let first_upper = first_char.to_uppercase().collect::<String>();
     result = replace_at(&result, 0, &first_upper);
     let mut i = 0;

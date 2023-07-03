@@ -14,7 +14,7 @@ val manifest = WrapManifest(
     type = "{{type}}",
     version = "{{version}}",
     abi = msgPackDecode(Abi01.serializer(), {{to_kotlin_byte_array abi}}).getOrThrow()
-)
+    )
 "#.to_string();
 }
 

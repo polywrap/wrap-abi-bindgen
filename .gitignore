@@ -102,7 +102,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # Docusaurus cache and generated files
 .docusaurus
@@ -132,6 +131,8 @@ dist
 # polywrap
 .polywrap/
 wrap/
-build/
 dist/
-node_modules/
+
+# wasm-bindgen artifacts
+bg_*.js
+bg_*.ts
