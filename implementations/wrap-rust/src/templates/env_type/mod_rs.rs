@@ -1,4 +1,6 @@
-use serde::{Serialize, Deserialize};
+lazy_static! {
+  static ref NAME: String = "env_type/mod.rs".to_string();
+  static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
 pub mod serialization;
 use polywrap_wasm_rs::{
     BigInt,
@@ -50,5 +52,16 @@ impl {{detect_keyword (to_upper type)}} {
 
     pub fn read<R: Read>(reader: &mut R) -> Result<{{detect_keyword (to_upper type)}}, DecodeError> {
         read_{{to_lower type}}(reader).map_err(|e| DecodeError::TypeReadError(e.to_string()))
+    }
+}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
     }
 }

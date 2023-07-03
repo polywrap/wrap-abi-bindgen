@@ -1,4 +1,6 @@
-use std::convert::TryFrom;
+lazy_static! {
+  static ref NAME: String = "env_type/serialization.rs".to_string();
+  static ref SOURCE: String = r#"use std::convert::TryFrom;
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
@@ -166,4 +168,15 @@ pub fn read_{{to_lower type}}<R: Read>(reader: &mut R) -> Result<{{detect_keywor
         {{detectKeyword (to_lower name)}}: _{{to_lower name}},
         {{/each}}
     })
+}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
 }
