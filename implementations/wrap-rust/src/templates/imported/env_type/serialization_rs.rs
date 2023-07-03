@@ -1,4 +1,6 @@
-use std::convert::TryFrom;
+lazy_static! {
+  static ref NAME: String = "imported/env_type/serialization.rs".to_string();
+  static ref SOURCE: String = r#"use std::convert::TryFrom;
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
@@ -30,7 +32,7 @@ use crate::{
 
 pub fn serialize_{{to_lower type}}(args: &{{detect_keyword (to_upper type)}}) -> Result<Vec<u8>, EncodeError> {
     let mut encoder_context = Context::new();
-    encoder_context.description = "Serializing (encoding) imported object-type: {{to_upper type}}".to_string();
+    encoder_context.description = "Serializing (encoding) imported env-type: {{to_upper type}}".to_string();
     let mut encoder = WriteEncoder::new(&[], encoder_context);
     write_{{to_lower type}}(args, &mut encoder)?;
     Ok(encoder.get_buffer())
@@ -47,15 +49,15 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     writer.context().push("{{name}}", "{{to_rust (to_graphql_type this)}}", "writing property");
     writer.write_string("{{name}}")?;
     {{#scalar}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}})?;
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}})?;
     {{/scalar}}
     {{#array}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, item| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, item| {
         {{> serialize_array}}
     })?;
     {{/array}}
     {{#map}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, key| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, key| {
         writer.write_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}(key)
     }, |writer, value| {
         {{> serialize_map_value}}
@@ -63,11 +65,11 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     {{/map}}
     {{#object}}
     {{#if required}}
-    {{detect_keyword (to_upper type)}}::write(&args.{{detectKeyword (to_lower name)}}, writer)?;
+    {{detect_keyword (to_upper type)}}::write(&args.{{detect_keyword (to_lower name)}}, writer)?;
     {{/if}}
     {{^required}}
-    if args.{{detectKeyword (to_lower name)}}.is_some() {
-        {{detect_keyword (to_upper type)}}::write(args.{{detectKeyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
+    if args.{{detect_keyword (to_lower name)}}.is_some() {
+        {{detect_keyword (to_upper type)}}::write(args.{{detect_keyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
     } else {
         writer.write_nil()?;
     }
@@ -75,10 +77,10 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     {{/object}}
     {{#enum}}
     {{#if required}}
-    writer.write_i32(&(args.{{detectKeyword (to_lower name)}} as i32))?;
+    writer.write_i32(&(args.{{detect_keyword (to_lower name)}} as i32))?;
     {{/if}}
     {{^required}}
-    writer.write_optional_i32(&args.{{detectKeyword (to_lower name)}}.map(|f| f as i32))?;
+    writer.write_optional_i32(&args.{{detect_keyword (to_lower name)}}.map(|f| f as i32))?;
     {{/if}}
     {{/enum}}
     writer.context().pop();
@@ -88,7 +90,7 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
 
 pub fn deserialize_{{to_lower type}}(args: &[u8]) -> Result<{{detect_keyword (to_upper type)}}, DecodeError> {
     let mut context = Context::new();
-    context.description = "Deserializing imported object-type: {{to_upper type}}".to_string();
+    context.description = "Deserializing imported env-type: {{to_upper type}}".to_string();
     let mut reader = ReadDecoder::new(args, context);
     read_{{to_lower type}}(&mut reader)
 }
@@ -131,7 +133,7 @@ pub fn read_{{to_lower type}}<R: Read>(reader: &mut R) -> Result<{{detect_keywor
                 {{/array}}
                 {{#map}}
                 _{{to_lower name}} = reader.read_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(|reader| {
-                    reader.read_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}()
+                    reader.read_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}()?
                 }, |reader| {
                     {{> deserialize_map_value_nobox}}
                 })?;
@@ -163,7 +165,18 @@ pub fn read_{{to_lower type}}<R: Read>(reader: &mut R) -> Result<{{detect_keywor
 
     Ok({{detect_keyword (to_upper type)}} {
         {{#each properties}}
-        {{detectKeyword (to_lower name)}}: _{{to_lower name}},
+        {{detect_keyword (to_lower name)}}: _{{to_lower name}},
         {{/each}}
     })
+}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
 }

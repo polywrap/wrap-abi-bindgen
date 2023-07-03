@@ -1,4 +1,6 @@
-use polywrap_wasm_rs::EnumTypeError;
+lazy_static! {
+  static ref NAME: String = "imported/enum_type/mod.rs".to_string();
+  static ref SOURCE: String = r#"use polywrap_wasm_rs::EnumTypeError;
 use serde::{Serialize, Deserialize};
 use std::convert::TryFrom;
 
@@ -51,5 +53,16 @@ impl TryFrom<i32> for {{detect_keyword (to_upper type)}} {
             x if x == {{detect_keyword (to_upper type)}}::_MAX_ as i32 => Ok({{detect_keyword (to_upper type)}}::_MAX_),
             _ => Err(EnumTypeError::ParseEnumError(format!("Invalid value for enum '{{detect_keyword (to_upper type)}}': {}", (v  as i32).to_string()))),
         }
+    }
+}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
     }
 }

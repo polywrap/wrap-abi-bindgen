@@ -1,4 +1,6 @@
-use serde::{Serialize, Deserialize};
+lazy_static! {
+  static ref NAME: String = "imported/module_type/mod.rs".to_string();
+  static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
@@ -25,38 +27,10 @@ use {{crate}}::{{detect_keyword (to_upper type)}};
 {{/each}}
 {{/if}}
 
-{{^isInterface}}
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{detect_keyword (to_upper type)}} {}
-
-impl {{detect_keyword (to_upper type)}} {
-    pub const URI: &'static str = "{{uri}}";
-
-    pub fn new() -> {{detect_keyword (to_upper type)}} {
-        {{detect_keyword (to_upper type)}} {}
-    }
-
-    {{#each methods}}
-    pub fn {{detectKeyword (to_lower name)}}(args: &Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String> {
-        let uri = {{#parent}}{{to_upper type}}{{/parent}}::URI;
-        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
-        let result = subinvoke::wrap_subinvoke(
-            uri,
-            "{{name}}",
-            args,
-        )?;
-        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
-    }
-    {{#if (is_not_last @index ../methods)}}
-
-    {{/if}}
-    {{/each}}
-}
-{{/isInterface}}
-{{#isInterface}}
+{{#if isInterface}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
-    {{#isInterface}}uri: String{{/isInterface}}
+    uri: String
 }
 
 impl {{detect_keyword (to_upper type)}} {
@@ -82,4 +56,42 @@ impl {{detect_keyword (to_upper type)}} {
     {{/if}}
     {{/each}}
 }
-{{/isInterface}}
+{{else}}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct {{detect_keyword (to_upper type)}} {}
+
+impl {{detect_keyword (to_upper type)}} {
+    pub const URI: &'static str = "{{uri}}";
+
+    pub fn new() -> {{detect_keyword (to_upper type)}} {
+        {{detect_keyword (to_upper type)}} {}
+    }
+
+    {{#each methods}}
+    pub fn {{detect_keyword (to_lower name)}}(args: &Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String> {
+        let uri = {{to_upper ../type}}::URI;
+        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
+        let result = subinvoke::wrap_subinvoke(
+            uri,
+            "{{name}}",
+            args,
+        )?;
+        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
+    }
+    {{#if (is_not_last @index ../methods)}}
+
+    {{/if}}
+    {{/each}}
+}
+{{/if}}
+"#.to_string();
+}
+
+use crate::templates::Template;
+
+pub fn load() -> Template {
+    Template {
+        name: &*NAME,
+        source: &*SOURCE
+    }
+}

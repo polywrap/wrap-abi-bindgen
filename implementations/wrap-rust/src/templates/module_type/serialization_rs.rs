@@ -36,7 +36,7 @@ use crate::{
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Args{{to_upper name}} {
     {{#each arguments}}
-    {{serdeKeyword (to_lower name)}}pub {{detectKeyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serdeKeyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
@@ -116,7 +116,7 @@ pub fn deserialize_{{to_lower name}}_args(args: &[u8]) -> Result<Args{{to_upper 
 
     Ok(Args{{to_upper name}} {
         {{#each arguments}}
-        {{detectKeyword (to_lower name)}}: _{{to_lower name}},
+        {{detect_keyword (to_lower name)}}: _{{to_lower name}},
         {{/each}}
     })
 }
@@ -140,15 +140,15 @@ pub fn write_{{to_lower name}}_args<W: Write>(args: &Args{{to_upper name}}, writ
     writer.context().push("{{name}}", "{{to_rust (to_graphql_type this)}}", "writing property");
     writer.write_string("{{name}}")?;
     {{#scalar}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}})?;
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}})?;
     {{/scalar}}
     {{#array}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, item| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, item| {
         {{> serialize_array}}
     })?;
     {{/array}}
     {{#map}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, key| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, key| {
         writer.write_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}(key)
     }, |writer, value| {
         {{> serialize_map_value}}
@@ -156,19 +156,19 @@ pub fn write_{{to_lower name}}_args<W: Write>(args: &Args{{to_upper name}}, writ
     {{/map}}
     {{#enum}}
     {{#if required}}
-    writer.write_i32(&(args.{{detectKeyword (to_lower name)}} as i32))?;
+    writer.write_i32(&(args.{{detect_keyword (to_lower name)}} as i32))?;
     {{/if}}
     {{^required}}
-    writer.write_optional_i32(&args.{{detectKeyword (to_lower name)}}.map(|f| f as i32))?;
+    writer.write_optional_i32(&args.{{detect_keyword (to_lower name)}}.map(|f| f as i32))?;
     {{/if}}
     {{/enum}}
     {{#object}}
     {{#if required}}
-    {{detect_keyword (to_upper type)}}::write(&args.{{detectKeyword (to_lower name)}}, writer)?;
+    {{detect_keyword (to_upper type)}}::write(&args.{{detect_keyword (to_lower name)}}, writer)?;
     {{/if}}
     {{^required}}
-    if args.{{detectKeyword (to_lower name)}}.is_some() {
-        {{detect_keyword (to_upper type)}}::write(args.{{detectKeyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
+    if args.{{detect_keyword (to_lower name)}}.is_some() {
+        {{detect_keyword (to_upper type)}}::write(args.{{detect_keyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
     } else {
         writer.write_nil()?;
     }

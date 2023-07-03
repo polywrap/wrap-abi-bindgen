@@ -25,7 +25,7 @@ use {{crate}}::{{detect_keyword (to_upper type)}};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serdeKeyword (to_lower name)}}pub {{detectKeyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serdeKeyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
@@ -33,7 +33,7 @@ impl {{detect_keyword (to_upper type)}} {
     pub fn new() -> {{detect_keyword (to_upper type)}} {
         {{detect_keyword (to_upper type)}} {
             {{#each properties}}
-            {{detectKeyword (to_lower name)}}: {{to_rust_init (to_graphql_type this)}},
+            {{detect_keyword (to_lower name)}}: {{to_rust_init (to_graphql_type this)}},
             {{/each}}
         }
     }

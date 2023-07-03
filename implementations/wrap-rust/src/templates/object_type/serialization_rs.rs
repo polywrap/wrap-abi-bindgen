@@ -48,15 +48,15 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     writer.context().push("{{name}}", "{{to_rust (to_graphql_type this)}}", "writing property");
     writer.write_string("{{name}}")?;
     {{#scalar}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}})?;
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}})?;
     {{/scalar}}
     {{#array}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, item| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, item| {
         {{> serialize_array}}
     })?;
     {{/array}}
     {{#map}}
-    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detectKeyword (to_lower name)}}, |writer, key| {
+    writer.write_{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}(&args.{{detect_keyword (to_lower name)}}, |writer, key| {
         writer.write_{{#key}}{{#toLower}}{{#toMsgPack}}{{toGraphQLType}}{{/toMsgPack}}{{/toLower}}{{/key}}(key)
     }, |writer, value| {
         {{> serialize_map_value}}
@@ -64,11 +64,11 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     {{/map}}
     {{#object}}
     {{#if required}}
-    {{detect_keyword (to_upper type)}}::write(&args.{{detectKeyword (to_lower name)}}, writer)?;
+    {{detect_keyword (to_upper type)}}::write(&args.{{detect_keyword (to_lower name)}}, writer)?;
     {{/if}}
     {{^required}}
-    if args.{{detectKeyword (to_lower name)}}.is_some() {
-        {{detect_keyword (to_upper type)}}::write(args.{{detectKeyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
+    if args.{{detect_keyword (to_lower name)}}.is_some() {
+        {{detect_keyword (to_upper type)}}::write(args.{{detect_keyword (to_lower name)}}.as_ref().as_ref().unwrap(), writer)?;
     } else {
         writer.write_nil()?;
     }
@@ -76,10 +76,10 @@ pub fn write_{{to_lower type}}<W: Write>(args: &{{detect_keyword (to_upper type)
     {{/object}}
     {{#enum}}
     {{#if required}}
-    writer.write_i32(&(args.{{detectKeyword (to_lower name)}} as i32))?;
+    writer.write_i32(&(args.{{detect_keyword (to_lower name)}} as i32))?;
     {{/if}}
     {{^required}}
-    writer.write_optional_i32(&args.{{detectKeyword (to_lower name)}}.map(|f| f as i32))?;
+    writer.write_optional_i32(&args.{{detect_keyword (to_lower name)}}.map(|f| f as i32))?;
     {{/if}}
     {{/enum}}
     writer.context().pop();
@@ -164,7 +164,7 @@ pub fn read_{{to_lower type}}<R: Read>(reader: &mut R) -> Result<{{detect_keywor
 
     Ok({{detect_keyword (to_upper type)}} {
         {{#each properties}}
-        {{detectKeyword (to_lower name)}}: _{{to_lower name}},
+        {{detect_keyword (to_lower name)}}: _{{to_lower name}},
         {{/each}}
     })
 }

@@ -29,7 +29,7 @@ pub struct Module;
 
 pub trait ModuleTrait {
   {{#each methods}}
-  fn {{detectKeyword (to_lower name)}}(args: Args{{to_upper name}}{{#with env}}, env: {{#if required}}Env{{else}}Option<Env>{{/if}}{{/with}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String>;
+  fn {{detect_keyword (to_lower name)}}(args: Args{{to_upper name}}{{#with env}}, env: {{#if required}}Env{{else}}Option<Env>{{/if}}{{/with}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String>;
   {{#if (is_not_last @index ../methods)}}
 
   {{/if}}

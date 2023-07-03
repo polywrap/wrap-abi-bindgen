@@ -44,9 +44,9 @@ pub fn {{to_lower name}}_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
     match deserialize_{{to_lower name}}_args(args) {
         Ok(args) => {
     {{/if}}
-            let result = Module::{{detectKeyword (to_lower name)}}(Args{{to_upper name}} {
+            let result = Module::{{detect_keyword (to_lower name)}}(Args{{to_upper name}} {
                 {{#each arguments}}
-                {{detectKeyword (to_lower name)}}: args.{{detectKeyword (to_lower name)}},
+                {{detect_keyword (to_lower name)}}: args.{{detect_keyword (to_lower name)}},
                 {{/each}}
             }{{#with env}}, env{{/with}});
             match result {
