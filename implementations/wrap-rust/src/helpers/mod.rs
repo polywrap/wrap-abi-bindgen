@@ -2,7 +2,7 @@ use handlebars::Handlebars;
 
 mod array_has_length;
 mod array_length;
-mod detect_keyword;
+pub mod detect_keyword;
 mod is_keyword;
 mod is_not_first;
 mod is_not_last;
@@ -11,7 +11,7 @@ mod serde_annotate_if_bytes;
 mod serde_keyword;
 mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
-mod to_lower;
+pub mod to_lower;
 mod to_rust;
 mod to_rust_init;
 mod to_upper;

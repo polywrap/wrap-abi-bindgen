@@ -8,6 +8,9 @@ pub mod templates;
 pub mod helpers;
 mod renderer;
 use renderer::Renderer;
+use crate::helpers::detect_keyword::_detect_keyword;
+use crate::helpers::to_lower::_to_lower;
+use polywrap_wasm_rs::{JSON};
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
@@ -42,12 +45,17 @@ impl ModuleTrait for Module {
 
         let abi = wrap_info.abi.as_object().unwrap();
 
+        let get_dir_name = |value: &JSON::Value| -> String {
+            let dir_name = value.get("type").unwrap().as_str().unwrap().to_string();
+            _to_lower(&dir_name)
+        };
+
         if let Some(object_types) = abi.get("objectTypes") {
             let objects = object_types.as_array().unwrap();
 
             for object in objects.iter() {
                 let dir = Directory {
-                    name: object.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: _detect_keyword(&get_dir_name(object)),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -62,7 +70,7 @@ impl ModuleTrait for Module {
 
         if let Some(module_type) = abi.get("moduleType") {
             let dir = Directory {
-                name: "Module".to_string(),
+                name: "module".to_string(),
                 files: vec!(
                     File {
                         name: "mod.rs".to_string(),
@@ -87,7 +95,7 @@ impl ModuleTrait for Module {
 
             for it in enums.iter() {
                 let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: _detect_keyword(&get_dir_name(it)),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -100,14 +108,12 @@ impl ModuleTrait for Module {
             }
         }
 
-
-
         if let Some(interface_types) = abi.get("interfaceTypes") {
             let interfaces = interface_types.as_array().unwrap();
 
             for it in interfaces.iter() {
                 let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: get_dir_name(it),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -132,7 +138,7 @@ impl ModuleTrait for Module {
 
             for object in objects.iter() {
                 let dir = Directory {
-                    name: object.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: _detect_keyword(&get_dir_name(object)),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -150,7 +156,7 @@ impl ModuleTrait for Module {
 
             for it in modules.iter() {
                 let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: get_dir_name(it),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -168,7 +174,7 @@ impl ModuleTrait for Module {
 
             for it in enums.iter() {
                 let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: _detect_keyword(&get_dir_name(it)),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -186,7 +192,7 @@ impl ModuleTrait for Module {
 
             for it in envs.iter() {
                 let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
+                    name: _detect_keyword(&get_dir_name(it)),
                     files: vec!(
                         File {
                             name: "mod.rs".to_string(),
@@ -213,7 +219,7 @@ impl ModuleTrait for Module {
 
         if let Some(env_type) = abi.get("envType") {
             let dir = Directory {
-                name: "Env".to_string(),
+                name: "env".to_string(),
                 files: vec!(
                     File {
                         name: "mod.rs".to_string(),
