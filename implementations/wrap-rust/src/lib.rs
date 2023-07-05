@@ -4,7 +4,6 @@ extern crate lazy_static;
 pub mod wrap;
 pub use wrap::*;
 
-pub mod partials;
 pub mod templates;
 pub mod helpers;
 mod renderer;
