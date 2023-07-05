@@ -48,8 +48,6 @@ pub use {{detect_keyword (to_lower type)}}::{
     Module,
     ModuleTrait,
     {{#each methods}}
-    deserialize_{{to_lower name}}_args,
-    serialize_{{to_lower name}}_result,
     {{to_lower name}}_wrapped,
     Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
     {{/each}}

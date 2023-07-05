@@ -78,7 +78,7 @@ impl ModuleTrait for Module {
                     },
                     File {
                         name: "module.rs".to_string(),
-                        data: renderer.render("module_type/module.rs", module_type)
+                        data: renderer.render("module_type/module.rs", abi)
                     },
                     File {
                         name: "wrapped.rs".to_string(),
