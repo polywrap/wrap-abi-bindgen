@@ -1,7 +1,6 @@
 lazy_static! {
   static ref NAME: String = "module_type/module.rs".to_string();
-  static ref SOURCE: String = r#"{{#with moduleType}}
-use crate::{
+  static ref SOURCE: String = r#"use crate::{
     {{#each methods}}
     Args{{to_upper name}},
     {{/each}}
@@ -35,7 +34,6 @@ pub trait ModuleTrait {
   {{/if}}
   {{/each}}
 }
-{{/with}}
 "#.to_string();
 }
 
