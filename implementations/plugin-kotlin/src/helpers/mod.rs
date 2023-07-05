@@ -16,6 +16,9 @@ mod to_kotlin_byte_array;
 mod to_package_id;
 mod to_upper;
 
+// helpers for helpers
+mod util;
+
 pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "array_has_length",

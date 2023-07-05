@@ -1,5 +1,6 @@
 use handlebars::handlebars_helper;
 use serde_json::{Value};
+use crate::helpers::util::map_types;
 
 use super::to_wasm::to_wasm_fn;
 use super::detect_keyword::detect_keyword_fn;
@@ -23,34 +24,9 @@ pub fn to_wasm_init_fn(value: &str) -> String {
     }
 
     if type_str.starts_with("Map<") {
-        let first_open_bracket_idx = type_str.find('<').unwrap_or_else(|| {
-            panic!("Invalid Map: {}", type_str);
-        });
-        let last_close_bracket_idx = type_str
-            .rfind('>')
-            .unwrap_or_else(|| panic!("Invalid Map: {}", type_str));
-
-        let key_val_types = type_str
-            .get(first_open_bracket_idx + 1..last_close_bracket_idx)
-            .unwrap_or_else(|| panic!("Invalid Map: {}", type_str));
-
-        let first_comma_idx = key_val_types.find(',').unwrap_or_else(|| {
-            panic!("Invalid Map: {}", type_str);
-        });
-        let key_type = key_val_types
-            .get(0..first_comma_idx)
-            .unwrap_or_else(|| panic!("Invalid Map: {}", type_str))
-            .trim()
-            .to_string();
-        let val_type = key_val_types
-            .get(first_comma_idx + 1..)
-            .unwrap_or_else(|| panic!("Invalid Map: {}", type_str))
-            .trim()
-            .to_string();
-
+        let (key_type, val_type) = map_types(&type_str).unwrap();
         let wasm_key_type = to_wasm_fn(&key_type);
         let wasm_val_type = to_wasm_fn(&val_type);
-
         return format!("new Map<{}, {}>()", wasm_key_type, wasm_val_type);
     }
 

@@ -15,6 +15,9 @@ mod to_wasm_init;
 mod to_wasm_map;
 mod to_wasm;
 
+// helpers for helpers
+mod util;
+
 pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "apply_optional",
