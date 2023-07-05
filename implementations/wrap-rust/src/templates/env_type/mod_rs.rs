@@ -1,7 +1,6 @@
 lazy_static! {
   static ref NAME: String = "env_type/mod.rs".to_string();
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
-pub mod serialization;
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
@@ -12,12 +11,6 @@ use polywrap_wasm_rs::{
     Write,
     JSON,
 };
-pub use serialization::{
-    deserialize_{{to_lower type}},
-    read_{{to_lower type}},
-    serialize_{{to_lower type}},
-    write_{{to_lower type}}
-};
 {{#each propertyDeps}}
 use {{crate}}::{{detect_keyword (to_upper type)}};
 {{/each}}
@@ -25,7 +18,7 @@ use {{crate}}::{{detect_keyword (to_upper type)}};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{serdeKeyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serde_keyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
@@ -36,22 +29,6 @@ impl {{detect_keyword (to_upper type)}} {
             {{detect_keyword (to_lower name)}}: {{to_rust_init (to_graphql_type this)}},
             {{/each}}
         }
-    }
-
-    pub fn to_buffer(args: &{{detect_keyword (to_upper type)}}) -> Result<Vec<u8>, EncodeError> {
-        serialize_{{to_lower type}}(args).map_err(|e| EncodeError::TypeWriteError(e.to_string()))
-    }
-
-    pub fn from_buffer(args: &[u8]) -> Result<{{detect_keyword (to_upper type)}}, DecodeError> {
-        deserialize_{{to_lower type}}(args).map_err(|e| DecodeError::TypeReadError(e.to_string()))
-    }
-
-    pub fn write<W: Write>(args: &{{detect_keyword (to_upper type)}}, writer: &mut W) -> Result<(), EncodeError> {
-        write_{{to_lower type}}(args, writer).map_err(|e| EncodeError::TypeWriteError(e.to_string()))
-    }
-
-    pub fn read<R: Read>(reader: &mut R) -> Result<{{detect_keyword (to_upper type)}}, DecodeError> {
-        read_{{to_lower type}}(reader).map_err(|e| DecodeError::TypeReadError(e.to_string()))
     }
 }
 "#.to_string();

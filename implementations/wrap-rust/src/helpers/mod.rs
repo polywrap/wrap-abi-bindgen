@@ -8,11 +8,13 @@ mod is_not_first;
 mod is_not_last;
 mod pretty;
 mod serde_annotate_if_bytes;
+mod serde_keyword;
 mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
 mod to_lower;
+mod to_rust;
+mod to_rust_init;
 mod to_upper;
-mod to_wasm;
 
 // helpers for helpers
 mod util;
@@ -51,6 +53,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(serde_annotate_if_bytes::serde_annotate_if_bytes)
     );
     handlebars.register_helper(
+        "serde_keyword",
+        Box::new(serde_keyword::serde_keyword)
+    );
+    handlebars.register_helper(
         "serde_rename_if_case_mismatch",
         Box::new(serde_rename_if_case_mismatch::serde_rename_if_case_mismatch)
     );
@@ -63,11 +69,15 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(to_lower::to_lower)
     );
     handlebars.register_helper(
-        "to_upper",
-        Box::new(to_upper::to_upper)
+        "to_rust",
+        Box::new(to_rust::to_rust)
     );
     handlebars.register_helper(
-        "to_wasm",
-        Box::new(to_wasm::to_wasm)
+        "to_rust_init",
+        Box::new(to_rust_init::to_rust_init)
+    );
+    handlebars.register_helper(
+        "to_upper",
+        Box::new(to_upper::to_upper)
     );
 }

@@ -10,20 +10,24 @@ use polywrap_wasm_rs::{
     JSON,
     subinvoke,
 };
-pub mod serialization;
-{{#if (array_has_length methods)}}
-pub use serialization::{
-    {{#each methods}}
-    deserialize_{{to_lower name}}_result,
-    serialize_{{to_lower name}}_args,
-    Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
-    {{/each}}
-};
-{{/if}}
 {{#if (array_has_length propertyDeps)}}
 
 {{#each propertyDeps}}
 use {{crate}}::{{detect_keyword (to_upper type)}};
+{{/each}}
+{{/if}}
+
+{{#if (array_has_length methods)}}
+{{#each methods}}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Args{{to_upper name}} {
+    {{#each arguments}}
+    {{serde_keyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{/each}}
+}
+{{#if (is_not_last @index ../methods)}}
+
+{{/if}}
 {{/each}}
 {{/if}}
 

@@ -53,10 +53,6 @@ impl ModuleTrait for Module {
                         File {
                             name: "mod.rs".to_string(),
                             data: renderer.render("object_type/mod.rs", object)
-                        },
-                        File {
-                            name: "serialization.rs".to_string(),
-                            data: renderer.render("object_type/serialization.rs", object)
                         }
                     ),
                     dirs: vec!()
@@ -78,12 +74,8 @@ impl ModuleTrait for Module {
                         data: renderer.render("module_type/module.rs", module_type)
                     },
                     File {
-                        name: "serialization.rs".to_string(),
-                        data: renderer.render("module_type/serialization.rs", module_type)
-                    },
-                    File {
                         name: "wrapped.rs".to_string(),
-                        data: renderer.render("module_type/wrapped.rs", module_type)
+                        data: renderer.render("module_type/wrapped.rs", abi)
                     },
                 ),
                 dirs: vec!()
@@ -146,10 +138,6 @@ impl ModuleTrait for Module {
                         File {
                             name: "mod.rs".to_string(),
                             data: renderer.render("imported/object_type/mod.rs", object)
-                        },
-                        File {
-                            name: "serialization.rs".to_string(),
-                            data: renderer.render("imported/object_type/serialization.rs", object)
                         }
                     ),
                     dirs: vec!()
@@ -168,10 +156,6 @@ impl ModuleTrait for Module {
                         File {
                             name: "mod.rs".to_string(),
                             data: renderer.render("imported/module_type/mod.rs", it)
-                        },
-                        File {
-                            name: "serialization.rs".to_string(),
-                            data: renderer.render("imported/module_type/serialization.rs", it)
                         }
                     ),
                     dirs: vec!()
@@ -208,10 +192,6 @@ impl ModuleTrait for Module {
                         File {
                             name: "mod.rs".to_string(),
                             data: renderer.render("imported/env_type/mod.rs", it)
-                        },
-                        File {
-                            name: "serialization.rs".to_string(),
-                            data: renderer.render("imported/env_type/serialization.rs", it)
                         }
                     ),
                     dirs: vec!()
@@ -239,11 +219,7 @@ impl ModuleTrait for Module {
                     File {
                         name: "mod.rs".to_string(),
                         data: renderer.render("env_type/mod.rs", env_type)
-                    },
-                    File {
-                        name: "serialization.rs".to_string(),
-                        data: renderer.render("env_type/serialization.rs", env_type)
-                    },
+                    }
                 ),
                 dirs: vec!()
             };
