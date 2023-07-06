@@ -6,7 +6,7 @@ use polywrap_client::msgpack::{from_slice, to_vec};
 use serde::{Deserialize, Serialize};
 use crate::module::{ModuleTrait, Module};
 use polywrap_wasm_rs::{
-    wrap_load_env;
+    wrap_load_env,
     BigInt,
     BigNumber,
     Map,
