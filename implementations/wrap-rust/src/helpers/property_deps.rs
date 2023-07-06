@@ -19,6 +19,7 @@ handlebars_helper!(property_deps: |value: Value| {
         .unwrap();
     let mut deps: Vec<PropertyDep> = Vec::new();
     _property_deps(root_type, obj, &mut deps).unwrap();
+    println!("deps: {:?}", deps);
     JSON::to_value(deps).unwrap()
 });
 
@@ -50,7 +51,7 @@ fn _property_deps(root_type: &str, def: &Map<String, Value>, deps: &mut Vec<Prop
 
 fn _append_property_dep(
     root_type: &str,
-    array: &mut Vec<PropertyDep>,
+    vec: &mut Vec<PropertyDep>,
     def: &Map<String, Value>
 ) -> Result<(), String> {
     let mut type_name = def.get("type")
@@ -83,7 +84,7 @@ fn _append_property_dep(
                     .and_then(|e| e.get("type"))
                     .and_then(|e| e.as_str())
                     .unwrap_or("");
-                append_unique(array, PropertyDep {
+                append_unique(vec, PropertyDep {
                     _crate: "crate".to_string(),
                     _type: value_name.to_string(),
                     is_enum: value_name == type_if_enum
@@ -91,7 +92,7 @@ fn _append_property_dep(
             }
         }
     } else if !is_known_type(&type_name, root_type) {
-        append_unique(array, PropertyDep {
+        append_unique(vec, PropertyDep {
             _crate: "crate".to_string(),
             _type: type_name.clone(),
             // !!def.enum || !!def.array?.enum
@@ -101,7 +102,6 @@ fn _append_property_dep(
 
     Ok(())
 }
-
 
 fn is_base_type(s: &str) -> bool {
     match s {
@@ -119,11 +119,11 @@ fn is_builtin_type(s: &str) -> bool {
     }
 }
 
-fn append_unique(array: &mut Vec<PropertyDep>, item: PropertyDep) {
-    if array.iter().any(|i| i._crate == item._crate && i._type == item._type) {
+fn append_unique(vec: &mut Vec<PropertyDep>, item: PropertyDep) {
+    if vec.iter().any(|i| i._crate == item._crate && i._type == item._type) {
         return;
     }
-    array.push(item);
+    vec.push(item);
 }
 
 fn is_known_type(name: &str, root_type: &str) -> bool {

@@ -1,6 +1,7 @@
 lazy_static! {
   static ref NAME: String = "imported/module_type/mod.rs".to_string();
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
+use polywrap_client::msgpack::{from_slice, to_vec};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
@@ -42,13 +43,13 @@ impl {{detect_keyword (to_upper type)}} {
     {{#each methods}}
     pub fn {{to_lower name}}(&self, args: &Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String> {
         let ref uri = self.uri;
-        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
+        let args = to_vec(args).map_err(|e| e.to_string())?;
         let result = subinvoke::wrap_subinvoke(
             uri.as_str(),
             "{{name}}",
             args,
         )?;
-        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
+        from_slice(result.as_slice()).map_err(|e| e.to_string())
     }
     {{#if (is_not_last @index ../methods)}}
 
@@ -69,13 +70,13 @@ impl {{detect_keyword (to_upper type)}} {
     {{#each methods}}
     pub fn {{detect_keyword (to_lower name)}}(args: &Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, String> {
         let uri = {{to_upper ../type}}::URI;
-        let args = serialize_{{to_lower name}}_args(args).map_err(|e| e.to_string())?;
+        let args = to_vec(args).map_err(|e| e.to_string())?;
         let result = subinvoke::wrap_subinvoke(
             uri,
             "{{name}}",
             args,
         )?;
-        deserialize_{{to_lower name}}_result(result.as_slice()).map_err(|e| e.to_string())
+        from_slice(result.as_slice()).map_err(|e| e.to_string())
     }
     {{#if (is_not_last @index ../methods)}}
 
