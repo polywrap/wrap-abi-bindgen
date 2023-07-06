@@ -7,6 +7,7 @@ mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod pretty;
+mod property_deps;
 mod serde_annotate_if_bytes;
 mod serde_keyword;
 mod serde_rename_if_case_mismatch;
@@ -47,6 +48,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "pretty",
         Box::new(pretty::pretty)
+    );
+    handlebars.register_helper(
+        "property_deps",
+        Box::new(property_deps::property_deps)
     );
     handlebars.register_helper(
         "serde_annotate_if_bytes",

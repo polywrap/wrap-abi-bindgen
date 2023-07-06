@@ -5,7 +5,7 @@ pub mod wrapped;
 pub use wrapped::{
     {{#each methods}}
     {{to_lower name}}_wrapped{{#if (is_not_last @index ../methods)}},{{/if}}
-    Args{{#toUpper}}{{name}}{{/toUpper}}{{^last}},{{/last}}
+    Args{{#toUpper}}{{name}}{{/toUpper}}{{#if (is_not_last @index ../methods)}},{{/if}}
     {{/each}}
 };
 {{/if}}

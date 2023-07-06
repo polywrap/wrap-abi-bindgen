@@ -11,9 +11,8 @@ use polywrap_wasm_rs::{
     Write,
     JSON,
 };
-
-{{#each propertyDeps}}
-use {{crate}}::{{detect_keyword (to_upper type)}};
+{{#each (property_deps this)}}
+use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

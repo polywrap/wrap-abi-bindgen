@@ -12,18 +12,12 @@ use polywrap_wasm_rs::{
     Map,
     JSON,
 };
-{{#if (array_has_length propertyDeps)}}
-
-{{#each propertyDeps}}
-{{#if isEnum}}
-use crate::{
-    {{detect_keyword (to_upper type)}},
-};
-{{else}}
-use {{crate}}::{{detect_keyword (to_upper type)}};
-{{/if}}
+{{#each (property_deps this)}}
+use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}
-{{/if}}
+{{#with ../envType}}
+use crate::env::Env;
+{{/with}}
 
 pub struct Module;
 

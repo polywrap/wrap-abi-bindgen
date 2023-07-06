@@ -10,12 +10,9 @@ use polywrap_wasm_rs::{
     JSON,
     subinvoke,
 };
-{{#if (array_has_length propertyDeps)}}
-
-{{#each propertyDeps}}
-use {{crate}}::{{detect_keyword (to_upper type)}};
+{{#each (property_deps this)}}
+use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}
-{{/if}}
 
 {{#if (array_has_length methods)}}
 {{#each methods}}
