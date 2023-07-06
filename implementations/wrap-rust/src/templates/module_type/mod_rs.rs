@@ -4,7 +4,7 @@ lazy_static! {
 pub mod wrapped;
 pub use wrapped::{
     {{#each methods}}
-    {{to_lower name}}_wrapped{{#if (is_not_last @index ../methods)}},{{/if}}
+    {{to_lower name}}_wrapped{{#if (is_not_last @index ../methods)}},{{/if}},
     Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
     {{/each}}
 };

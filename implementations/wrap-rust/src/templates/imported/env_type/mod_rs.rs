@@ -5,10 +5,6 @@ use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
-    DecodeError,
-    EncodeError,
-    Read,
-    Write,
     JSON,
 };
 {{#each (property_deps this)}}

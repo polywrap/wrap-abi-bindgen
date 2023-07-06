@@ -4,22 +4,19 @@ lazy_static! {
 {{#if (array_has_length methods)}}
 use polywrap_client::msgpack::{from_slice, to_vec};
 use serde::{Deserialize, Serialize};
-use polywrap_wasm_rs::wrap_load_env;
 use crate::module::{ModuleTrait, Module};
-
-use crate::{
-    {{#each methods}}
-    Args{{to_upper name}}{{#if (is_not_last @index ../methods)}},{{/if}}
-    {{/each}}
+use polywrap_wasm_rs::{
+    wrap_load_env;
+    BigInt,
+    BigNumber,
+    Map,
+    JSON,
 };
-{{/if}}
-{{/with}}
-
-{{#with envType}}
+{{#with ../envType}}
 use crate::Env;
 {{/with}}
+{{/if}}
 
-{{#with moduleType}}
 {{#each methods}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Args{{to_upper name}} {

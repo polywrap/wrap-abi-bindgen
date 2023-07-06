@@ -5,8 +5,6 @@ use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
-    Read,
-    Write,
     JSON,
     subinvoke,
 };
