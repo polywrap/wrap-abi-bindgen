@@ -13,37 +13,48 @@ struct PropertyDep {
 
 handlebars_helper!(property_deps: |value: Value| {
     let obj = value.as_object().unwrap();
-    let root_type = obj.get("type")
-        .and_then(|t| t.as_str())
-        .ok_or_else(|| format!("Invalid type for 'type' property of ABI definition. Expected string."))
-        .unwrap();
-    let mut deps: Vec<PropertyDep> = Vec::new();
-    _property_deps(root_type, obj, &mut deps).unwrap();
-    println!("deps: {:?}", deps);
-    JSON::to_value(deps).unwrap()
+    _property_deps(obj).unwrap()
 });
 
-fn _property_deps(root_type: &str, def: &Map<String, Value>, deps: &mut Vec<PropertyDep>) -> Result<(), String> {
-    let kind: DefinitionKind = def.get("kind")
+pub fn _property_deps(def: &Map<String, Value>) -> Result<Value, String> {
+    let root_type = def.get("type")
+        .and_then(|t| t.as_str())
+        .ok_or_else(|| format!("Invalid type for 'type' property of ABI definition. Expected string."))?;
+    let mut deps: Vec<PropertyDep> = Vec::new();
+    _search_property_deps(root_type, def, &mut deps)?;
+    let result = JSON::to_value(deps)
+        .map_err(|e| format!("Failed to serialize property dependencies: {}", e))?;
+    Ok(result)
+}
+
+fn _search_property_deps(root_type: &str, def: &Map<String, Value>, deps: &mut Vec<PropertyDep>) -> Result<(), String> {
+    let kind: DefinitionKind = match def.get("kind")
         .and_then(|k| k.as_u64())
-        .map(|k| DefinitionKind::from(k as u32))
-        .ok_or_else(|| "Invalid type for 'kind' property of ABI definition. Expected u32.".to_string())?;
+        .map(|k| DefinitionKind::from(k as u32)) {
+        Some(k) => k,
+        None => return Ok(())
+    };
 
     match kind {
-        DefinitionKind::Env
-        | DefinitionKind::ImportedEnv
-        | DefinitionKind::Object
-        | DefinitionKind::Module
-        | DefinitionKind::ImportedModule => {
-            for v in def.values() {
-                match v.as_object() {
-                    Some(obj) => _property_deps(root_type,obj, deps)?,
-                    None => {}
+        DefinitionKind::Scalar
+        | DefinitionKind::Method => {}
+        _ => _append_property_dep(root_type, deps, &def)?,
+    }
+
+    for v in def.values() {
+        match v.as_object() {
+            Some(obj) => _search_property_deps(root_type, obj, deps)?,
+            None => match v.as_array() {
+                Some(arr) => {
+                    for item in arr {
+                        if let Some(item) = item.as_object() {
+                            _search_property_deps(root_type, item, deps)?;
+                        }
+                    }
                 }
+                None => {}
             }
-            _append_property_dep(root_type, deps, &def)?
         }
-        _ => {}
     }
 
     Ok(())
