@@ -2,7 +2,7 @@ lazy_static! {
   static ref NAME: String = "module_type/wrapped.rs".to_string();
   static ref SOURCE: String = r#"{{#with moduleType}}
 {{#if (array_has_length methods)}}
-use polywrap_client::msgpack::{from_slice, to_vec};
+use polywrap_msgpack_serde::{from_slice, to_vec};
 use serde::{Deserialize, Serialize};
 use crate::module::{ModuleTrait, Module};
 use polywrap_wasm_rs::{
