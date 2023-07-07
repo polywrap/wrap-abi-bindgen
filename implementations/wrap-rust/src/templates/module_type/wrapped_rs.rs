@@ -12,6 +12,9 @@ use polywrap_wasm_rs::{
     Map,
     JSON,
 };
+{{#each (property_deps this)}}
+use {{_crate}}::{{detect_keyword (to_upper _type)}};
+{{/each}}
 {{#with ../envType}}
 use crate::Env;
 {{/with}}
