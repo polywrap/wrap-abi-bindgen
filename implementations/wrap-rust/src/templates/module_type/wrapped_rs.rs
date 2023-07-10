@@ -29,7 +29,7 @@ use crate::Env;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Args{{to_upper name}} {
     {{#each arguments}}
-    {{serde_keyword (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serde_rename_if_case_mismatch (to_lower name)}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 
