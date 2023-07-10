@@ -1,12 +1,15 @@
 lazy_static! {
   static ref NAME: String = "imported/module_type/mod.rs".to_string();
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
-use polywrap_msgpack_serde::{from_slice, to_vec};
+use polywrap_msgpack_serde::{
+    from_slice,
+    to_vec
+    wrappers::polywrap_json::JSONString
+    wrappers::polywrap_bigint::BigIntWrapper
+};
 use polywrap_wasm_rs::{
-    BigInt,
     BigNumber,
     Map,
-    JSON,
     subinvoke,
 };
 {{#each (property_deps this)}}

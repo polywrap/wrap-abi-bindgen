@@ -2,16 +2,19 @@ lazy_static! {
   static ref NAME: String = "module_type/wrapped.rs".to_string();
   static ref SOURCE: String = r#"{{#with moduleType}}
 {{#if (array_has_length methods)}}
-use polywrap_msgpack_serde::{from_slice, to_vec};
 use serde::{Deserialize, Serialize};
-use crate::module::{ModuleTrait, Module};
+use polywrap_msgpack_serde::{
+    from_slice,
+    to_vec
+    wrappers::polywrap_json::JSONString
+    wrappers::polywrap_bigint::BigIntWrapper
+};
 use polywrap_wasm_rs::{
     wrap_load_env,
-    BigInt,
     BigNumber,
     Map,
-    JSON,
 };
+use crate::module::{ModuleTrait, Module};
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}

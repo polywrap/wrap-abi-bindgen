@@ -35,9 +35,9 @@ pub fn _to_rust_init(value: &str) -> String {
         "String" => optional_modifier("String::new()", optional),
         "Boolean" => optional_modifier("false", optional),
         "Bytes" => optional_modifier("vec![]", optional),
-        "BigInt" => optional_modifier("BigInt::default()", optional),
+        "BigInt" => optional_modifier("BigIntWrapper { BigInt::default() }", optional),
         "BigNumber" => optional_modifier("BigNumber::default()", optional),
-        "JSON" => optional_modifier("JSON::Value::Null", optional),
+        "JSON" => optional_modifier("JSONString::from(JSON::Value::Null)", optional),
         _ => {
             let rs_type = _to_rust(&type_str);
             if type_str.starts_with("Enum_") {
