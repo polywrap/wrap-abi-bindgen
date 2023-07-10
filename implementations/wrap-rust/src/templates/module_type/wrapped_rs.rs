@@ -5,8 +5,8 @@ lazy_static! {
 use serde::{Deserialize, Serialize};
 use polywrap_msgpack_serde::{
     from_slice,
-    to_vec
-    wrappers::polywrap_json::JSONString
+    to_vec,
+    wrappers::polywrap_json::JSONString,
     wrappers::polywrap_bigint::BigIntWrapper
 };
 use polywrap_wasm_rs::{
@@ -14,7 +14,7 @@ use polywrap_wasm_rs::{
     BigNumber,
     Map,
     JSON,
-    wrap_load_env,
+    wrap_load_env
 };
 use crate::module::{ModuleTrait, Module};
 {{#each (property_deps this)}}

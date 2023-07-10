@@ -3,8 +3,8 @@ lazy_static! {
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
 use polywrap_msgpack_serde::{
     from_slice,
-    to_vec
-    wrappers::polywrap_json::JSONString
+    to_vec,
+    wrappers::polywrap_json::JSONString,
     wrappers::polywrap_bigint::BigIntWrapper
 };
 use polywrap_wasm_rs::{
@@ -12,7 +12,7 @@ use polywrap_wasm_rs::{
     BigNumber,
     Map,
     JSON,
-    subinvoke,
+    subinvoke
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
