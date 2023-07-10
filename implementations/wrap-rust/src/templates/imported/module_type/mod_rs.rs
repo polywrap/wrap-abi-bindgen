@@ -8,8 +8,10 @@ use polywrap_msgpack_serde::{
     wrappers::polywrap_bigint::BigIntWrapper
 };
 use polywrap_wasm_rs::{
+    BigInt,
     BigNumber,
     Map,
+    JSON,
     subinvoke,
 };
 {{#each (property_deps this)}}

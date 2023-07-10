@@ -6,8 +6,10 @@ use polywrap_msgpack_serde::{
     wrappers::polywrap_bigint::BigIntWrapper
 };
 use polywrap_wasm_rs::{
+    BigInt,
     BigNumber,
     Map,
+    JSON,
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};

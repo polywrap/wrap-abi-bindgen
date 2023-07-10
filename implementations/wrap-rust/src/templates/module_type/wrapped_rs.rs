@@ -10,9 +10,11 @@ use polywrap_msgpack_serde::{
     wrappers::polywrap_bigint::BigIntWrapper
 };
 use polywrap_wasm_rs::{
-    wrap_load_env,
+    BigInt,
     BigNumber,
     Map,
+    JSON,
+    wrap_load_env,
 };
 use crate::module::{ModuleTrait, Module};
 {{#each (property_deps this)}}
