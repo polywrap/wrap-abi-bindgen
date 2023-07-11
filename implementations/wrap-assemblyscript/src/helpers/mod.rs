@@ -1,5 +1,6 @@
 use handlebars::Handlebars;
 
+mod has_required;
 mod apply_optional;
 mod array_has_length;
 mod array_length;
@@ -17,6 +18,10 @@ mod to_wasm_map;
 mod to_wasm;
 
 pub fn register(handlebars: &mut Handlebars) -> () {
+    handlebars.register_helper(
+        "has_required",
+        Box::new(has_required::has_required)
+    );
     handlebars.register_helper(
         "apply_optional",
         Box::new(apply_optional::apply_optional)

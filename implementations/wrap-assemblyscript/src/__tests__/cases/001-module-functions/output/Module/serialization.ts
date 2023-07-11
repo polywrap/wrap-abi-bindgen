@@ -46,12 +46,14 @@ export function deserializefunction1Args(argsBuf: ArrayBuffer): Args_function1 {
     }
     reader.context().pop();
   }
+
   if (!_arg1Set) {
     throw new Error(reader.context().printWithContext("Missing required argument: 'arg1: UInt32'"));
   }
   if (!_arg2Set) {
     throw new Error(reader.context().printWithContext("Missing required argument: 'arg2: Boolean'"));
   }
+
   return {
     arg1: _arg1,
     arg2: _arg2
@@ -142,6 +144,7 @@ export function deserializefunction2Args(argsBuf: ArrayBuffer): Args_function2 {
     }
     reader.context().pop();
   }
+
   return {
     arg1: _arg1,
     arg2: _arg2

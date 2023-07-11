@@ -60,6 +60,9 @@ while (numFields > 0) {
   {{/each}}
   reader.context().pop();
 }
+{{#if (has_required arguments)}}
+
+{{/if}}
 {{#each arguments}}
 {{#if required}}
 {{#if object}}if (!_{{name}} || !_{{name}}Set) {
@@ -69,6 +72,7 @@ while (numFields > 0) {
 }
 {{/if}}
 {{/each}}
+
 {{/if}}
 return {
   {{#each arguments}}
