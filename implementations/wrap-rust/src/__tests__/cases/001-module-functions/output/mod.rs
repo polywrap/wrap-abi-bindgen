@@ -1,14 +1,11 @@
 pub mod entry;
+
 pub mod module;
 pub use module::{
     Module,
     ModuleTrait,
-    deserialize_function1_args,
-    serialize_function1_result,
     function1_wrapped,
     ArgsFunction1,
-    deserialize_function2_args,
-    serialize_function2_result,
     function2_wrapped,
     ArgsFunction2
 };
