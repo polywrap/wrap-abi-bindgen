@@ -7,4 +7,4 @@ source:
   schema: ./polywrap.graphql
   import_abis:
     - uri: wrap://ens/wraps.eth:abi-bindgen@0.1
-      abi: ../../interface/build/wrap.info
+      abi: ../../interface/polywrap.graphql
