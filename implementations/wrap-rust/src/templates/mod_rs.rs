@@ -18,9 +18,15 @@ pub use {{detect_keyword (to_lower type)}}::{
 pub mod {{detect_keyword (to_lower type)}};
 pub use {{detect_keyword (to_lower type)}}::{{detect_keyword (to_upper type)}};
 {{/with}}
-{{#if hasImports}}
+{{#if (array_has_length importedModuleTypes)}}
 pub mod imported;
-{{/if}}
+{{else}}{{#if (array_has_length importedObjectTypes)}}
+pub mod imported;
+{{else}}{{#if (array_has_length importedEnumTypes)}}
+pub mod imported;
+{{else}}{{#if (array_has_length importedEnvTypes)}}
+pub mod imported;
+{{/if}}{{/if}}{{/if}}{{/if}}
 {{#each importedObjectTypes}}
 pub use imported::{{detect_keyword (to_lower type)}}::{{detect_keyword (to_upper type)}};
 {{/each}}
