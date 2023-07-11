@@ -139,7 +139,7 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   writer.writeArray(type.uArrayArray, (writer: Write, item: Array<u32>): void => {
     writer.writeArray(item, (writer: Write, item: u32): void => {
       writer.writeUInt32(item);
-});
+    });
   });
   writer.context().pop();
   writer.context().push("uOptArrayOptArray", "Array<Array<Box<u32> | null> | null>", "writing property");
@@ -155,9 +155,9 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   writer.writeArray(type.uArrayOptArrayArray, (writer: Write, item: Array<Array<u32>> | null): void => {
     writer.writeOptionalArray(item, (writer: Write, item: Array<u32>): void => {
       writer.writeArray(item, (writer: Write, item: u32): void => {
-    writer.writeUInt32(item);
-});
-});
+        writer.writeUInt32(item);
+      });
+    });
   });
   writer.context().pop();
   writer.context().push("crazyArray", "Array<Array<Array<Array<u32> | null>> | null> | null", "writing property");
@@ -165,11 +165,11 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   writer.writeOptionalArray(type.crazyArray, (writer: Write, item: Array<Array<Array<u32> | null>> | null): void => {
     writer.writeOptionalArray(item, (writer: Write, item: Array<Array<u32> | null>): void => {
       writer.writeArray(item, (writer: Write, item: Array<u32> | null): void => {
-    writer.writeOptionalArray(item, (writer: Write, item: u32): void => {
-    writer.writeUInt32(item);
-});
-});
-});
+        writer.writeOptionalArray(item, (writer: Write, item: u32): void => {
+          writer.writeUInt32(item);
+        });
+      });
+    });
   });
   writer.context().pop();
   writer.context().push("object", "Types.AnotherType", "writing property");
@@ -194,10 +194,10 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   writer.writeString("optObjectArray");
   writer.writeOptionalArray(type.optObjectArray, (writer: Write, item: Types.AnotherType | null): void => {
     if (item) {
-  Types.AnotherType.write(writer, item as Types.AnotherType);
-} else {
-  writer.writeNil();
-}
+      Types.AnotherType.write(writer, item as Types.AnotherType);
+    } else {
+      writer.writeNil();
+    }
   });
   writer.context().pop();
   writer.context().push("map", "Map<string, i32>", "writing property");
@@ -215,7 +215,7 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   }, (writer: Write, value: Array<i32>): void => {
     writer.writeArray(value, (writer: Write, item: i32): void => {
       writer.writeInt32(item);
-});
+    });
   });
   writer.context().pop();
   writer.context().push("mapOfObj", "Map<string, Types.AnotherType>", "writing property");
@@ -233,7 +233,7 @@ export function writeCustomType(writer: Write, type: CustomType): void {
   }, (writer: Write, value: Array<Types.AnotherType>): void => {
     writer.writeArray(value, (writer: Write, item: Types.AnotherType): void => {
       Types.AnotherType.write(writer, item);
-});
+    });
   });
   writer.context().pop();
   writer.context().push("mapCustomValue", "Map<string, Types.CustomMapValue | null>", "writing property");
