@@ -10,6 +10,9 @@ mod to_graphql_type;
 mod to_typescript;
 mod pretty;
 
+// helpers for helpers
+mod util;
+
 pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "array_has_length",
