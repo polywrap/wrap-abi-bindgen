@@ -36,6 +36,7 @@ jobs:
 
       - name: Check for changes in URI.txt
         run: |
+          git add .
           git diff --name-only | grep ^URI.txt$
           echo "changed=$?" >> $GITHUB_ENV
 
@@ -43,7 +44,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
           git commit -m "Add deployments" -a
         if: env.changed == 0
 
@@ -101,6 +101,7 @@ jobs:
 
       - name: Check for changes in URI.txt
         run: |
+          git add .
           git diff --name-only | grep ^URI.txt$
           echo "changed=$?" >> $GITHUB_ENV
 
@@ -108,7 +109,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
           git commit -m "Add deployments" -a
         if: env.changed == 0
 
