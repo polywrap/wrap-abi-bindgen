@@ -8,7 +8,7 @@ handlebars_helper!(serde_annotate_if_bytes: |val: Value| {
 
 pub fn _serde_annotate_if_bytes(val: &str) -> String {
     if val == "Bytes" {
-        return "#[serde(with = \"serde_bytes\")]\n    ".to_string();
+        return "#[serde(with = \"bytes\")]\n    ".to_string();
     }
     "".to_string()
 }

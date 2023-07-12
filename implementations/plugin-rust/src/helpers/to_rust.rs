@@ -38,9 +38,9 @@ pub fn _to_rust(value: &str) -> String {
         "String" => "String".to_string(),
         "Boolean" => "bool".to_string(),
         "Bytes" => "Vec<u8>".to_string(),
-        "BigInt" => "BigInt".to_string(),
+        "BigInt" => "BigIntWrapper".to_string(),
         "BigNumber" => "BigNumber".to_string(),
-        "JSON" => "JSON::Value".to_string(),
+        "JSON" => "JSONString".to_string(),
         _ => {
             if res.starts_with("Enum_") {
                 res = res.replacen("Enum_", "", 1);
@@ -64,7 +64,7 @@ pub fn _to_rust_map(value: &str, optional: bool) -> Result<String, String> {
     let (key_type, val_type) = map_types(value)?;
     let rs_key_type = _to_rust(&key_type);
     let rs_val_type = _to_rust(&val_type);
-    let rs_map = format!("Map<{}, {}>", &rs_key_type, &rs_val_type);
+    let rs_map = format!("BTreeMap<{}, {}>", &rs_key_type, &rs_val_type);
     Ok(_apply_optional(&rs_map, optional))
 }
 

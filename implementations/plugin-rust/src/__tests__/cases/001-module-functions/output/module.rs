@@ -4,6 +4,15 @@
 use std::sync::Arc;
 use polywrap_core::invoke::Invoker;
 use polywrap_plugin::{error::PluginError, module::PluginModule};
+use polywrap_msgpack_serde::{
+  to_vec,
+  from_slice,
+  BigIntWrapper,
+  BigNumber,
+  JSONString,
+  bytes
+};
+use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 use super::types::*;
 
@@ -16,7 +25,7 @@ pub struct ArgsFunction1 {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ArgsFunction2 {
     pub arg1: Option<i32>,
-    #[serde(with = "serde_bytes")]
+    #[serde(with = "bytes")]
     pub arg2: Option<Vec<u8>>,
 }
 

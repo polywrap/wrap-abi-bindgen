@@ -6,8 +6,16 @@ lazy_static! {
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
 use polywrap_core::{invoke::Invoker, uri::Uri};
-use polywrap_msgpack::{decode, serialize};
-use polywrap_plugin::{error::PluginError, BigInt, BigNumber, Map, JSON};
+use polywrap_plugin::error::PluginError;
+use polywrap_msgpack_serde::{
+  to_vec,
+  from_slice,
+  BigIntWrapper,
+  BigNumber,
+  JSONString,
+  bytes
+};
+use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 {{#each importedModuleTypes}}
 use std::sync::Arc;
@@ -116,7 +124,7 @@ impl<'a> {{detect_keyword (to_upper type)}}<'a> {
     {{#each methods}}
     pub fn {{to_lower name}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
         let uri = self.uri;
-        let serialized_args = serialize(args.clone()).unwrap();
+        let serialized_args = to_vec(args.clone()).unwrap();
         let result = invoker.invoke_raw(
             uri,
             "{{name}}",
@@ -131,7 +139,7 @@ impl<'a> {{detect_keyword (to_upper type)}}<'a> {
             exception: e.to_string(),
         })?;
 
-        Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}decode(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
+        Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}from_slice(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
     }
     {{#if (is_not_last @index ../methods)}}
 
@@ -152,7 +160,7 @@ impl {{detect_keyword (to_upper type)}} {
     {{#each methods}}
     let uri = {{to_upper ../type}}::URI;
     pub fn {{detect_keyword (to_lower name)}}(args: &{{to_upper ../type}}Args{{to_upper name}}, invoker: Arc<dyn Invoker>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
-        let serialized_args = serialize(args.clone()).unwrap();
+        let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let uri = Uri::try_from(uri).unwrap();
         let result = invoker.invoke_raw(
@@ -169,7 +177,7 @@ impl {{detect_keyword (to_upper type)}} {
             exception: e.to_string(),
         })?;
 
-        Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}decode(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
+        Ok({{#with return}}{{#if required}}{{else}}Some({{/if}}{{/with}}from_slice(result.as_slice())?{{#with return}}{{#if required}}{{else}}){{/if}}{{/with}})
     }
     {{#if (is_not_last @index ../methods)}}
 
