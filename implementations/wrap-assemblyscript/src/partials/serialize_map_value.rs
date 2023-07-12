@@ -5,14 +5,14 @@ writer.write{{to_msgpack (to_graphql_type this)}}(value);
 {{/with}}
 {{#with array}}
 writer.write{{to_msgpack (to_graphql_type this)}}(value, (writer: Write, item: {{#with item}}{{to_wasm (to_graphql_type this)}}{{/with}}): void => {
-  {{> serialize_array}}
+{{indent_partial "serialize_array" 2}}
 });
 {{/with}}
 {{#with map}}
 writer.write{{to_msgpack (to_graphql_type this)}}(value, (writer: Write, key: {{#with key}}{{to_wasm (to_graphql_type this)}}{{/with}}) => {
   writer.write{{#with key}}{{to_msgpack (to_graphql_type this)}}{{/with}}(key);
 }, (writer: Write, value: {{#with value}}{{to_wasm (to_graphql_type this)}}{{/with}}): void => {
-  {{> serialize_map_value}}
+{{indent_partial "serialize_map_value" 2}}
 });
 {{/with}}
 {{#with enum}}

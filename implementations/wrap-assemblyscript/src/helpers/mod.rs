@@ -1,9 +1,11 @@
 use handlebars::Handlebars;
 
+mod has_required;
 mod apply_optional;
 mod array_has_length;
 mod array_length;
 mod detect_keyword;
+mod indent_partial;
 mod is_base_type;
 mod is_keyword;
 mod is_not_first;
@@ -20,6 +22,10 @@ mod util;
 
 pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
+        "has_required",
+        Box::new(has_required::has_required)
+    );
+    handlebars.register_helper(
         "apply_optional",
         Box::new(apply_optional::apply_optional)
     );
@@ -34,6 +40,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "detect_keyword",
         Box::new(detect_keyword::detect_keyword)
+    );
+    handlebars.register_helper(
+        "indent_partial",
+        Box::new(indent_partial::IndentPartialDef)
     );
     handlebars.register_helper(
         "is_base_type",

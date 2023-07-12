@@ -16,7 +16,7 @@ export function serialize{{type}}(type: {{detect_keyword type}}): ArrayBuffer {
 }
 
 export function write{{type}}(writer: Write, type: {{detect_keyword type}}): void {
-{{> serialize_properties}}
+{{indent_partial "serialize_properties" 2}}
 }
 
 export function deserialize{{type}}(buffer: ArrayBuffer): {{detect_keyword type}} {
@@ -26,7 +26,7 @@ export function deserialize{{type}}(buffer: ArrayBuffer): {{detect_keyword type}
 }
 
 export function read{{type}}(reader: Read): {{detect_keyword type}} {
-  {{> deserialize_properties}}
+{{indent_partial "deserialize_properties" 2}}
 }
 "#.to_string();
 }

@@ -5,14 +5,14 @@ return reader.read{{to_msgpack (to_graphql_type this)}}();
 {{/with}}
 {{#with array}}
 return reader.read{{to_msgpack (to_graphql_type this)}}((reader: Read): {{#with item}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
-  {{> deserialize_array}}
+{{indent_partial "deserialize_array" 2}}
 });
 {{/with}}
 {{#with map}}
 return reader.read{{to_msgpack (to_graphql_type this)}}((reader: Read): {{#with key}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
   return reader.read{{#with key}}{{to_msgpack (to_graphql_type this)}}{{/with}}();
 }, (reader: Read): {{#with value}}{{to_wasm (to_graphql_type this)}}{{/with}} => {
-  {{> deserialize_map_value}}
+{{indent_partial "deserialize_map_value" 2}}
 });
 {{/with}}
 {{#with enum}}
