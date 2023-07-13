@@ -8,10 +8,14 @@ use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
   to_vec,
   from_slice,
-  BigIntWrapper,
+  BigInt,
   BigNumber,
-  JSONString,
-  bytes
+  JSON,
+  bytes,
+  wrappers::{
+    polywrap_bigint as bigint,
+    polywrap_json as json
+  }
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};

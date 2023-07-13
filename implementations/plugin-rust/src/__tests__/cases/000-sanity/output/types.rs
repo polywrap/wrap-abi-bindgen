@@ -8,10 +8,14 @@ use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
   to_vec,
   from_slice,
-  BigIntWrapper,
+  BigInt,
   BigNumber,
-  JSONString,
-  bytes
+  JSON,
+  bytes,
+  wrappers::{
+    polywrap_bigint as bigint,
+    polywrap_json as json
+  }
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
@@ -46,15 +50,19 @@ pub struct CustomType {
     pub i8: i8,
     pub i16: i16,
     pub i32: i32,
-    pub bigint: BigIntWrapper,
+    #[serde(with = "bigint")]
+    pub bigint: BigInt,
+    #[serde(with = "bigint")]
     #[serde(rename = "optBigint")]
-    pub opt_bigint: Option<BigIntWrapper>,
+    pub opt_bigint: Option<BigInt>,
     pub bignumber: BigNumber,
     #[serde(rename = "optBignumber")]
     pub opt_bignumber: Option<BigNumber>,
-    pub json: JSONString,
+    #[serde(with = "json")]
+    pub json: JSON::Value,
+    #[serde(with = "json")]
     #[serde(rename = "optJson")]
-    pub opt_json: Option<JSONString>,
+    pub opt_json: Option<JSON::Value>,
     #[serde(with = "bytes")]
     pub bytes: Vec<u8>,
     #[serde(with = "bytes")]
