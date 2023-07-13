@@ -4,8 +4,20 @@
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
 use polywrap_core::{invoke::Invoker, uri::Uri};
-use polywrap_msgpack::{decode, serialize};
-use polywrap_plugin::{error::PluginError, BigInt, BigNumber, Map, JSON};
+use polywrap_plugin::error::PluginError;
+use polywrap_msgpack_serde::{
+  to_vec,
+  from_slice,
+  BigInt,
+  BigNumber,
+  JSON,
+  bytes,
+  wrappers::{
+    polywrap_bigint as bigint,
+    polywrap_json as json
+  }
+};
+use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 
 // Env START //
@@ -29,18 +41,22 @@ pub struct CustomType {
     pub i8: i8,
     pub i16: i16,
     pub i32: i32,
+    #[serde(with = "bigint")]
     pub bigint: BigInt,
+    #[serde(with = "bigint")]
     #[serde(rename = "optBigint")]
     pub opt_bigint: Option<BigInt>,
     pub bignumber: BigNumber,
     #[serde(rename = "optBignumber")]
     pub opt_bignumber: Option<BigNumber>,
+    #[serde(with = "json")]
     pub json: JSON::Value,
+    #[serde(with = "json")]
     #[serde(rename = "optJson")]
     pub opt_json: Option<JSON::Value>,
-    #[serde(with = "serde_bytes")]
+    #[serde(with = "bytes")]
     pub bytes: Vec<u8>,
-    #[serde(with = "serde_bytes")]
+    #[serde(with = "bytes")]
     #[serde(rename = "optBytes")]
     pub opt_bytes: Option<Vec<u8>>,
     pub boolean: bool,
@@ -68,15 +84,15 @@ pub struct CustomType {
     pub object_array: Vec<AnotherType>,
     #[serde(rename = "optObjectArray")]
     pub opt_object_array: Option<Vec<Option<AnotherType>>>,
-    pub map: Map<String, i32>,
+    pub map: BTreeMap<String, i32>,
     #[serde(rename = "mapOfArr")]
-    pub map_of_arr: Map<String, Vec<i32>>,
+    pub map_of_arr: BTreeMap<String, Vec<i32>>,
     #[serde(rename = "mapOfObj")]
-    pub map_of_obj: Map<String, AnotherType>,
+    pub map_of_obj: BTreeMap<String, AnotherType>,
     #[serde(rename = "mapOfArrOfObj")]
-    pub map_of_arr_of_obj: Map<String, Vec<AnotherType>>,
+    pub map_of_arr_of_obj: BTreeMap<String, Vec<AnotherType>>,
     #[serde(rename = "mapCustomValue")]
-    pub map_custom_value: Map<String, Option<CustomMapValue>>,
+    pub map_custom_value: BTreeMap<String, Option<CustomMapValue>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AnotherType {
