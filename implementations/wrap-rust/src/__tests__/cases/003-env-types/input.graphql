@@ -1,0 +1,47 @@
+scalar UInt
+scalar UInt8
+scalar UInt16
+scalar UInt32
+scalar Int
+scalar Int8
+scalar Int16
+scalar Int32
+scalar Bytes
+scalar BigInt
+scalar BigNumber
+scalar JSON
+scalar Map
+
+type EnvObject {
+  prop: String!
+}
+
+enum EnvEnum {
+  FIRST
+  SECOND
+}
+
+type Env {
+  str: String!
+  optStr: String
+  optFilledStr: String
+  number: Int8!
+  optNumber: Int8
+  bool: Boolean!
+  optBool: Boolean
+  en: EnvEnum!
+  optEnum: EnvEnum
+  object: EnvObject!
+  optObject: EnvObject
+  array: [UInt32!]!
+}
+
+type Module {
+  methodNoEnv(
+    arg: String!
+  ): String!
+
+  methodRequireEnv: Env! @env(required: true)
+
+  methodOptionalEnv: Env @env(required: false)
+}
