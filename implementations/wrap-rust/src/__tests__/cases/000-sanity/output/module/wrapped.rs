@@ -89,7 +89,7 @@ pub fn object_method_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
     }
 
     let env_buf = wrap_load_env(env_size);
-    let env = Env::from_buffer(&env_buf).unwrap();
+    let env = from_slice::<Env>(&env_buf).unwrap();
 
     match from_slice::<ArgsObjectMethod>(args) {
         Ok(args) => {
@@ -129,7 +129,7 @@ pub fn optional_env_method_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
     let mut env: Option<Env> = None;
     if env_size > 0 {
       let env_buf = wrap_load_env(env_size);
-      env = Some(Env::from_buffer(&env_buf).unwrap());
+      env = Some(from_slice::<Env>(&env_buf).unwrap());
     }
 
     match from_slice::<ArgsOptionalEnvMethod>(args) {
