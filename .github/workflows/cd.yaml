@@ -34,29 +34,13 @@ jobs:
       - name: Deploy
         run: yarn deploy
 
-      - name: Check for changes in URI.txt
-        run: |
-          git add .
-          git diff --name-only | grep ^URI.txt$
-          echo "changed=$?" >> $GITHUB_ENV
-
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "Add deployments" -a
-        if: env.changed == 0
-
-      - name: Push changes
-        run: |
-          git branch -c main artifacts_interface_${{ github.run_id }}
-          git push origin artifacts_interface_${{ github.run_id }}
-        if: env.changed == 0
-
-      - name: Create PR
-        run: |
-          gh pr create --title "New deployment artifacts" --body "" --base main --head artifacts_interface_${{ github.run_id }}
-        if: env.changed == 0
+      - name: PR New URI
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: interface-cd-pr-${{github.event.number}}
+          commit-message: "[CD] interface"
+          title: "[CD] interface"
+          body: "Triggered by: https://github.com/${{github.repository}}/pull/${{github.event.number}}"
 
   getImplementations:
     runs-on: ubuntu-latest
