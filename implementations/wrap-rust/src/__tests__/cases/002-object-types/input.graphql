@@ -82,3 +82,8 @@ type Arg {
 type Nested {
     prop: String!
 }
+
+type Output {
+    prop: String!
+    nested: Nested!
+}
