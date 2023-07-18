@@ -2,7 +2,7 @@ name: CI
 on:
   push: 
     branches:
-      - main
+      - wrap-0.1
   pull_request:
 
 jobs:
