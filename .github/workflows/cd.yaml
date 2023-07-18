@@ -7,6 +7,9 @@ on:
 
 jobs:
   interface:
+    if: |
+      startsWith(github.event.pull_request.title, '[CD]') != true &&
+      github.event.pull_request.user.login != 'github-actions'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     defaults:
@@ -43,6 +46,9 @@ jobs:
           body: "Triggered by: https://github.com/${{github.repository}}/pull/${{github.event.number}}"
 
   getImplementations:
+    if: |
+      startsWith(github.event.pull_request.title, '[CD]') != true &&
+      github.event.pull_request.user.login != 'github-actions'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ env.matrix }}
@@ -53,6 +59,9 @@ jobs:
         run: echo "matrix=$(./scripts/getImplementations.sh)" >> $GITHUB_ENV
 
   implementations-cd:
+    if: |
+      startsWith(github.event.pull_request.title, '[CD]') != true &&
+      github.event.pull_request.user.login != 'github-actions'
     runs-on: ubuntu-latest
     needs:
       - interface
