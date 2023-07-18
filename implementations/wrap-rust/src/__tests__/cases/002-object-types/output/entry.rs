@@ -1,3 +1,6 @@
+use crate::{
+    method_wrapped
+};
 use polywrap_wasm_rs::{
     abort,
     invoke,
@@ -13,6 +16,9 @@ pub extern "C" fn _wrap_invoke(method_size: u32, args_size: u32, env_size: u32) 
     let result: Vec<u8>;
 
     match args.method.as_str() {
+        "method" => {
+            result = method_wrapped(args.args.as_slice(), env_size);
+        }
         _ => {
             invoke::wrap_invoke_error(format!("Could not find invoke function {}", args.method));
             return false;

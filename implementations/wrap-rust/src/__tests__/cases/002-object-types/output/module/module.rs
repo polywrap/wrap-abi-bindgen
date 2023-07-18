@@ -9,9 +9,10 @@ use polywrap_wasm_rs::{
     JSON
 };
 use crate::{
-    ArgsMethod
+    ArgsMethod,
 };
 use crate::Arg;
+use crate::Output;
 
 pub struct Module;
 

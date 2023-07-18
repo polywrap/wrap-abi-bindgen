@@ -7,7 +7,20 @@ pub mod custom_map_value;
 pub use custom_map_value::CustomMapValue;
 pub mod _else;
 pub use _else::Else;
+pub mod arg;
+pub use arg::Arg;
+pub mod nested;
+pub use nested::Nested;
+pub mod output;
+pub use output::Output;
 
+pub mod module;
+pub use module::{
+    Module,
+    ModuleTrait,
+    method_wrapped,
+    ArgsMethod
+};
 
 // Override print!(...) & println!(...) macros
 #[macro_export]
