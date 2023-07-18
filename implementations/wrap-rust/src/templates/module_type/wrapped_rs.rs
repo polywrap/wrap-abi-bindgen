@@ -41,13 +41,13 @@ pub fn {{to_lower name}}_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
     }
 
     let env_buf = wrap_load_env(env_size);
-    let env = Env::from_buffer(&env_buf).unwrap();
+    let env = from_slice::<Env>(&env_buf).unwrap();
 
     {{else}}
     let mut env: Option<Env> = None;
     if env_size > 0 {
       let env_buf = wrap_load_env(env_size);
-      env = Some(Env::from_buffer(&env_buf).unwrap());
+      env = Some(from_slice::<Env>(&env_buf).unwrap());
     }
 
     {{/if}}
