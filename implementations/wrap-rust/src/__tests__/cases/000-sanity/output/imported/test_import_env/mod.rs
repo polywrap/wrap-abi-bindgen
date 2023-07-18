@@ -29,11 +29,11 @@ impl TestImportEnv {
 
     pub fn new() -> TestImportEnv {
         TestImportEnv {
-            object: Option<TestImportAnotherObject>::new(),
+            object: TestImportAnotherObject::new(),
             opt_object: None,
             object_array: vec![],
             opt_object_array: None,
-            en: Option<TestImportEnum>::_MAX_,
+            en: TestImportEnum::_MAX_,
             opt_enum: None,
             enum_array: vec![],
             opt_enum_array: None,

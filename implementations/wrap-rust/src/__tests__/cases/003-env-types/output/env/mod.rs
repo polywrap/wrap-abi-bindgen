@@ -44,9 +44,9 @@ impl Env {
             opt_number: None,
             bool: false,
             opt_bool: None,
-            en: Option<EnvEnum>::_MAX_,
+            en: EnvEnum::_MAX_,
             opt_enum: None,
-            object: Option<EnvObject>::new(),
+            object: EnvObject::new(),
             opt_object: None,
             array: vec![],
         }

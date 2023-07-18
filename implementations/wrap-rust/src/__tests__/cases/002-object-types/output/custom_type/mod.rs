@@ -109,7 +109,7 @@ impl CustomType {
             u_opt_array_opt_array: vec![],
             u_array_opt_array_array: vec![],
             crazy_array: None,
-            object: Option<AnotherType>::new(),
+            object: AnotherType::new(),
             opt_object: None,
             object_array: vec![],
             opt_object_array: None,
