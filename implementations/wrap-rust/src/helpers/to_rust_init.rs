@@ -39,7 +39,11 @@ pub fn _to_rust_init(value: &str) -> String {
         "BigNumber" => optional_modifier("BigNumber::default()", optional),
         "JSON" => optional_modifier("JSONString::from(JSON::Value::Null)", optional),
         _ => {
-            let rs_type = _to_rust(&type_str);
+            let rs_type = match optional {
+                true => _to_rust(&type_str),
+                false => _to_rust(format!("{}!", &type_str).as_str())
+            };
+
             if type_str.starts_with("Enum_") {
                 optional_modifier(&format!("{}::_MAX_", rs_type), optional)
             } else {

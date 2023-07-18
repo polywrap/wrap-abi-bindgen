@@ -1,5 +1,7 @@
 use crate::{
-    method_wrapped
+    method_no_env_wrapped,
+    method_require_env_wrapped,
+    method_optional_env_wrapped
 };
 use polywrap_wasm_rs::{
     abort,
@@ -16,8 +18,14 @@ pub extern "C" fn _wrap_invoke(method_size: u32, args_size: u32, env_size: u32) 
     let result: Vec<u8>;
 
     match args.method.as_str() {
-        "method" => {
-            result = method_wrapped(args.args.as_slice(), env_size);
+        "methodNoEnv" => {
+            result = method_no_env_wrapped(args.args.as_slice(), env_size);
+        }
+        "methodRequireEnv" => {
+            result = method_require_env_wrapped(args.args.as_slice(), env_size);
+        }
+        "methodOptionalEnv" => {
+            result = method_optional_env_wrapped(args.args.as_slice(), env_size);
         }
         _ => {
             invoke::wrap_invoke_error(format!("Could not find invoke function {}", args.method));

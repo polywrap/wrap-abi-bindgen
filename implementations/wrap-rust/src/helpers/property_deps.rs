@@ -138,5 +138,5 @@ fn append_unique(vec: &mut Vec<PropertyDep>, item: PropertyDep) {
 }
 
 fn is_known_type(name: &str, root_type: &str) -> bool {
-    is_base_type(name) || is_builtin_type(name) || name == root_type
+    is_base_type(name) || is_builtin_type(name) || name == root_type || name == "Env"
 }

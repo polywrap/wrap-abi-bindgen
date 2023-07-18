@@ -66,3 +66,24 @@ type CustomMapValue {
 type else {
   else: String!
 }
+
+
+type Module {
+      method(
+        arg: Arg!
+    ): Output!
+}
+
+type Arg {
+    prop: String!
+    nested: Nested!
+}
+
+type Nested {
+    prop: String!
+}
+
+type Output {
+    prop: String!
+    nested: Nested!
+}
