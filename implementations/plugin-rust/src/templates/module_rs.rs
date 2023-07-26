@@ -16,7 +16,8 @@ use polywrap_msgpack_serde::{
   wrappers::{
     polywrap_bigint as bigint,
     polywrap_json as json
-  }
+  },
+  JSONString
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
