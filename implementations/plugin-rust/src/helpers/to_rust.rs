@@ -37,7 +37,7 @@ pub fn _to_rust(value: &str) -> String {
         "UInt64" => "u64".to_string(),
         "String" => "String".to_string(),
         "Boolean" => "bool".to_string(),
-        "Bytes" => "Vec<u8>".to_string(),
+        "Bytes" => "ByteBuf".to_string(),
         "BigInt" => "BigInt".to_string(),
         "BigNumber" => "BigNumber".to_string(),
         "JSON" => "JSONString".to_string(),

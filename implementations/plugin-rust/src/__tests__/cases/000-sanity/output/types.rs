@@ -3,6 +3,7 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
+use bytes::ByteBuf;
 use polywrap_core::{invoker::Invoker, uri::Uri};
 use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
@@ -62,11 +63,9 @@ pub struct CustomType {
     pub json: JSONString,
     #[serde(rename = "optJson")]
     pub opt_json: Option<JSONString>,
-    #[serde(with = "bytes")]
-    pub bytes: Vec<u8>,
-    #[serde(with = "bytes")]
+    pub bytes: ByteBuf,
     #[serde(rename = "optBytes")]
-    pub opt_bytes: Option<Vec<u8>>,
+    pub opt_bytes: Option<ByteBuf>,
     pub boolean: bool,
     #[serde(rename = "optBoolean")]
     pub opt_boolean: Option<bool>,
