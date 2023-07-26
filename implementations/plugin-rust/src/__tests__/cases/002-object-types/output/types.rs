@@ -15,7 +15,8 @@ use polywrap_msgpack_serde::{
   wrappers::{
     polywrap_bigint as bigint,
     polywrap_json as json
-  }
+  },
+  JSONString
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
@@ -49,11 +50,9 @@ pub struct CustomType {
     pub bignumber: BigNumber,
     #[serde(rename = "optBignumber")]
     pub opt_bignumber: Option<BigNumber>,
-    #[serde(with = "json")]
-    pub json: JSON::Value,
-    #[serde(with = "json")]
+    pub json: JSONString,
     #[serde(rename = "optJson")]
-    pub opt_json: Option<JSON::Value>,
+    pub opt_json: Option<JSONString>,
     #[serde(with = "bytes")]
     pub bytes: Vec<u8>,
     #[serde(with = "bytes")]
