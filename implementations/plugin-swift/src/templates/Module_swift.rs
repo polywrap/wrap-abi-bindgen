@@ -8,16 +8,6 @@ pub struct Args{{to_upper name}} {
     {{#each arguments}}
     {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}var {{detect_keyword (to_lower name)}}: {{to_swift (to_graphql_type this)}},
     {{/each}}
-
-    public init(
-        {{#each arguments}}
-        {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}{{detect_keyword (to_lower name)}}: {{to_swift (to_graphql_type this)}},
-        {{/each}}
-    ) {
-        {{#each arguments}}
-        self.{{detect_keyword (to_lower name)}} = {{detect_keyword (to_lower name)}}
-        {{/each}}
-    }
 }
 
   {{/each}}

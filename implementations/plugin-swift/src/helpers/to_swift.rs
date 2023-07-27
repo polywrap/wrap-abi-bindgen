@@ -67,7 +67,7 @@ pub fn to_swift_map(value: &str, optional: bool) -> Result<String, String> {
 
 pub fn _apply_optional(value: &str, optional: bool) -> String {
     return if optional {
-        format!("Option<{}>", value)
+        format!("{}?", value)
     } else {
         value.to_string()
     }
