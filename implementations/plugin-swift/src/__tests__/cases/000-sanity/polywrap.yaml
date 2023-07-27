@@ -1,0 +1,7 @@
+format: 0.3.0
+project:
+  type: plugin/swift
+  name: Test
+source:
+  module: ./Cargo.toml
+  schema: ./input.graphql

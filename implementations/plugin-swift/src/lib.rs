@@ -3,7 +3,6 @@ extern crate lazy_static;
 
 pub mod wrap;
 pub use wrap::*;
-use polywrap_wasm_rs::JSON;
 
 pub mod templates;
 pub mod helpers;
@@ -33,13 +32,13 @@ impl ModuleTrait for Module {
             )
         });
 
-        // output.files.push(File {
-        //     name: "module.rs".to_string(),
-        //     data: renderer.render(
-        //         "module.rs",
-        //         &wrap_info.abi
-        //     )
-        // });
+        output.files.push(File {
+            name: "Types.swift".to_string(),
+            data: renderer.render(
+                "Types.swift",
+                &wrap_info.abi
+            )
+        });
 
         Ok(output)
     }

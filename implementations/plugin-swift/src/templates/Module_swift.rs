@@ -1,21 +1,26 @@
 lazy_static! {
   static ref NAME: String = "Module.swift".to_string();
-  static ref SOURCE: String = r#"import PolywrapClient
-  
+  static ref SOURCE: String = r#"// NOTE: This is an auto-generated file.
+//       All modifications will be overwritten.
+
+import PolywrapClient
+import Foundation
+
 {{#with moduleType}}
 {{#each methods}}
-pub struct Args{{to_upper name}} {
+public struct Args{{to_upper name}}: Codable {
     {{#each arguments}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}var {{detect_keyword (to_lower name)}}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}},
     {{/each}}
 }
 
-  {{/each}}
+{{/each}}
+{{/with}}
 
 protocol Plugin: PluginModule {
     {{#with moduleType}}
     {{#each methods}}
-    func {{detect_keyword (to_lower name)}}(_ args: Args{{to_upper name}}, _ env: {{#if env}}{{else}}VoidCodable?{{/if}}, _ invoker: Invoker) throws -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}}
+    func {{ name }}(_ args: Args{{to_upper name}}, _ env: {{#if env}}{{#with env}}Env{{#if required}}{{else}}?{{/if}}{{/with}}{{else}}VoidCodable?{{/if}}, _ invoker: Invoker) throws -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}}
     {{#if (is_not_last @index ../methods)}}
 
     {{/if}}

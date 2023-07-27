@@ -7,12 +7,10 @@ mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod pretty;
-mod serde_annotate_if_bytes;
-mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
 mod to_lower;
 mod to_upper;
-mod to_rust;
+mod to_swift;
 
 // helpers for helpers
 mod util;
@@ -47,14 +45,6 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(pretty::pretty)
     );
     handlebars.register_helper(
-        "serde_annotate_if_bytes",
-        Box::new(serde_annotate_if_bytes::serde_annotate_if_bytes)
-    );
-    handlebars.register_helper(
-        "serde_rename_if_case_mismatch",
-        Box::new(serde_rename_if_case_mismatch::serde_rename_if_case_mismatch)
-    );
-    handlebars.register_helper(
         "to_graphql_type",
         Box::new(to_graphql_type::to_graphql_type)
     );
@@ -67,7 +57,7 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(to_upper::to_upper)
     );
     handlebars.register_helper(
-        "to_rust",
-        Box::new(to_rust::to_rust)
+        "to_swift",
+        Box::new(to_swift::to_swift)
     );
 }

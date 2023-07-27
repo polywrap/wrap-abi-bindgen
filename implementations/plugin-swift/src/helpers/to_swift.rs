@@ -1,15 +1,15 @@
-use handlebars::handlebars_helper;
-use serde_json::{Value};
 use crate::helpers::detect_keyword::_detect_keyword;
 use crate::helpers::to_upper::_to_upper;
 use crate::helpers::util::{array_type, map_types};
+use handlebars::handlebars_helper;
+use serde_json::Value;
 
-handlebars_helper!(to_rust: |val: Value| {
+handlebars_helper!(to_swift: |val: Value| {
     let type_val = val.as_str().unwrap();
-    to_swift(type_val)
+    _to_swift(type_val)
 });
 
-pub fn to_swift(value: &str) -> String {
+pub fn _to_swift(value: &str) -> String {
     let mut res = value.to_string();
     let mut optional = false;
     if res.ends_with("!") {
@@ -19,7 +19,7 @@ pub fn to_swift(value: &str) -> String {
     }
 
     if res.starts_with("[") {
-        return to_swift_array(&res, optional).unwrap();
+        return _to_swift_array(&res, optional).unwrap();
     }
 
     if res.starts_with("Map<") {
@@ -52,15 +52,15 @@ pub fn to_swift(value: &str) -> String {
 
 pub fn _to_swift_array(value: &str, optional: bool) -> Result<String, String> {
     let inner_type = array_type(value)?;
-    let swift_type = to_swift(&inner_type);
+    let swift_type = _to_swift(&inner_type);
     let rs_array = format!("Array<{}>", swift_type);
     Ok(_apply_optional(&rs_array, optional))
 }
 
 pub fn to_swift_map(value: &str, optional: bool) -> Result<String, String> {
     let (key_type, val_type) = map_types(value)?;
-    let swift_key_type = to_swift(&key_type);
-    let swift_val_type = to_swift(&val_type);
+    let swift_key_type = _to_swift(&key_type);
+    let swift_val_type = _to_swift(&val_type);
     let swift_map = format!("[{}: {}]", &swift_key_type, &swift_val_type);
     Ok(_apply_optional(&swift_map, optional))
 }
@@ -70,5 +70,5 @@ pub fn _apply_optional(value: &str, optional: bool) -> String {
         format!("{}?", value)
     } else {
         value.to_string()
-    }
+    };
 }
