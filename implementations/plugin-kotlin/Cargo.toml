@@ -8,12 +8,12 @@ license = "MIT"
 edition = "2021"
 
 [dependencies]
-polywrap-wasm-rs = { version = "~0.10.5" }
+polywrap-wasm-rs = { version = "0.11.0-pre.4" }
 serde = { version = "1.0", features = ["derive"] }
-serde_json = { version = "1.0.97" }
+serde_json = { version = "1.0.104" }
 handlebars = { version = "4.3.7" }
 lazy_static = { version = "1.4.0" }
-polywrap_msgpack_serde = { git = "https://github.com/polywrap/msgpack-serde", branch = "namesty/wrap"}
+polywrap_msgpack = "0.1.6-beta.7"
 
 [lib]
 crate-type = ["cdylib"]

@@ -9,7 +9,7 @@ package {{to_package_id name}}
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
-import io.polywrap.core.msgpack.MsgPackMap
+import io.polywrap.core.msgpack.GenericMap
 import kotlinx.serialization.Serializable
 
 typealias BigInt = String

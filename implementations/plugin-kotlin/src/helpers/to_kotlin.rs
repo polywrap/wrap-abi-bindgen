@@ -64,7 +64,7 @@ fn to_kotlin_map(value: &str, optional: bool) -> Result<String, String> {
     let (key_type, val_type) = map_types(value)?;
     let kt_key_type = _to_kotlin(&key_type);
     let kt_val_type = _to_kotlin(&val_type);
-    let kt_map = format!("MsgPackMap<{}, {}>", kt_key_type, kt_val_type);
+    let kt_map = format!("GenericMap<{}, {}>", kt_key_type, kt_val_type);
     Ok(apply_optional(&kt_map, optional))
 }
 
