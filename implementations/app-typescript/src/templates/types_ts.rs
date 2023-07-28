@@ -9,7 +9,9 @@ import {
   InvokeResult,
   Uri,
 } from "@polywrap/core-js";
+{{#with importedModuleTypes}}
 import { PolywrapClient } from "@polywrap/client-js";
+{{/with}}
 
 export type UInt = number;
 export type UInt8 = number;
@@ -101,42 +103,42 @@ export interface {{../type}}_Args_{{name}} {
 
 /* URI: "{{uri}}" */
 export abstract class {{to_abstract_type (detect_keyword type)}} {
-  protected defaultClient: CoreClient;
-  protected defaultUri: string;
-  protected defaultEnv?: Record<string, unknown>;
+  protected _defaultClient: CoreClient;
+  protected _defaultUri: string;
+  protected _defaultEnv?: Record<string, unknown>;
 
   constructor(
     client?: CoreClient,
     env?: Record<string, unknown>,
     uri?: string,
   ) {
-    this.defaultClient = this.getClient(client);
-    this.defaultEnv = this.getEnv(env);
-    this.defaultUri = this.getUri(uri);
+    this._defaultClient = this._getClient(client);
+    this._defaultEnv = this._getEnv(env);
+    this._defaultUri = this._getUri(uri);
   }
 
   public get client(): CoreClient {
-    return this.defaultClient || this._getDefaultClient() || new PolywrapClient();
+    return this._defaultClient;
   }
 
   public get uri(): string {
-    return this.defaultUri || this._getDefaultUri() || "{{uri}}";
+    return this._defaultUri;
   }
 
-  public get env(): Record<string, unknown> {
-    return this.defaultEnv || this._getDefaultEnv();
+  public get env(): Record<string, unknown> | undefined {
+    return this._defaultEnv;
   }
 
-  protected _getClient(client?: CoreClient): CoreClient {
-    return client || this.client;
+  private _getClient(client?: CoreClient): CoreClient {
+    return client || this._defaultClient || this._getDefaultClient() || new PolywrapClient();
   }
 
-  protected _getUri(uri?: string): string {
-    return uri || this.uri;
+  private _getUri(uri?: string): string {
+    return uri || this._defaultUri || this._getDefaultUri() || "{{{uri}}}";
   }
 
-  protected _getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
-    return env || this.env;
+  private _getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
+    return env || this._defaultEnv || this._getDefaultEnv();
   }
 
   protected abstract _getDefaultClient(): CoreClient;
