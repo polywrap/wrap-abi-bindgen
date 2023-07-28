@@ -12,7 +12,8 @@ use polywrap_msgpack_serde::{
   from_slice,
   JSON,
   bytes::ByteBuf,
-  JSONString
+  JSONString,
+  BigNumber
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
@@ -21,7 +22,6 @@ use std::sync::Arc;
 {{/each}}
 
 pub type BigInt = String;
-pub type BigNumber = String;
 
 // Env START //
 
