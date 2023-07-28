@@ -7,6 +7,7 @@ import {
   InvokeResult,
   Uri,
 } from "@polywrap/core-js";
+import { PolywrapClient } from "@polywrap/client-js";
 
 export type UInt = number;
 export type UInt8 = number;
@@ -183,42 +184,90 @@ export interface TestImport_Module_Args_returnsArrayOfEnums {
 }
 
 /* URI: "testimport.uri.eth" */
-export const TestImport_Module = {
-  importedMethod: async (
+export abstract class TestImport_Module {
+  protected defaultClient: CoreClient;
+  protected defaultUri: string;
+  protected defaultEnv?: Record<string, unknown>;
+
+  constructor(
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ) {
+    this.defaultClient = this.getClient(client);
+    this.defaultEnv = this.getEnv(env);
+    this.defaultUri = this.getUri(uri);
+  }
+
+  getClient(client?: CoreClient): CoreClient {
+    return client || this.defaultClient || this._getDefaultClient() || new PolywrapClient();
+  }
+
+  getUri(uri?: string): string {
+    return uri || this.defaultUri || this._getDefaultUri() || "testimport.uri.eth";
+  }
+
+  getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
+    return env || this.defaultEnv || this._getDefaultEnv();
+  }
+
+  protected abstract _getDefaultClient(): CoreClient;
+  protected abstract _getDefaultUri(): string | undefined;
+  protected abstract _getDefaultEnv(): Record<string, unknown> | undefined;
+
+  async importedMethod(
     args: TestImport_Module_Args_importedMethod,
-    client: CoreClient,
-    uri: string = "testimport.uri.eth"
-  ): Promise<InvokeResult<Types.TestImport_Object | null>> => {
-    return client.invoke<Types.TestImport_Object | null>({
-      uri: Uri.from(uri),
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ): Promise<InvokeResult<Types.TestImport_Object | null>> {
+    const _client = this.getClient(client);
+    const _env = this.getEnv(env);
+    const _uri = this.getUri(uri);
+
+    return _client.invoke<Types.TestImport_Object | null>({
+      uri: Uri.from(_uri),
       method: "importedMethod",
       args: (args as unknown) as Record<string, unknown>,
+      env: _env,
     });
-  },
+  };
 
-  anotherMethod: async (
+  async anotherMethod(
     args: TestImport_Module_Args_anotherMethod,
-    client: CoreClient,
-    uri: string = "testimport.uri.eth"
-  ): Promise<InvokeResult<Types.Int32>> => {
-    return client.invoke<Types.Int32>({
-      uri: Uri.from(uri),
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ): Promise<InvokeResult<Types.Int32>> {
+    const _client = this.getClient(client);
+    const _env = this.getEnv(env);
+    const _uri = this.getUri(uri);
+
+    return _client.invoke<Types.Int32>({
+      uri: Uri.from(_uri),
       method: "anotherMethod",
       args: (args as unknown) as Record<string, unknown>,
+      env: _env,
     });
-  },
+  };
 
-  returnsArrayOfEnums: async (
+  async returnsArrayOfEnums(
     args: TestImport_Module_Args_returnsArrayOfEnums,
-    client: CoreClient,
-    uri: string = "testimport.uri.eth"
-  ): Promise<InvokeResult<Array<Types.TestImport_Enum_Return | null>>> => {
-    return client.invoke<Array<Types.TestImport_Enum_Return | null>>({
-      uri: Uri.from(uri),
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ): Promise<InvokeResult<Array<Types.TestImport_Enum_Return | null>>> {
+    const _client = this.getClient(client);
+    const _env = this.getEnv(env);
+    const _uri = this.getUri(uri);
+
+    return _client.invoke<Array<Types.TestImport_Enum_Return | null>>({
+      uri: Uri.from(_uri),
       method: "returnsArrayOfEnums",
       args: (args as unknown) as Record<string, unknown>,
+      env: _env,
     });
-  }
+  };
 };
 
 /// Imported Modules END ///

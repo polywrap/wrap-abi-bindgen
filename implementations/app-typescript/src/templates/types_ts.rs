@@ -100,7 +100,7 @@ export interface {{../type}}_Args_{{name}} {
 {{/each}}
 
 /* URI: "{{uri}}" */
-export abstract class {{detect_keyword type}} {
+export abstract class {{to_abstract_type (detect_keyword type)}} {
   protected defaultClient: CoreClient;
   protected defaultUri: string;
   protected defaultEnv?: Record<string, unknown>;

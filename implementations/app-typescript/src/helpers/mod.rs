@@ -9,6 +9,7 @@ mod is_not_last;
 mod to_graphql_type;
 mod to_typescript;
 mod pretty;
+mod to_abstract_type;
 
 // helpers for helpers
 mod util;
