@@ -3,13 +3,13 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
-use bytes::ByteBuf;
 use polywrap_core::{invoker::Invoker, uri::Uri};
 use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
   to_vec,
   from_slice,
   JSON,
+  bytes::ByteBuf,
   JSONString
 };
 use std::collections::BTreeMap;
