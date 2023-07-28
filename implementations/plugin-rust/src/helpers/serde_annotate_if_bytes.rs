@@ -8,8 +8,6 @@ handlebars_helper!(serde_annotate_if_bytes: |val: Value| {
 
 pub fn _serde_annotate_if_wrapper(val: &str) -> String {
     match val {
-        "Bytes" =>  "#[serde(with = \"bytes\")]\n    ".to_string(),
-        "JSON" =>  "#[serde(with = \"json\")]\n    ".to_string(),
         "BigInt" =>  "#[serde(with = \"bigint\")]\n    ".to_string(),
         _ => "".to_string(),
     }

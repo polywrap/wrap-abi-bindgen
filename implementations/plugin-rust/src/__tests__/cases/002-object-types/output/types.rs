@@ -3,6 +3,7 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
+use bytes::ByteBuf;
 use polywrap_core::{invoker::Invoker, uri::Uri};
 use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
@@ -15,7 +16,8 @@ use polywrap_msgpack_serde::{
   wrappers::{
     polywrap_bigint as bigint,
     polywrap_json as json
-  }
+  },
+  JSONString
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
@@ -49,16 +51,12 @@ pub struct CustomType {
     pub bignumber: BigNumber,
     #[serde(rename = "optBignumber")]
     pub opt_bignumber: Option<BigNumber>,
-    #[serde(with = "json")]
-    pub json: JSON::Value,
-    #[serde(with = "json")]
+    pub json: JSONString,
     #[serde(rename = "optJson")]
-    pub opt_json: Option<JSON::Value>,
-    #[serde(with = "bytes")]
-    pub bytes: Vec<u8>,
-    #[serde(with = "bytes")]
+    pub opt_json: Option<JSONString>,
+    pub bytes: ByteBuf,
     #[serde(rename = "optBytes")]
-    pub opt_bytes: Option<Vec<u8>>,
+    pub opt_bytes: Option<ByteBuf>,
     pub boolean: bool,
     #[serde(rename = "optBoolean")]
     pub opt_boolean: Option<bool>,

@@ -5,6 +5,7 @@ lazy_static! {
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
+use bytes::ByteBuf;
 use polywrap_core::{invoker::Invoker, uri::Uri};
 use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
@@ -17,7 +18,8 @@ use polywrap_msgpack_serde::{
   wrappers::{
     polywrap_bigint as bigint,
     polywrap_json as json
-  }
+  },
+  JSONString
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};

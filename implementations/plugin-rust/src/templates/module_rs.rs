@@ -4,6 +4,7 @@ lazy_static! {
 ///       All modifications will be overwritten.
 
 use std::sync::Arc;
+use bytes::ByteBuf;
 use polywrap_core::invoker::Invoker;
 use polywrap_plugin::{error::PluginError, module::PluginModule};
 use polywrap_msgpack_serde::{
@@ -16,7 +17,8 @@ use polywrap_msgpack_serde::{
   wrappers::{
     polywrap_bigint as bigint,
     polywrap_json as json
-  }
+  },
+  JSONString
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
