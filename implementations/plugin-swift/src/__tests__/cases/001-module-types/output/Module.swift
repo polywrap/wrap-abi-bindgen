@@ -15,7 +15,7 @@ public struct ArgsFunction2: Codable {
 }
 
 
-protocol Plugin: PluginModule {
+public protocol Plugin: PluginModule {
     func function1(_ args: ArgsFunction1, _ env: VoidCodable?, _ invoker: Invoker) throws -> String
 
     func function2(_ args: ArgsFunction2, _ env: VoidCodable?, _ invoker: Invoker) throws -> String?

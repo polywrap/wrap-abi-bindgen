@@ -37,7 +37,7 @@ public struct ArgsIf: Codable {
 }
 
 
-protocol Plugin: PluginModule {
+public protocol Plugin: PluginModule {
     func moduleMethod(_ args: ArgsModuleMethod, _ env: VoidCodable?, _ invoker: Invoker) throws -> Int32
 
     func objectMethod(_ args: ArgsObjectMethod, _ env: Env, _ invoker: Invoker) throws -> AnotherType?

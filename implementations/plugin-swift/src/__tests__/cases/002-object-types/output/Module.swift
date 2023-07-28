@@ -5,5 +5,5 @@ import PolywrapClient
 import Foundation
 
 
-protocol Plugin: PluginModule {
+public protocol Plugin: PluginModule {
 }
