@@ -11,7 +11,7 @@ import Foundation
 {{#with envType}}
 public struct {{detect_keyword (to_upper type)}}: Codable {
     {{#each properties}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 {{/with}}
@@ -23,7 +23,7 @@ public struct {{detect_keyword (to_upper type)}}: Codable {
 {{#each objectTypes}}
 public struct {{detect_keyword (to_upper type)}}: Codable {
     {{#each properties}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 
@@ -49,7 +49,7 @@ public enum {{detect_keyword (to_upper type)}}: String, Codable {
 {{#each importedObjectTypes}}
 public struct {{detect_keyword (to_upper type)}}: Codable {
     {{#each properties}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 
@@ -62,7 +62,7 @@ public struct {{detect_keyword (to_upper type)}}: Codable {
 {{#each importedEnvTypes}}
 public struct {{detect_keyword (to_upper type)}}: Codable {
     {{#each properties}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 {{/each}}
@@ -89,7 +89,7 @@ public enum {{detect_keyword (to_upper type)}}: String, Codable {
 // URI: "{{../uri}}" //
 public struct Args{{to_upper name}}: Codable {
     {{#each arguments}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 

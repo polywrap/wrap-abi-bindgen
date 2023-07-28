@@ -1,20 +1,22 @@
 // NOTE: This is an auto-generated file.
-//       All modifications will be overwritten.
+// All modifications will be overwritten.
+
+import PolywrapClient
 import Foundation
 
 // Env START //
 
-struct Env: Codable {
+public struct Env: Codable {
     var prop: String
-    var optProp: String? // Option in Rust, Optional in Swift
-    var optMap: [String: Int?]? // BTreeMap in Rust, Dictionary in Swift
+    var optProp: String?
+    var optMap: [String: Int32?]?
 }
 
 // Env END //
 
 // Objects START //
 
-struct CustomType: Codable {
+public struct CustomType: Codable {
     var str: String
     var optStr: String?
     var u: UInt32
@@ -36,175 +38,185 @@ struct CustomType: Codable {
     var optBytes: Data?
     var boolean: Bool
     var optBoolean: Bool?
-    var uArray: [UInt32]
-    var uOptArray: [UInt32]?
-    var optUOptArray: [UInt32?]?
-    var optStrOptArray: [String?]?
-    var uArrayArray: [[UInt32]]
-    var uOptArrayOptArray: [[UInt32]?]
-    var uArrayOptArrayArray: [[[UInt32]]]?
-    var crazyArray: [[[UInt32?]]]?
+    var u_array: Array<UInt32>
+    var uOpt_array: Array<UInt32>?
+    var _opt_uOptArray: Array<UInt32?>?
+    var optStrOptArray: Array<String?>?
+    var uArrayArray: Array<Array<UInt32>>
+    var uOptArrayOptArray: Array<Array<UInt32?>?>
+    var uArrayOptArrayArray: Array<Array<Array<UInt32>>?>
+    var crazyArray: Array<Array<Array<Array<UInt32>?>>?>?
     var object: AnotherType
     var optObject: AnotherType?
-    var objectArray: [AnotherType]
-    var optObjectArray: [AnotherType?]?
+    var objectArray: Array<AnotherType>
+    var optObjectArray: Array<AnotherType?>?
     var en: CustomEnum
     var optEnum: CustomEnum?
-    var enumArray: [CustomEnum]
-    var optEnumArray: [CustomEnum?]?
+    var enumArray: Array<CustomEnum>
+    var optEnumArray: Array<CustomEnum?>?
     var map: [String: Int32]
-    var mapOfArr: [String: [Int32]]
+    var mapOfArr: [String: Array<Int32>]
     var mapOfObj: [String: AnotherType]
-    var mapOfArrOfObj: [String: [AnotherType]]
+    var mapOfArrOfObj: [String: Array<AnotherType>]
     var mapCustomValue: [String: CustomMapValue?]
 }
 
-
-struct AnotherType: Codable {
+public struct AnotherType: Codable {
     var prop: String?
     var circular: CustomType?
     var const: String?
 }
 
-struct CustomMapValue {
+public struct CustomMapValue: Codable {
     var foo: String
 }
 
-struct Else {
-    var `else`: String
+public struct Else: Codable {
+    var else: String
 }
+
 
 // Objects END //
 
 // Enums START //
 
-enum CustomEnum: String, Codable {
+public enum CustomEnum: String, Codable {
     case STRING
     case BYTES
-    case _MAX_
 }
 
-enum While: String, Codable {
+public enum While: String, Codable {
     case _for
     case _in
-    case _MAX_
 }
+
 
 // Enums END //
 
 // Imported objects START //
 
-struct TestImportObject: Codable {
+public struct TestImportObject: Codable {
     var object: TestImportAnotherObject
     var optObject: TestImportAnotherObject?
-    var objectArray: [TestImportAnotherObject]
-    var optObjectArray: [TestImportAnotherObject?]?
+    var objectArray: Array<TestImportAnotherObject>
+    var optObjectArray: Array<TestImportAnotherObject?>?
     var en: TestImportEnum
     var optEnum: TestImportEnum?
-    var enumArray: [TestImportEnum]
-    var optEnumArray: [TestImportEnum?]?
+    var enumArray: Array<TestImportEnum>
+    var optEnumArray: Array<TestImportEnum?>?
 }
 
-struct TestImportAnotherObject: Codable {
+public struct TestImportAnotherObject: Codable {
     var prop: String
 }
+
 
 // Imported objects END //
 
 // Imported envs START //
 
+public struct TestImportEnv: Codable {
+    var object: TestImportAnotherObject
+    var optObject: TestImportAnotherObject?
+    var objectArray: Array<TestImportAnotherObject>
+    var optObjectArray: Array<TestImportAnotherObject?>?
+    var en: TestImportEnum
+    var optEnum: TestImportEnum?
+    var enumArray: Array<TestImportEnum>
+    var optEnumArray: Array<TestImportEnum?>?
+}
+
 // Imported envs END //
 
 // Imported enums START //
 
-enum TestImportEnum: String, Codable {
-    case string = "STRING"
-    case bytes = "BYTES"
-    case max = "_MAX_"
+public enum TestImportEnum: String, Codable {
+    case STRING
+    case BYTES
 }
 
-enum TestImportEnumReturn: String, Codable {
-    case string = "STRING"
-    case bytes = "BYTES"
-    case max = "_MAX_"
+public enum TestImportEnumReturn: String, Codable {
+    case STRING
+    case BYTES
 }
+
 
 // Imported enums END //
 
-// Imported Modules START //
+// Imported modules START //
 
 // URI: "testimport.uri.eth" //
-struct TestImportModuleArgsImportedMethod: Codable {
+public struct ArgsImportedMethod: Codable {
     var str: String
     var optStr: String?
     var u: UInt32
     var optU: UInt32?
-    var uArrayArray: [[UInt32?]?]?
+    var uArrayArray: Array<Array<UInt32?>?>
     var object: TestImportObject
     var optObject: TestImportObject?
-    var objectArray: [TestImportObject]
-    var optObjectArray: [TestImportObject?]?
+    var objectArray: Array<TestImportObject>
+    var optObjectArray: Array<TestImportObject?>?
     var en: TestImportEnum
     var optEnum: TestImportEnum?
-    var enumArray: [TestImportEnum]
-    var optEnumArray: [TestImportEnum?]?
+    var enumArray: Array<TestImportEnum>
+    var optEnumArray: Array<TestImportEnum?>?
 }
 
-
 // URI: "testimport.uri.eth" //
-struct TestImportModuleArgsAnotherMethod: Codable {
-    var arg: [String]
+public struct ArgsAnotherMethod: Codable {
+    var arg: Array<String>
 }
 
-
 // URI: "testimport.uri.eth" //
-struct TestImportModuleArgsReturnsArrayOfEnums: Codable {
+public struct ArgsReturnsArrayOfEnums: Codable {
     var arg: String
 }
 
-class TestImportModule {
-    static let INTERFACE_URI = "testimport.uri.eth"
-    var uri: String
-    
-    init(uri: String) {
+public class TestImportModule {
+    var uri: Uri
+
+    public init(uri: Uri) {
         self.uri = uri
     }
-    
-    func importedMethod(_ args: TestImportModuleArgsImportedMethod, _ env: VoidCodable?, _ invoker: Invoker) throws -> TestImportObject {
+    func importedMethod(
+        _ args: TestImportModuleArgsImportedMethod,
+        _ invoker: Invoker
+    ) throws -> TestImportObject? {
         let serializedArgs = try encode(value: args)
-        let resultData = try invoker.invokeRaw(
-            uri: self.uri,
+        return try invoker.invokeRaw(
+            uri: try Uri("testimport.uri.eth"),
             method: "importedMethod",
             args: serializedArgs,
-            env: nil
+            env: nil,
         )
-        
-        return try decode(value: resultData)
     }
-    
-    func anotherMethod(_ args: TestImportModuleArgsAnotherMethod, _ env: VoidCodable?, _ invoker: Invoker) throws -> Int {
+
+    func anotherMethod(
+        _ args: TestImportModuleArgsAnotherMethod,
+        _ invoker: Invoker
+    ) throws -> Int32 {
         let serializedArgs = try encode(value: args)
-        let resultData = try invoker.invokeRaw(
-            uri: self.uri,
+        return try invoker.invokeRaw(
+            uri: try Uri("testimport.uri.eth"),
             method: "anotherMethod",
             args: serializedArgs,
-            env: nil
+            env: nil,
         )
-        
-        return try decode(value: resultData)
     }
-    
-    func returnsArrayOfEnums(_ args: TestImportModuleArgsReturnsArrayOfEnums,  _ env: VoidCodable?, _ invoker: Invoker) throws -> [TestImportEnumReturn?] {
+
+    func returnsArrayOfEnums(
+        _ args: TestImportModuleArgsReturnsArrayOfEnums,
+        _ invoker: Invoker
+    ) throws -> Array<TestImportEnumReturn?> {
         let serializedArgs = try encode(value: args)
-        let resultData = try invoker.invokeRaw(
-            uri: self.uri,
+        return try invoker.invokeRaw(
+            uri: try Uri("testimport.uri.eth"),
             method: "returnsArrayOfEnums",
             args: serializedArgs,
             env: nil,
-         )
-
-        return try decode(value: resultData)
+        )
     }
-}
 
+    
+}
 // Imported Modules END //

@@ -10,14 +10,14 @@ import Foundation
 {{#each methods}}
 public struct Args{{to_upper name}}: Codable {
     {{#each arguments}}
-    var {{ name }}: {{to_swift (to_graphql_type this)}},
+    var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
 }
 
 {{/each}}
 {{/with}}
 
-protocol Plugin: PluginModule {
+public protocol Plugin: PluginModule {
     {{#with moduleType}}
     {{#each methods}}
     func {{ name }}(_ args: Args{{to_upper name}}, _ env: {{#if env}}{{#with env}}Env{{#if required}}{{else}}?{{/if}}{{/with}}{{else}}VoidCodable?{{/if}}, _ invoker: Invoker) throws -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}}
