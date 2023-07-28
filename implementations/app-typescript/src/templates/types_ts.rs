@@ -9,6 +9,7 @@ import {
   InvokeResult,
   Uri,
 } from "@polywrap/core-js";
+import { PolywrapClient } from "@polywrap/client-js";
 
 export type UInt = number;
 export type UInt8 = number;
@@ -99,23 +100,71 @@ export interface {{../type}}_Args_{{name}} {
 {{/each}}
 
 /* URI: "{{uri}}" */
-export const {{type}} = {
+export abstract class {{detect_keyword type}} {
+  protected defaultClient: CoreClient;
+  protected defaultUri: string;
+  protected defaultEnv?: Record<string, unknown>;
+
+  constructor(
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ) {
+    this.defaultClient = this.getClient(client);
+    this.defaultEnv = this.getEnv(env);
+    this.defaultUri = this.getUri(uri);
+  }
+
+  public get client(): CoreClient {
+    return this.defaultClient || this._getDefaultClient() || new PolywrapClient();
+  }
+
+  public get uri(): string {
+    return this.defaultUri || this._getDefaultUri() || "{{uri}}";
+  }
+
+  public get env(): Record<string, unknown> {
+    return this.defaultEnv || this._getDefaultEnv();
+  }
+
+  protected _getClient(client?: CoreClient): CoreClient {
+    return client || this.client;
+  }
+
+  protected _getUri(uri?: string): string {
+    return uri || this.uri;
+  }
+
+  protected _getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
+    return env || this.env;
+  }
+
+  protected abstract _getDefaultClient(): CoreClient;
+  protected abstract _getDefaultUri(): string | undefined;
+  protected abstract _getDefaultEnv(): Record<string, unknown> | undefined;
+
   {{#each methods}}
-  {{name}}: async (
+  async {{name}}(
     args: {{../type}}_Args_{{name}},
-    client: CoreClient,
-    uri: string = "{{../uri}}"
-  ): Promise<InvokeResult<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>> => {
-    return client.invoke<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>({
-      uri: Uri.from(uri),
+    client?: CoreClient,
+    env?: Record<string, unknown>,
+    uri?: string,
+  ): Promise<InvokeResult<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>> {
+    const _client = this._getClient(client);
+    const _env = this._getEnv(env);
+    const _uri = this._getUri(uri);
+
+    return _client.invoke<{{#with return}}{{to_typescript (to_graphql_type this)}}{{/with}}>({
+      uri: Uri.from(_uri),
       method: "{{name}}",
       args: (args as unknown) as Record<string, unknown>,
+      env: _env,
     });
-  }{{#if (is_not_last @index ../methods)}},
+  };
+  {{#if (is_not_last @index ../methods)}}
 
   {{/if}}
   {{/each}}
-
 };
 {{/each}}
 
