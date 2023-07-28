@@ -6,7 +6,7 @@ package _000_sanity.wrap
 import io.polywrap.core.Invoker
 import io.polywrap.core.msgpack.msgPackDecode
 import io.polywrap.core.msgpack.msgPackEncode
-import io.polywrap.core.msgpack.MsgPackMap
+import io.polywrap.core.msgpack.GenericMap
 import io.polywrap.plugin.PluginMethod
 import io.polywrap.plugin.PluginModule
 import kotlinx.serialization.Serializable
@@ -20,11 +20,11 @@ data class ArgsModuleMethod(
     val optEnum: CustomEnum? = null,
     val enumArray: List<CustomEnum>,
     val optEnumArray: List<CustomEnum?>? = null,
-    val map: MsgPackMap<String, Int>,
-    val mapOfArr: MsgPackMap<String, List<Int>>,
-    val mapOfMap: MsgPackMap<String, MsgPackMap<String, Int>>,
-    val mapOfObj: MsgPackMap<String, AnotherType>,
-    val mapOfArrOfObj: MsgPackMap<String, List<AnotherType>>,
+    val map: GenericMap<String, Int>,
+    val mapOfArr: GenericMap<String, List<Int>>,
+    val mapOfMap: GenericMap<String, GenericMap<String, Int>>,
+    val mapOfObj: GenericMap<String, AnotherType>,
+    val mapOfArrOfObj: GenericMap<String, List<AnotherType>>,
 )
 
 @Serializable

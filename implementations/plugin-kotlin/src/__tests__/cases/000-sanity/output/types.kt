@@ -6,7 +6,7 @@ package _000_sanity.wrap
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
-import io.polywrap.core.msgpack.MsgPackMap
+import io.polywrap.core.msgpack.GenericMap
 import kotlinx.serialization.Serializable
 
 typealias BigInt = String
@@ -18,7 +18,7 @@ typealias Json = String
 data class Env(
     val prop: String,
     val optProp: String? = null,
-    val optMap: MsgPackMap<String, Int?>? = null,
+    val optMap: GenericMap<String, Int?>? = null,
 )
 /// Env END ///
 
@@ -62,11 +62,11 @@ data class CustomType(
     val optEnum: CustomEnum? = null,
     val enumArray: List<CustomEnum>,
     val optEnumArray: List<CustomEnum?>? = null,
-    val map: MsgPackMap<String, Int>,
-    val mapOfArr: MsgPackMap<String, List<Int>>,
-    val mapOfObj: MsgPackMap<String, AnotherType>,
-    val mapOfArrOfObj: MsgPackMap<String, List<AnotherType>>,
-    val mapCustomValue: MsgPackMap<String, CustomMapValue?>,
+    val map: GenericMap<String, Int>,
+    val mapOfArr: GenericMap<String, List<Int>>,
+    val mapOfObj: GenericMap<String, AnotherType>,
+    val mapOfArrOfObj: GenericMap<String, List<AnotherType>>,
+    val mapCustomValue: GenericMap<String, CustomMapValue?>,
 )
 
 @Serializable
