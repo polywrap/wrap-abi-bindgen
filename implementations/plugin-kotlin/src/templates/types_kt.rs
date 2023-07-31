@@ -9,8 +9,10 @@ package {{to_package_id name}}
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
-import io.polywrap.core.msgpack.GenericMap
+import io.polywrap.core.msgpack.GenericMapExtensionSerializer
 import kotlinx.serialization.Serializable
+
+typealias GenericMap<K, V> = @Serializable(with = GenericMapExtensionSerializer::class) io.polywrap.core.msgpack.GenericMap<K, V>
 
 typealias BigInt = String
 typealias BigNumber = String
