@@ -3,25 +3,21 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
-use bytes::ByteBuf;
 use polywrap_core::{invoker::Invoker, uri::Uri};
 use polywrap_plugin::error::PluginError;
 use polywrap_msgpack_serde::{
   to_vec,
   from_slice,
-  BigInt,
-  BigNumber,
   JSON,
-  bytes,
-  wrappers::{
-    polywrap_bigint as bigint,
-    polywrap_json as json
-  },
-  JSONString
+  bytes::ByteBuf,
+  JSONString,
+  BigNumber
 };
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 use std::sync::Arc;
+
+pub type BigInt = String;
 
 // Env START //
 
@@ -52,9 +48,7 @@ pub struct CustomType {
     pub i8: i8,
     pub i16: i16,
     pub i32: i32,
-    #[serde(with = "bigint")]
     pub bigint: BigInt,
-    #[serde(with = "bigint")]
     #[serde(rename = "optBigint")]
     pub opt_bigint: Option<BigInt>,
     pub bignumber: BigNumber,
