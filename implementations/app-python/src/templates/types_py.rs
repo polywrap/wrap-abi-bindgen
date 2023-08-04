@@ -4,10 +4,11 @@ lazy_static! {
 # type: ignore
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import InvokerClient, Uri
+from polywrap_core import Uri, Client
 from polywrap_msgpack import GenericMap
 
 
@@ -127,7 +128,7 @@ class {{to_abstract_type (detect_keyword type)}}(ABC):
         pass
 
     @abstractmethod
-    def _get_default_uri(self) -> Uri:
+    def _get_default_uri(self) -> Optional[Uri]:
         pass
 
     @abstractmethod
@@ -136,6 +137,7 @@ class {{to_abstract_type (detect_keyword type)}}(ABC):
 
     {{#each methods}}
     def {{detect_keyword (to_lower name)}}(
+        self,
         args: {{to_upper ../type}}Args{{to_upper name}},
         client: Optional[Client] = None,
         env: Optional[Any] = None,

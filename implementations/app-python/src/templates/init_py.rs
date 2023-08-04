@@ -1,6 +1,6 @@
 lazy_static! {
   static ref NAME: String = "__init__.py".to_string();
-  static ref SOURCE: String = r#"from .types import *";
+  static ref SOURCE: String = r#"from .types import *
 "#.to_string();
 }
 
