@@ -1,3 +1,8 @@
+/// NOTE: This is an auto-generated file.
+///       All modifications will be overwritten.
+
+package wrap
+
 import io.polywrap.configBuilder.polywrapClient
 import io.polywrap.core.WrapEnv
 import io.polywrap.core.Invoker
@@ -11,15 +16,6 @@ typealias GenericMap<K, V> = @Serializable(with = GenericMapExtensionSerializer:
 typealias BigInt = String
 typealias BigNumber = String
 typealias Json = String
-
-/// Env START ///
-@Serializable
-data class Env(
-    val prop: String,
-    val optProp: String? = null,
-    val optMap: GenericMap<String, Int?>? = null,
-)
-/// Env END ///
 
 /// Objects START ///
 @Serializable
@@ -122,6 +118,9 @@ data class TestImportAnotherObject(
     val prop: String,
 )
 
+/// Imported Objects END ///
+
+/// Imported Enums START ///
 /* URI: "testimport.uri.eth" */
 @Serializable
 enum class TestImportEnum {
@@ -136,7 +135,7 @@ enum class TestImportEnumReturn {
     BYTES
 }
 
-/// Imported Objects END ///
+/// Imported Enums END ///
 
 /// Imported Modules START ///
 /* URI: "testimport.uri.eth" */
@@ -170,7 +169,7 @@ data class TestImportModuleArgsReturnsArrayOfEnums(
 )
 
 /* URI: "testimport.uri.eth" */
-abstract class BaseTestImport(
+abstract class BaseTestImportModule(
     client: Invoker? = null,
     env: WrapEnv? = null,
     uri: Uri? = null
@@ -212,11 +211,11 @@ abstract class BaseTestImport(
         client: Invoker? = null,
         env: WrapEnv? = null,
         uri: Uri? = null
-    ): InvokeResult<Array<TestImportEnumReturn?>> {
+    ): InvokeResult<List<TestImportEnumReturn?>> {
         val _client = client ?: this.client
         val _env = env ?: this.env
         val _uri = uri ?: this.uri
         return _client.invoke(_uri, "returnsArrayOfEnums", args, _env)
     }
 }
-
+/// Imported Modules END ///

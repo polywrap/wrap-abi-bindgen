@@ -25,28 +25,13 @@ impl ModuleTrait for Module {
         let mut output = Output::new();
 
         output.files.push(File {
-            name: "module.kt".to_string(),
-            data: renderer.render(
-                "module.kt",
-                &wrap_info
-            )
-        });
-
-        output.files.push(File {
             name: "types.kt".to_string(),
             data: renderer.render(
                 "types.kt",
-                &wrap_info
+                &wrap_info.abi.to_json()
             )
         });
 
-        output.files.push(File {
-            name: "wrap.info.kt".to_string(),
-            data: renderer.render(
-                "wrap.info.kt",
-                &wrap_info
-            )
-        });
 
         Ok(output)
     }

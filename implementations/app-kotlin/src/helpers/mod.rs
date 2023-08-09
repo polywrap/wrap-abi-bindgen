@@ -12,8 +12,6 @@ mod nullable_default;
 mod to_class_name;
 mod to_graphql_type;
 mod to_kotlin;
-mod to_kotlin_byte_array;
-mod to_package_id;
 mod to_upper;
 
 // helpers for helpers
@@ -67,14 +65,6 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "to_kotlin",
         Box::new(to_kotlin::to_kotlin)
-    );
-    handlebars.register_helper(
-        "to_kotlin_byte_array",
-        Box::new(to_kotlin_byte_array::to_kotlin_byte_array)
-    );
-    handlebars.register_helper(
-        "to_package_id",
-        Box::new(to_package_id::to_package_id)
     );
     handlebars.register_helper(
         "to_upper",
