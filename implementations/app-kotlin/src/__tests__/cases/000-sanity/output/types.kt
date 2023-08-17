@@ -4,7 +4,6 @@
 package wrap
 
 import io.polywrap.configBuilder.polywrapClient
-import io.polywrap.core.WrapEnv
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
@@ -137,6 +136,21 @@ enum class TestImportEnumReturn {
 
 /// Imported Enums END ///
 
+/// Imported Envs START ///
+@Serializable
+data class TestImportEnv(
+    val _object: TestImportAnotherObject,
+    val optObject: TestImportAnotherObject? = null,
+    val objectArray: List<TestImportAnotherObject>,
+    val optObjectArray: List<TestImportAnotherObject?>? = null,
+    val en: TestImportEnum,
+    val optEnum: TestImportEnum? = null,
+    val enumArray: List<TestImportEnum>,
+    val optEnumArray: List<TestImportEnum?>? = null,
+)
+
+/// Imported Envs END ///
+
 /// Imported Modules START ///
 /* URI: "testimport.uri.eth" */
 @Serializable
@@ -171,21 +185,21 @@ data class TestImportModuleArgsReturnsArrayOfEnums(
 /* URI: "testimport.uri.eth" */
 abstract class BaseTestImportModule(
     client: Invoker? = null,
-    env: WrapEnv? = null,
+    env: TestImportEnv? = null,
     uri: Uri? = null
 ) {
     protected abstract val defaultClient: Invoker?
     protected abstract val defaultUri: Uri?
-    protected abstract val defaultEnv: WrapEnv?
+    protected abstract val defaultEnv: TestImportEnv?
 
     protected val client: Invoker = client ?: defaultClient ?: polywrapClient { addDefaults() }
     protected val uri: Uri = uri ?: defaultUri ?: Uri("testimport.uri.eth")
-    protected val env: WrapEnv? = env ?: defaultEnv
+    protected val env: TestImportEnv? = env ?: defaultEnv
 
     fun importedMethod(
         args: TestImportModuleArgsImportedMethod,
         client: Invoker? = null,
-        env: WrapEnv? = null,
+        env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<TestImportObject?> {
         val _client = client ?: this.client
@@ -197,7 +211,7 @@ abstract class BaseTestImportModule(
     fun anotherMethod(
         args: TestImportModuleArgsAnotherMethod,
         client: Invoker? = null,
-        env: WrapEnv? = null,
+        env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<Int> {
         val _client = client ?: this.client
@@ -209,7 +223,7 @@ abstract class BaseTestImportModule(
     fun returnsArrayOfEnums(
         args: TestImportModuleArgsReturnsArrayOfEnums,
         client: Invoker? = null,
-        env: WrapEnv? = null,
+        env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<List<TestImportEnumReturn?>> {
         val _client = client ?: this.client
