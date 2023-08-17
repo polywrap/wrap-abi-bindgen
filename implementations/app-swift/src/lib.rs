@@ -30,7 +30,7 @@ impl ModuleTrait for Module {
             name: "Types.swift".to_string(),
             data: renderer.render(
                 "Types.swift",
-                &wrap_info.abi
+                &wrap_info.abi.to_json()
             )
         });
 

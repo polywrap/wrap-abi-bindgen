@@ -83,12 +83,12 @@ public struct Args{{to_upper name}}: Codable {
 
 {{/each}}
 /* URI: "{{uri}}" */
-class Base{{to_class_name type}} {
+class Base{{to_upper type}} {
     var client: Invoker? = nil
-    var env: {{to_class_name namespace}}Env? = nil
+    var env: {{to_upper namespace}}Env? = nil
     var uri: Uri? = nil
 
-    init(client: Invoker? = nil, env: {{to_class_name namespace}}Env? = nil, uri: Uri? = nil) {
+    init(client: Invoker? = nil, env: {{to_upper namespace}}Env? = nil, uri: Uri? = nil) {
         self.client = client
         self.env = env
         self.uri = uri
@@ -96,18 +96,18 @@ class Base{{to_class_name type}} {
 
     var defaultClient: Invoker? { return nil }
     var defaultUri: Uri? { return nil }
-    var defaultEnv: {{to_class_name namespace}}Env? { return nil }
-
+    var defaultEnv: {{to_upper namespace}}Env? { return nil }
     {{#each methods}}
+
     func {{detect_keyword name}}(
         args: {{to_upper ../type}}Args{{to_upper name}},
         client: Invoker? = nil,
-        env: {{to_class_name namespace}}Env? = nil,
+        env: {{to_upper ../namespace}}Env? = nil,
         uri: Uri? = nil
     ) -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}} {
         let _client = client ?? self.client ?? defaultClient!
         let _env = env ?? self.env
-        let _uri = uri ?? self.uri ?? Uri("{{uri}}")
+        let _uri = uri ?? self.uri ?? Uri("{{../uri}}")
         return _client.invoke(_uri, "{{name}}", args, _env)
     }
     {{/each}}

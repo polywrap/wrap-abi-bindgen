@@ -4,16 +4,6 @@
 import PolywrapClient
 import Foundation
 
-// Env START //
-
-public struct Env: Codable {
-    var prop: String
-    var optProp: String?
-    var optMap: [String: Int32?]?
-}
-
-// Env END //
-
 // Objects START //
 
 public struct CustomType: Codable {
@@ -172,51 +162,57 @@ public struct ArgsReturnsArrayOfEnums: Codable {
     var arg: String
 }
 
-public class TestImportModule {
-    var uri: Uri
+/* URI: "testimport.uri.eth" */
+class BaseTestImportModule {
+    var client: Invoker? = nil
+    var env: TestImportEnv? = nil
+    var uri: Uri? = nil
 
-    public init(uri: Uri) {
+    init(client: Invoker? = nil, env: TestImportEnv? = nil, uri: Uri? = nil) {
+        self.client = client
+        self.env = env
         self.uri = uri
     }
+
+    var defaultClient: Invoker? { return nil }
+    var defaultUri: Uri? { return nil }
+    var defaultEnv: TestImportEnv? { return nil }
+
     func importedMethod(
-        _ args: TestImportModuleArgsImportedMethod,
-        _ invoker: Invoker
-    ) throws -> TestImportObject? {
-        let serializedArgs = try encode(value: args)
-        return try invoker.invokeRaw(
-            uri: try Uri("testimport.uri.eth"),
-            method: "importedMethod",
-            args: serializedArgs,
-            env: nil,
-        )
+        args: TestImportModuleArgsImportedMethod,
+        client: Invoker? = nil,
+        env: TestImportEnv? = nil,
+        uri: Uri? = nil
+    ) -> TestImportObject? {
+        let _client = client ?? self.client ?? defaultClient!
+        let _env = env ?? self.env
+        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        return _client.invoke(_uri, "importedMethod", args, _env)
     }
 
     func anotherMethod(
-        _ args: TestImportModuleArgsAnotherMethod,
-        _ invoker: Invoker
-    ) throws -> Int32 {
-        let serializedArgs = try encode(value: args)
-        return try invoker.invokeRaw(
-            uri: try Uri("testimport.uri.eth"),
-            method: "anotherMethod",
-            args: serializedArgs,
-            env: nil,
-        )
+        args: TestImportModuleArgsAnotherMethod,
+        client: Invoker? = nil,
+        env: TestImportEnv? = nil,
+        uri: Uri? = nil
+    ) -> Int32 {
+        let _client = client ?? self.client ?? defaultClient!
+        let _env = env ?? self.env
+        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        return _client.invoke(_uri, "anotherMethod", args, _env)
     }
 
     func returnsArrayOfEnums(
-        _ args: TestImportModuleArgsReturnsArrayOfEnums,
-        _ invoker: Invoker
-    ) throws -> Array<TestImportEnumReturn?> {
-        let serializedArgs = try encode(value: args)
-        return try invoker.invokeRaw(
-            uri: try Uri("testimport.uri.eth"),
-            method: "returnsArrayOfEnums",
-            args: serializedArgs,
-            env: nil,
-        )
+        args: TestImportModuleArgsReturnsArrayOfEnums,
+        client: Invoker? = nil,
+        env: TestImportEnv? = nil,
+        uri: Uri? = nil
+    ) -> Array<TestImportEnumReturn?> {
+        let _client = client ?? self.client ?? defaultClient!
+        let _env = env ?? self.env
+        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        return _client.invoke(_uri, "returnsArrayOfEnums", args, _env)
     }
-
-    
 }
+
 // Imported Modules END //
