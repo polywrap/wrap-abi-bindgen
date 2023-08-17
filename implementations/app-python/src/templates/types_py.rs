@@ -5,7 +5,7 @@ lazy_static! {
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TypedDict, Optional
+from typing import Any, TypedDict, Optional
 from enum import IntEnum
 
 from polywrap_core import Uri, Client
@@ -19,7 +19,7 @@ from polywrap_msgpack import GenericMap
     {{#each properties}}
     "{{name}}": {{to_python (to_graphql_type this)}},
     {{/each}}
-})
+}, total=False)
 
 {{/with}}
 ### Env END ###
@@ -31,7 +31,7 @@ from polywrap_msgpack import GenericMap
     {{#each properties}}
     "{{name}}": {{to_python (to_graphql_type this)}},
     {{/each}}
-})
+}, total=False)
 
 {{/each}}
 ### Objects END ###
@@ -61,7 +61,7 @@ class {{detect_keyword (to_upper type)}}(IntEnum):
     {{#each properties}}
     "{{name}}": {{to_python (to_graphql_type this)}},
     {{/each}}
-})
+}, total=False)
 
 {{/each}}
 ### Imported Objects END ###
@@ -95,7 +95,7 @@ class {{detect_keyword (to_upper type)}}(IntEnum):
     {{#each arguments}}
     "{{name}}": {{to_python (to_graphql_type this)}},
     {{/each}}
-})
+}, total=False)
 
 {{/each}}
 # URI: "{{uri}}" #
