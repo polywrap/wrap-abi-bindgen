@@ -93,10 +93,6 @@ class Base{{to_upper type}} {
         self.env = env
         self.uri = uri
     }
-
-    var defaultClient: Invoker? { return nil }
-    var defaultUri: Uri? { return nil }
-    var defaultEnv: {{to_upper namespace}}Env? { return nil }
     {{#each methods}}
 
     func {{detect_keyword name}}(

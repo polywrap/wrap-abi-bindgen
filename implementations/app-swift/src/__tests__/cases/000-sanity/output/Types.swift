@@ -174,10 +174,6 @@ class BaseTestImportModule {
         self.uri = uri
     }
 
-    var defaultClient: Invoker? { return nil }
-    var defaultUri: Uri? { return nil }
-    var defaultEnv: TestImportEnv? { return nil }
-
     func importedMethod(
         args: TestImportModuleArgsImportedMethod,
         client: Invoker? = nil,
