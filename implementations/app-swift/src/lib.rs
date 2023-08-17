@@ -2,6 +2,8 @@
 extern crate lazy_static;
 
 pub mod wrap;
+
+use polywrap_wasm_rs::JSON;
 pub use wrap::*;
 
 pub mod templates;

@@ -1,4 +1,4 @@
-import { Output, WrapInfo } from "./wrap";
+import {Output, WrapInfo} from "./wrap";
 import { loadTestCases, TestCase } from "./cases";
 import { orderOutput } from "./output";
 
@@ -30,7 +30,7 @@ describe("e2e", () => {
       const wrapInfo: WrapInfo = {
         version: "0.1",
         name: testCase.name,
-        type: "wasm",
+        type: "plugin",
         abi: JSON.stringify(abi),
       }
 
