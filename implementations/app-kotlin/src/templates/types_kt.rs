@@ -6,7 +6,6 @@ lazy_static! {
 package wrap
 
 import io.polywrap.configBuilder.polywrapClient
-import io.polywrap.core.WrapEnv
 import io.polywrap.core.Invoker
 import io.polywrap.core.InvokeResult
 import io.polywrap.core.resolution.Uri
@@ -69,6 +68,18 @@ enum class {{to_class_name type}} {
 {{/each}}
 /// Imported Enums END ///
 
+/// Imported Envs START ///
+{{#each importedEnvTypes}}
+@Serializable
+{{#if (array_has_length properties)}}data{{/if}} class {{to_class_name namespace}}Env(
+    {{#each properties}}
+    val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
+    {{/each}}
+)
+
+{{/each}}
+/// Imported Envs END ///
+
 /// Imported Modules START ///
 {{#each importedModuleTypes}}
 {{#each methods}}
@@ -84,22 +95,22 @@ enum class {{to_class_name type}} {
 /* URI: "{{uri}}" */
 abstract class Base{{to_class_name type}}(
     client: Invoker? = null,
-    env: WrapEnv? = null,
+    env: {{to_class_name namespace}}Env? = null,
     uri: Uri? = null
 ) {
     protected abstract val defaultClient: Invoker?
     protected abstract val defaultUri: Uri?
-    protected abstract val defaultEnv: WrapEnv?
+    protected abstract val defaultEnv: {{to_class_name namespace}}Env?
 
     protected val client: Invoker = client ?: defaultClient ?: polywrapClient { addDefaults() }
     protected val uri: Uri = uri ?: defaultUri ?: Uri("{{uri}}")
-    protected val env: WrapEnv? = env ?: defaultEnv
+    protected val env: {{to_class_name namespace}}Env? = env ?: defaultEnv
     {{#each methods}}
 
     fun {{detect_keyword name}}(
         args: {{to_class_name ../type}}Args{{to_class_name name}},
         client: Invoker? = null,
-        env: WrapEnv? = null,
+        env: {{to_class_name ../namespace}}Env? = null,
         uri: Uri? = null
     ): InvokeResult<{{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}> {
         val _client = client ?: this.client
