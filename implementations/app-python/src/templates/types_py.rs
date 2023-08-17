@@ -115,13 +115,13 @@ class {{to_abstract_type (detect_keyword type)}}(ABC):
         self._default_env = self._get_env(env)
 
     def _get_client(self, client: Optional[Client]) -> Client:
-        return client or getattr(self, "_default_client") or self._get_default_client()
+        return client or getattr(self, "_default_client", None) or self._get_default_client()
 
     def _get_uri(self, uri: Optional[Uri]) -> Uri:
-        return uri or getattr(self, "_default_uri") or self._get_default_uri() or Uri.from_str("{{uri}}")
+        return uri or getattr(self, "_default_uri", None) or self._get_default_uri() or Uri.from_str("{{uri}}")
 
     def _get_env(self, env: Optional[Any]) -> Any:
-        return env or getattr(self, "_default_env") or self._get_default_env()
+        return env or getattr(self, "_default_env", None) or self._get_default_env()
 
     @abstractmethod
     def _get_default_client(self) -> Client:
