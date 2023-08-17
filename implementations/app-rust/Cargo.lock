@@ -3,6 +3,17 @@
 version = 3
 
 [[package]]
+name = "app-rust-wrap-abi-bindgen"
+version = "0.1.0"
+dependencies = [
+ "handlebars",
+ "lazy_static",
+ "polywrap-wasm-rs",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -200,17 +211,6 @@ dependencies = [
  "once_cell",
  "pest",
  "sha2",
-]
-
-[[package]]
-name = "plugin-rust-wrap-abi-bindgen"
-version = "0.1.0"
-dependencies = [
- "handlebars",
- "lazy_static",
- "polywrap-wasm-rs",
- "serde",
- "serde_json",
 ]
 
 [[package]]

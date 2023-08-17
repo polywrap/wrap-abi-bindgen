@@ -27,17 +27,17 @@ impl ModuleTrait for Module {
         let mut output = Output::new();
 
         output.files.push(File {
-            name: "__init__.py".to_string(),
+            name: "mod.rs".to_string(),
             data: renderer.render(
-                "__init__.py",
+                "mod.rs",
                 &None::<JSON::Value>
             )
         });
 
         output.files.push(File {
-            name: "types.py".to_string(),
+            name: "types.rs".to_string(),
             data: renderer.render(
-                "types.py",
+                "types.rs",
                 &wrap_info.abi
             )
         });

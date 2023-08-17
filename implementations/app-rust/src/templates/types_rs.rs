@@ -99,6 +99,12 @@ pub enum {{detect_keyword (to_upper type)}} {
 
 // Imported Modules START //
 
+// pub trait BaseModuleTrait {
+//     fn _get_default_client(&self) -> Arc<dyn Invoker>;
+//     fn _get_default_uri(&self) -> Option<Uri>;
+//     fn _get_default_env(&self) -> Option<Vec<u8>>;
+// }
+
 {{#each importedModuleTypes}}
 {{#each methods}}
 // URI: "{{../uri}}" //
@@ -111,30 +117,44 @@ pub struct {{to_upper ../type}}Args{{to_upper name}} {
 
 {{/each}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{detect_keyword (to_upper type)}} {
+pub struct {{to_abstract_type (detect_keyword (to_upper type))}} {
     uri: Uri;
     invoker: Arc<dyn Invoker>;
+    env: Option<Vec<u8>>;
 }
 
 impl {{detect_keyword (to_upper type)}} {
     pub const URI: &'static str = "{{uri}}";
 
-    pub fn new(uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>) -> {{detect_keyword (to_upper type)}} {
-        _uri 
-        {{detect_keyword (to_upper type)}} {}
+    pub fn new(uri: Option<Uri>, invoker: Arc<dyn Invoker>, env: Option<Vec<u8>>) -> {{detect_keyword (to_upper type)}} {
+        let _uri = (uri.unwrap_or(Uri::try_from(Self::URI).unwrap());
+        let _invoker = invoker.unwrap();
+        let _env = env;
+
+        {{detect_keyword (to_upper type)}} {
+            uri: _uri,
+            invoker: _invoker,
+            env: _env,
+        }
     }
 
     {{#each methods}}
     let uri = {{to_upper ../type}}::URI;
-    pub fn {{detect_keyword (to_lower name)}}(args: &{{to_upper ../type}}Args{{to_upper name}}, invoker: Arc<dyn Invoker>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
+    pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, PluginError> {
+        let _uri = uri.unwrap_or(self.uri);
+        let _invoker = invoker.unwrap_or(self.invoker);
+        let _env = match env {
+            Some(e) => Some(e),
+            None => self.env,
+        };
+        
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        let uri = Uri::try_from(uri).unwrap();
-        let result = invoker.invoke_raw(
-            &uri,
+        let result = _invoker.invoke_raw(
+            &_uri,
             "{{name}}",
             opt_args,
-            None,
+            _env,
             None
         )
         .map_err(|e| PluginError::SubinvocationError {

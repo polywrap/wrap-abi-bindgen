@@ -12,6 +12,7 @@ mod to_graphql_type;
 mod to_lower;
 mod to_upper;
 mod to_rust;
+mod to_abstract_type;
 
 // helpers for helpers
 mod util;
@@ -65,4 +66,5 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         "to_rust",
         Box::new(to_rust::to_rust)
     );
+    handlebars.register_helper("to_abstract_type", Box::new(to_abstract_type::to_abstract_type));
 }
