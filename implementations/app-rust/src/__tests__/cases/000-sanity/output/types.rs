@@ -223,25 +223,42 @@ pub struct TestImportModuleArgsReturnsArrayOfEnums {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct TestImportModule<'a> {
-    uri: &'a str
+pub struct TestImportModule {
+    uri: Uri,
+    invoker: Arc<dyn Invoker>,
+    env: Option<Vec<u8>>
 }
 
-impl<'a> TestImportModule<'a> {
-    pub const INTERFACE_URI: &'static str = "testimport.uri.eth";
+impl TestImportModule {
+    pub const URI: &'static str = "testimport.uri.eth";
 
-    pub fn new(uri: &'a str) -> TestImportModule<'a> {
-        TestImportModule { uri: uri }
+    pub fn new(uri: Option<Uri>, invoker: Arc<dyn Invoker>, env: Option<Vec<u8>>) -> TestImportModule {
+        let _uri = uri.unwrap_or(Uri::try_from(Self::URI).unwrap());
+        let _invoker = invoker.unwrap();
+        let _env = env;
+
+        TestImportModule {
+            uri: _uri,
+            invoker: _invoker,
+            env: _env,
+        }
     }
 
-    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod) -> Result<Option<TestImportObject>, PluginError> {
-        let uri = self.uri;
+    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, PluginError> {
+        let _uri = uri.unwrap_or(self.uri.clone());
+        let _invoker = invoker.unwrap_or(self.invoker.clone());
+        let _env = match env {
+            Some(e) => Some(e),
+            None => self.env.clone(),
+        };
+
         let serialized_args = to_vec(args.clone()).unwrap();
-        let result = invoker.invoke_raw(
-            uri,
+        let opt_args = Some(serialized_args.as_slice());
+        let result = _invoker.invoke_raw(
+            &_uri,
             "importedMethod",
-            serialized_args,
-            None,
+            opt_args,
+            _env,
             None
         )
         .map_err(|e| PluginError::SubinvocationError {
@@ -254,14 +271,21 @@ impl<'a> TestImportModule<'a> {
         Ok(Some(from_slice(result.as_slice())?))
     }
 
-    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod) -> Result<i32, PluginError> {
-        let uri = self.uri;
+    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, PluginError> {
+        let _uri = uri.unwrap_or(self.uri.clone());
+        let _invoker = invoker.unwrap_or(self.invoker.clone());
+        let _env = match env {
+            Some(e) => Some(e),
+            None => self.env.clone(),
+        };
+
         let serialized_args = to_vec(args.clone()).unwrap();
-        let result = invoker.invoke_raw(
-            uri,
+        let opt_args = Some(serialized_args.as_slice());
+        let result = _invoker.invoke_raw(
+            &_uri,
             "anotherMethod",
-            serialized_args,
-            None,
+            opt_args,
+            _env,
             None
         )
         .map_err(|e| PluginError::SubinvocationError {
@@ -274,14 +298,21 @@ impl<'a> TestImportModule<'a> {
         Ok(from_slice(result.as_slice())?)
     }
 
-    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums) -> Result<Vec<Option<TestImportEnumReturn>>, PluginError> {
-        let uri = self.uri;
+    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, PluginError> {
+        let _uri = uri.unwrap_or(self.uri.clone());
+        let _invoker = invoker.unwrap_or(self.invoker.clone());
+        let _env = match env {
+            Some(e) => Some(e),
+            None => self.env.clone(),
+        };
+
         let serialized_args = to_vec(args.clone()).unwrap();
-        let result = invoker.invoke_raw(
-            uri,
+        let opt_args = Some(serialized_args.as_slice());
+        let result = _invoker.invoke_raw(
+            &_uri,
             "returnsArrayOfEnums",
-            serialized_args,
-            None,
+            opt_args,
+            _env,
             None
         )
         .map_err(|e| PluginError::SubinvocationError {
