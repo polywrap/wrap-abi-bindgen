@@ -3,16 +3,7 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
-use polywrap_core::{invoker::Invoker, uri::Uri};
-use polywrap_plugin::error::PluginError;
-use polywrap_msgpack_serde::{
-  to_vec,
-  from_slice,
-  JSON,
-  bytes::ByteBuf,
-  JSONString,
-  BigNumber
-};
+use polywrap::*;
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 use std::sync::Arc;
@@ -230,11 +221,14 @@ pub struct TestImportModule {
 }
 
 impl TestImportModule {
-    pub const URI: &'static str = "testimport.uri.eth";
-
     pub fn new(uri: Option<Uri>, invoker: Arc<dyn Invoker>, env: Option<Vec<u8>>) -> TestImportModule {
-        let _uri = uri.unwrap_or(Uri::try_from(Self::URI).unwrap());
-        let _invoker = invoker.unwrap();
+        let mut config = PolywrapClientConfig::new();
+        config.add(SystemClientConfig::default().into());
+        config.add(Web3ClientConfig::default().into());
+        let client = PolywrapClient::new(config.build());
+
+        let _uri = uri.unwrap_or(uri!("testimport.uri.eth"));
+        let _invoker = invoker.unwrap_or(Arc::new(client));
         let _env = env;
 
         TestImportModule {
@@ -244,7 +238,7 @@ impl TestImportModule {
         }
     }
 
-    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, PluginError> {
+    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
@@ -254,24 +248,16 @@ impl TestImportModule {
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        let result = _invoker.invoke_raw(
+        _invoker.invoke<Option<TestImportObject>>(
             &_uri,
             "importedMethod",
             opt_args,
             _env,
             None
         )
-        .map_err(|e| PluginError::SubinvocationError {
-            uri: uri.to_string(),
-            method: "importedMethod".to_string(),
-            args: JSON::to_string(&args).unwrap(),
-            exception: e.to_string(),
-        })?;
-
-        Ok(Some(from_slice(result.as_slice())?))
     }
 
-    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, PluginError> {
+    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
@@ -281,24 +267,16 @@ impl TestImportModule {
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        let result = _invoker.invoke_raw(
+        _invoker.invoke<i32>(
             &_uri,
             "anotherMethod",
             opt_args,
             _env,
             None
         )
-        .map_err(|e| PluginError::SubinvocationError {
-            uri: uri.to_string(),
-            method: "anotherMethod".to_string(),
-            args: JSON::to_string(&args).unwrap(),
-            exception: e.to_string(),
-        })?;
-
-        Ok(from_slice(result.as_slice())?)
     }
 
-    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, PluginError> {
+    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
@@ -308,21 +286,13 @@ impl TestImportModule {
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        let result = _invoker.invoke_raw(
+        _invoker.invoke<Vec<Option<TestImportEnumReturn>>>(
             &_uri,
             "returnsArrayOfEnums",
             opt_args,
             _env,
             None
         )
-        .map_err(|e| PluginError::SubinvocationError {
-            uri: uri.to_string(),
-            method: "returnsArrayOfEnums".to_string(),
-            args: JSON::to_string(&args).unwrap(),
-            exception: e.to_string(),
-        })?;
-
-        Ok(from_slice(result.as_slice())?)
     }
 }
 // Imported Modules END //
