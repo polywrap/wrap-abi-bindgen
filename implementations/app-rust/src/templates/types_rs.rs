@@ -127,7 +127,7 @@ impl {{detect_keyword (to_upper type)}} {
     }
 
     {{#each methods}}
-    pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, Error> {
+    pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {

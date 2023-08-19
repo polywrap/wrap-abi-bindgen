@@ -238,7 +238,7 @@ impl TestImportModule {
         }
     }
 
-    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, Error> {
+    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
@@ -257,7 +257,7 @@ impl TestImportModule {
         )
     }
 
-    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, Error> {
+    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
@@ -276,7 +276,7 @@ impl TestImportModule {
         )
     }
 
-    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
+    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
