@@ -3,7 +3,18 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
-use polywrap::*;
+use polywrap::{
+    from_slice,
+    uri,
+    to_vec,
+    Uri,
+    Invoker,
+    PolywrapClient,
+    PolywrapClientConfig,
+    SystemClientConfig,
+    Web3ClientConfig,
+    polywrap_core::error::Error
+};
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 use std::sync::Arc;
@@ -213,7 +224,7 @@ pub struct TestImportModuleArgsReturnsArrayOfEnums {
     pub arg: String,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone)]
 pub struct TestImportModule {
     uri: Uri,
     invoker: Arc<dyn Invoker>,
@@ -221,7 +232,7 @@ pub struct TestImportModule {
 }
 
 impl TestImportModule {
-    pub fn new(uri: Option<Uri>, invoker: Arc<dyn Invoker>, env: Option<Vec<u8>>) -> TestImportModule {
+    pub fn new(uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> TestImportModule {
         let mut config = PolywrapClientConfig::new();
         config.add(SystemClientConfig::default().into());
         config.add(Web3ClientConfig::default().into());
@@ -238,61 +249,76 @@ impl TestImportModule {
         }
     }
 
-    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>> {
+    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
-            Some(e) => Some(e),
-            None => self.env.clone(),
+            Some(e) => Some(e.as_slice()),
+            None => match self.env.clone() {
+                Some(e) => Some(e.as_slice()),
+                None => None,
+            },
         };
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        _invoker.invoke<Option<TestImportObject>>(
+        let result = _invoker.invoke_raw(
             &_uri,
             "importedMethod",
             opt_args,
             _env,
             None
-        )
+        )?;
+
+        from_slice(result.as_slice()).map_err(Error::MsgpackError)
     }
 
-    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32> {
+    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
-            Some(e) => Some(e),
-            None => self.env.clone(),
+            Some(e) => Some(e.as_slice()),
+            None => match self.env.clone() {
+                Some(e) => Some(e.as_slice()),
+                None => None,
+            },
         };
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        _invoker.invoke<i32>(
+        let result = _invoker.invoke_raw(
             &_uri,
             "anotherMethod",
             opt_args,
             _env,
             None
-        )
+        )?;
+
+        from_slice(result.as_slice()).map_err(Error::MsgpackError)
     }
 
-    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>> {
+    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
         let _env = match env {
-            Some(e) => Some(e),
-            None => self.env.clone(),
+            Some(e) => Some(e.as_slice()),
+            None => match self.env.clone() {
+                Some(e) => Some(e.as_slice()),
+                None => None,
+            },
         };
 
         let serialized_args = to_vec(args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
-        _invoker.invoke<Vec<Option<TestImportEnumReturn>>>(
+        let result = _invoker.invoke_raw(
             &_uri,
             "returnsArrayOfEnums",
             opt_args,
             _env,
             None
-        )
+        )?;
+
+        from_slice(result.as_slice()).map_err(Error::MsgpackError)
     }
 }
 // Imported Modules END //
