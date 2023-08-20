@@ -149,7 +149,7 @@ impl {{detect_keyword (to_upper type)}} {
             },
         };
 
-        let serialized_args = to_vec(args.clone()).unwrap();
+        let serialized_args = to_vec(&args.clone()).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let result = _invoker.invoke_raw(
             &_uri,
