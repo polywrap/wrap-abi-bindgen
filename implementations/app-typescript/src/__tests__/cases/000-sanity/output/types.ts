@@ -184,7 +184,7 @@ export interface TestImport_Module_Args_returnsArrayOfEnums {
 }
 
 /* URI: "testimport.uri.eth" */
-export abstract class BaseTestImport {
+export class TestImport {
   protected _defaultClient: CoreClient;
   protected _defaultUri: string;
   protected _defaultEnv?: Record<string, unknown>;
@@ -212,20 +212,26 @@ export abstract class BaseTestImport {
   }
 
   private _getClient(client?: CoreClient): CoreClient {
-    return client || this._defaultClient || this._getDefaultClient() || new PolywrapClient();
+    return client || this._defaultClient || this._getDefaultClient();
   }
 
   private _getUri(uri?: string): string {
-    return uri || this._defaultUri || this._getDefaultUri() || "testimport.uri.eth";
+    return uri || this._defaultUri || this._getDefaultUri();
   }
 
   private _getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
     return env || this._defaultEnv || this._getDefaultEnv();
   }
 
-  protected abstract _getDefaultClient(): CoreClient;
-  protected abstract _getDefaultUri(): string | undefined;
-  protected abstract _getDefaultEnv(): Record<string, unknown> | undefined;
+  protected _getDefaultClient(): CoreClient {
+    return new PolywrapClient();
+  }
+  protected _getDefaultUri(): string {
+    return "testimport.uri.eth";
+  }
+  protected _getDefaultEnv(): Record<string, unknown> | undefined {
+    return undefined;
+  }
 
   async importedMethod(
     args: TestImport_Module_Args_importedMethod,

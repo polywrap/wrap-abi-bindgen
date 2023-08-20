@@ -7,7 +7,7 @@ mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod pretty;
-mod to_abstract_type;
+mod remove_module_suffix;
 mod to_graphql_type;
 mod to_typescript;
 
@@ -31,7 +31,7 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper("pretty", Box::new(pretty::pretty));
     handlebars.register_helper("to_typescript", Box::new(to_typescript::to_typescript));
     handlebars.register_helper(
-        "to_abstract_type",
-        Box::new(to_abstract_type::to_abstract_type),
+        "remove_module_suffix",
+        Box::new(remove_module_suffix::remove_module_suffix),
     );
 }

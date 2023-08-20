@@ -102,7 +102,7 @@ export interface {{../type}}_Args_{{name}} {
 {{/each}}
 
 /* URI: "{{uri}}" */
-export abstract class {{to_abstract_type (detect_keyword type)}} {
+export class {{remove_module_suffix (detect_keyword type)}} {
   protected _defaultClient: CoreClient;
   protected _defaultUri: string;
   protected _defaultEnv?: Record<string, unknown>;
@@ -130,20 +130,26 @@ export abstract class {{to_abstract_type (detect_keyword type)}} {
   }
 
   private _getClient(client?: CoreClient): CoreClient {
-    return client || this._defaultClient || this._getDefaultClient() || new PolywrapClient();
+    return client || this._defaultClient || this._getDefaultClient();
   }
 
   private _getUri(uri?: string): string {
-    return uri || this._defaultUri || this._getDefaultUri() || "{{{uri}}}";
+    return uri || this._defaultUri || this._getDefaultUri();
   }
 
   private _getEnv(env?: Record<string, unknown>): Record<string, unknown> | undefined {
     return env || this._defaultEnv || this._getDefaultEnv();
   }
 
-  protected abstract _getDefaultClient(): CoreClient;
-  protected abstract _getDefaultUri(): string | undefined;
-  protected abstract _getDefaultEnv(): Record<string, unknown> | undefined;
+  protected _getDefaultClient(): CoreClient {
+    return new PolywrapClient();
+  }
+  protected _getDefaultUri(): string {
+    return "{{{uri}}}";
+  }
+  protected _getDefaultEnv(): Record<string, unknown> | undefined {
+    return undefined;
+  }
 
   {{#each methods}}
   async {{name}}(
