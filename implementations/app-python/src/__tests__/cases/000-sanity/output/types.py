@@ -6,8 +6,15 @@ from abc import ABC, abstractmethod
 from typing import TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import Uri, Client
-from polywrap_msgpack import GenericMap
+from polywrap import (
+    Uri,
+    Client,
+    GenericMap,
+    PolywrapClient,
+    PolywrapClientConfigBuilder,
+    sys_bundle,
+    web3_bundle
+)
 
 
 ### Env START ###
@@ -188,7 +195,7 @@ TestImportModuleArgsReturnsArrayOfEnums = TypedDict("TestImportModuleArgsReturns
 })
 
 # URI: "testimport.uri.eth" #
-class BaseTestImport(ABC):
+class BaseTestImport:
     _default_client: Client
     _default_uri: Uri
     _default_env: Optional[Any]
@@ -212,17 +219,20 @@ class BaseTestImport(ABC):
     def _get_env(self, env: Optional[Any]) -> Any:
         return env or self._default_env or self._get_default_env()
 
-    @abstractmethod
     def _get_default_client(self) -> Client:
-        pass
+        config = (
+            PolywrapClientConfigBuilder()
+            .add_bundle(sys_bundle())
+            .add_bundle(web3_bundle())
+            .build()
+        )
+        return PolywrapClient(config)
 
-    @abstractmethod
     def _get_default_uri(self) -> Optional[Uri]:
-        pass
+        return Uri.from_str("{{uri}}")
 
-    @abstractmethod
     def _get_default_env(self) -> Any:
-        pass
+        return None
 
     def imported_method(
         self,

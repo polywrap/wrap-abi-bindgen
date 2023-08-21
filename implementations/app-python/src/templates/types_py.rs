@@ -4,12 +4,18 @@ lazy_static! {
 # type: ignore
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from typing import Any, TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import Uri, Client
-from polywrap_msgpack import GenericMap
+from polywrap import (
+    Uri,
+    Client,
+    GenericMap,
+    PolywrapClient,
+    PolywrapClientConfigBuilder,
+    sys_bundle,
+    web3_bundle
+)
 
 
 ### Env START ###
@@ -99,7 +105,7 @@ class {{detect_keyword (to_upper type)}}(IntEnum):
 
 {{/each}}
 # URI: "{{uri}}" #
-class {{to_abstract_type (detect_keyword type)}}(ABC):
+class {{to_abstract_type (detect_keyword type)}}:
     _default_client: Client
     _default_uri: Uri
     _default_env: Optional[Any]
@@ -118,22 +124,25 @@ class {{to_abstract_type (detect_keyword type)}}(ABC):
         return client or getattr(self, "_default_client", None) or self._get_default_client()
 
     def _get_uri(self, uri: Optional[Uri]) -> Uri:
-        return uri or getattr(self, "_default_uri", None) or self._get_default_uri() or Uri.from_str("{{uri}}")
+        return uri or getattr(self, "_default_uri", None) or self._get_default_uri() 
 
     def _get_env(self, env: Optional[Any]) -> Any:
         return env or getattr(self, "_default_env", None) or self._get_default_env()
 
-    @abstractmethod
     def _get_default_client(self) -> Client:
-        pass
+        config = (
+            PolywrapClientConfigBuilder()
+            .add_bundle(sys_bundle())
+            .add_bundle(web3_bundle())
+            .build()
+        )
+        return PolywrapClient(config)
 
-    @abstractmethod
     def _get_default_uri(self) -> Optional[Uri]:
-        pass
+        return Uri.from_str("{{uri}}")
 
-    @abstractmethod
     def _get_default_env(self) -> Any:
-        pass
+        return None
 
     {{#each methods}}
     def {{detect_keyword (to_lower name)}}(
