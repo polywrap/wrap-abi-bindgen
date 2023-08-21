@@ -2,12 +2,18 @@
 # type: ignore
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from typing import TypedDict, Optional
+from typing import Any, TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import Uri, Client
-from polywrap_msgpack import GenericMap
+from polywrap import (
+    Uri,
+    Client,
+    GenericMap,
+    PolywrapClient,
+    PolywrapClientConfigBuilder,
+    sys_bundle,
+    web3_bundle
+)
 
 
 ### Env START ###
@@ -55,21 +61,21 @@ CustomType = TypedDict("CustomType", {
     "mapOfObj": GenericMap[str, "AnotherType"],
     "mapOfArrOfObj": GenericMap[str, list["AnotherType"]],
     "mapCustomValue": GenericMap[str, Optional["CustomMapValue"]],
-})
+}, total=False)
 
 AnotherType = TypedDict("AnotherType", {
     "prop": Optional[str],
     "circular": Optional["CustomType"],
     "const": Optional[str],
-})
+}, total=False)
 
 CustomMapValue = TypedDict("CustomMapValue", {
     "foo": str,
-})
+}, total=False)
 
 Else = TypedDict("Else", {
     "else": str,
-})
+}, total=False)
 
 ### Objects END ###
 

@@ -9,7 +9,6 @@ dependencies = [
  "handlebars",
  "lazy_static",
  "polywrap-wasm-rs",
- "polywrap_msgpack_serde",
  "serde",
  "serde_json",
 ]
@@ -226,21 +225,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "polywrap_msgpack_serde"
-version = "0.0.2-beta.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "efb55e4b83dd7fb9d547792aa65d68698e3b16b3c0e26bb2846c576b4c994c9f"
-dependencies = [
- "bigdecimal",
- "byteorder",
- "num-bigint",
- "serde",
- "serde_bytes",
- "serde_json",
- "thiserror",
-]
-
-[[package]]
 name = "proc-macro2"
 version = "1.0.63"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -271,15 +255,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be9b6f69f1dfd54c3b568ffa45c310d6973a5e5148fd40cf515acaf38cf5bc31"
 dependencies = [
  "serde_derive",
-]
-
-[[package]]
-name = "serde_bytes"
-version = "0.11.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ab33ec92f677585af6d88c65593ae2375adde54efdbf16d597f2cbc7a6d368ff"
-dependencies = [
- "serde",
 ]
 
 [[package]]

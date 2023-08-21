@@ -2,12 +2,18 @@
 # type: ignore
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from typing import TypedDict, Optional
+from typing import Any, TypedDict, Optional
 from enum import IntEnum
 
-from polywrap_core import Uri, Client
-from polywrap_msgpack import GenericMap
+from polywrap import (
+    Uri,
+    Client,
+    GenericMap,
+    PolywrapClient,
+    PolywrapClientConfigBuilder,
+    sys_bundle,
+    web3_bundle
+)
 
 
 ### Env START ###
