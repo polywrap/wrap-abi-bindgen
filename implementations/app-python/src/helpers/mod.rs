@@ -11,6 +11,7 @@ mod to_lower;
 mod to_python;
 mod to_upper;
 mod to_abstract_type;
+mod remove_module_suffix;
 
 // helpers for helpers
 mod util;
@@ -59,5 +60,9 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "to_abstract_type",
         Box::new(to_abstract_type::to_abstract_type)
+    );
+    handlebars.register_helper(
+        "remove_module_suffix",
+        Box::new(remove_module_suffix::remove_module_suffix),
     );
 }

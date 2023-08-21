@@ -2,8 +2,7 @@
 # type: ignore
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from typing import TypedDict, Optional
+from typing import Any, TypedDict, Optional
 from enum import IntEnum
 
 from polywrap import (
@@ -23,7 +22,7 @@ Env = TypedDict("Env", {
     "prop": str,
     "optProp": Optional[str],
     "optMap": Optional[GenericMap[str, Optional[int]]],
-})
+}, total=False)
 
 ### Env END ###
 
@@ -72,21 +71,21 @@ CustomType = TypedDict("CustomType", {
     "mapOfObj": GenericMap[str, "AnotherType"],
     "mapOfArrOfObj": GenericMap[str, list["AnotherType"]],
     "mapCustomValue": GenericMap[str, Optional["CustomMapValue"]],
-})
+}, total=False)
 
 AnotherType = TypedDict("AnotherType", {
     "prop": Optional[str],
     "circular": Optional["CustomType"],
     "const": Optional[str],
-})
+}, total=False)
 
 CustomMapValue = TypedDict("CustomMapValue", {
     "foo": str,
-})
+}, total=False)
 
 Else = TypedDict("Else", {
     "else": str,
-})
+}, total=False)
 
 ### Objects END ###
 
@@ -127,12 +126,12 @@ TestImportObject = TypedDict("TestImportObject", {
     "optEnum": Optional["TestImportEnum"],
     "enumArray": list["TestImportEnum"],
     "optEnumArray": Optional[list[Optional["TestImportEnum"]]],
-})
+}, total=False)
 
 # URI: "testimport.uri.eth" #
 TestImportAnotherObject = TypedDict("TestImportAnotherObject", {
     "prop": str,
-})
+}, total=False)
 
 ### Imported Objects END ###
 
@@ -182,20 +181,20 @@ TestImportModuleArgsImportedMethod = TypedDict("TestImportModuleArgsImportedMeth
     "optEnum": Optional["TestImportEnum"],
     "enumArray": list["TestImportEnum"],
     "optEnumArray": Optional[list[Optional["TestImportEnum"]]],
-})
+}, total=False)
 
 # URI: "testimport.uri.eth" #
 TestImportModuleArgsAnotherMethod = TypedDict("TestImportModuleArgsAnotherMethod", {
     "arg": list[str],
-})
+}, total=False)
 
 # URI: "testimport.uri.eth" #
 TestImportModuleArgsReturnsArrayOfEnums = TypedDict("TestImportModuleArgsReturnsArrayOfEnums", {
     "arg": str,
-})
+}, total=False)
 
 # URI: "testimport.uri.eth" #
-class BaseTestImport:
+class TestImport:
     _default_client: Client
     _default_uri: Uri
     _default_env: Optional[Any]
@@ -211,13 +210,13 @@ class BaseTestImport:
         self._default_env = self._get_env(env)
 
     def _get_client(self, client: Optional[Client]) -> Client:
-        return client or self._default_client or self._get_default_client()
+        return client or getattr(self, "_default_client", None) or self._get_default_client()
 
     def _get_uri(self, uri: Optional[Uri]) -> Uri:
-        return uri or self._default_uri or self._get_default_uri() or Uri.from_str("testimport.uri.eth")
+        return uri or getattr(self, "_default_uri", None) or self._get_default_uri() 
 
     def _get_env(self, env: Optional[Any]) -> Any:
-        return env or self._default_env or self._get_default_env()
+        return env or getattr(self, "_default_env", None) or self._get_default_env()
 
     def _get_default_client(self) -> Client:
         config = (
@@ -229,7 +228,7 @@ class BaseTestImport:
         return PolywrapClient(config)
 
     def _get_default_uri(self) -> Optional[Uri]:
-        return Uri.from_str("{{uri}}")
+        return Uri.from_str("testimport.uri.eth")
 
     def _get_default_env(self) -> Any:
         return None

@@ -105,7 +105,7 @@ class {{detect_keyword (to_upper type)}}(IntEnum):
 
 {{/each}}
 # URI: "{{uri}}" #
-class {{to_abstract_type (detect_keyword type)}}:
+class {{remove_module_suffix (detect_keyword type)}}:
     _default_client: Client
     _default_uri: Uri
     _default_env: Optional[Any]
