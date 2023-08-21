@@ -132,8 +132,8 @@ class {{remove_module_suffix (detect_keyword type)}}:
     def _get_default_client(self) -> Client:
         config = (
             PolywrapClientConfigBuilder()
-            .add_bundle(sys_bundle())
-            .add_bundle(web3_bundle())
+            .add_bundle(sys_bundle)
+            .add_bundle(web3_bundle)
             .build()
         )
         return PolywrapClient(config)
