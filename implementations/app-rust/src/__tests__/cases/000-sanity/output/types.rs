@@ -10,6 +10,7 @@ use polywrap::{
     Uri,
     Invoker,
     PolywrapClient,
+    PolywrapClientConfigBuilder,
     PolywrapClientConfig,
     SystemClientConfig,
     Web3ClientConfig,
@@ -260,7 +261,7 @@ impl TestImportModule {
             },
         };
 
-        let serialized_args = to_vec(args.clone()).unwrap();
+        let serialized_args = to_vec(&args).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let result = _invoker.invoke_raw(
             &_uri,
@@ -284,7 +285,7 @@ impl TestImportModule {
             },
         };
 
-        let serialized_args = to_vec(args.clone()).unwrap();
+        let serialized_args = to_vec(&args).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let result = _invoker.invoke_raw(
             &_uri,
@@ -308,7 +309,7 @@ impl TestImportModule {
             },
         };
 
-        let serialized_args = to_vec(args.clone()).unwrap();
+        let serialized_args = to_vec(&args).unwrap();
         let opt_args = Some(serialized_args.as_slice());
         let result = _invoker.invoke_raw(
             &_uri,
