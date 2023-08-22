@@ -5,25 +5,15 @@ lazy_static! {
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
+use polywrap::*;
 use polywrap::{
-    from_slice,
-    uri,
-    to_vec,
-    Uri,
-    Invoker,
-    PolywrapClient,
-    PolywrapClientConfigBuilder,
-    ClientConfigBuilder,
-    PolywrapClientConfig,
-    SystemClientConfig,
-    Web3ClientConfig,
-    polywrap_core::error::Error
+    core::error::Error,
+    msgpack::from_slice
 };
+use std::result::Result;
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
-{{#each importedModuleTypes}}
 use std::sync::Arc;
-{{/each}}
 
 pub type BigInt = String;
 
@@ -143,9 +133,9 @@ impl {{detect_keyword (to_upper type)}} {
     pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match env {
+        let _env = match &env {
             Some(e) => Some(e.as_slice()),
-            None => match self.env.clone() {
+            None => match &self.env {
                 Some(e) => Some(e.as_slice()),
                 None => None,
             },
