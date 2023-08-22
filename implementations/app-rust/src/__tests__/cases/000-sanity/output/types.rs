@@ -11,6 +11,7 @@ use polywrap::{
     Invoker,
     PolywrapClient,
     PolywrapClientConfigBuilder,
+    ClientConfigBuilder,
     PolywrapClientConfig,
     SystemClientConfig,
     Web3ClientConfig,
