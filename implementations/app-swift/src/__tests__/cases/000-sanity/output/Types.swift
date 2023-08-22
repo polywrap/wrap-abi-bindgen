@@ -163,7 +163,7 @@ public struct ArgsReturnsArrayOfEnums: Codable {
 }
 
 /* URI: "testimport.uri.eth" */
-class BaseTestImportModule {
+class TestImport {
     var client: Invoker? = nil
     var env: TestImportEnv? = nil
     var uri: Uri? = nil
@@ -174,15 +174,29 @@ class BaseTestImportModule {
         self.uri = uri
     }
 
+    func getDefaultClient() -> Invoker {
+        if (self.client == nil) {
+            self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
+        }
+        return self.client!
+    }
+
+    func getDefaultUri() -> Uri {
+        if (self.uri == nil) {
+            self.uri = Uri("testimport.uri.eth")
+        }
+        return self.uri!
+    }
+
     func importedMethod(
         args: TestImportModuleArgsImportedMethod,
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) -> TestImportObject? {
-        let _client = client ?? self.client ?? defaultClient!
+        let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
-        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        let _uri = uri ?? self.uri ?? getDefaultUri()
         return _client.invoke(_uri, "importedMethod", args, _env)
     }
 
@@ -192,9 +206,9 @@ class BaseTestImportModule {
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) -> Int32 {
-        let _client = client ?? self.client ?? defaultClient!
+        let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
-        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        let _uri = uri ?? self.uri ?? getDefaultUri()
         return _client.invoke(_uri, "anotherMethod", args, _env)
     }
 
@@ -204,9 +218,9 @@ class BaseTestImportModule {
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) -> Array<TestImportEnumReturn?> {
-        let _client = client ?? self.client ?? defaultClient!
+        let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
-        let _uri = uri ?? self.uri ?? Uri("testimport.uri.eth")
+        let _uri = uri ?? self.uri ?? getDefaultUri()
         return _client.invoke(_uri, "returnsArrayOfEnums", args, _env)
     }
 }

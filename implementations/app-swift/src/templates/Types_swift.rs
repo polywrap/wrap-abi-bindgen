@@ -83,7 +83,7 @@ public struct Args{{to_upper name}}: Codable {
 
 {{/each}}
 /* URI: "{{uri}}" */
-class Base{{to_upper type}} {
+class {{to_upper (remove_module_suffix type)}} {
     var client: Invoker? = nil
     var env: {{to_upper namespace}}Env? = nil
     var uri: Uri? = nil
@@ -93,6 +93,20 @@ class Base{{to_upper type}} {
         self.env = env
         self.uri = uri
     }
+
+    func getDefaultClient() -> Invoker {
+        if (self.client == nil) {
+            self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
+        }
+        return self.client!
+    }
+
+    func getDefaultUri() -> Uri {
+        if (self.uri == nil) {
+            self.uri = Uri("{{uri}}")
+        }
+        return self.uri!
+    }
     {{#each methods}}
 
     func {{detect_keyword name}}(
@@ -101,9 +115,9 @@ class Base{{to_upper type}} {
         env: {{to_upper ../namespace}}Env? = nil,
         uri: Uri? = nil
     ) -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}} {
-        let _client = client ?? self.client ?? defaultClient!
+        let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
-        let _uri = uri ?? self.uri ?? Uri("{{../uri}}")
+        let _uri = uri ?? self.uri ?? getDefaultUri()
         return _client.invoke(_uri, "{{name}}", args, _env)
     }
     {{/each}}

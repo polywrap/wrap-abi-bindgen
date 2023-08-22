@@ -7,6 +7,7 @@ mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod pretty;
+mod remove_module_suffix;
 mod to_graphql_type;
 mod to_lower;
 mod to_upper;
@@ -43,6 +44,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "pretty",
         Box::new(pretty::pretty)
+    );
+    handlebars.register_helper(
+        "remove_module_suffix",
+        Box::new(remove_module_suffix::remove_module_suffix)
     );
     handlebars.register_helper(
         "to_graphql_type",
