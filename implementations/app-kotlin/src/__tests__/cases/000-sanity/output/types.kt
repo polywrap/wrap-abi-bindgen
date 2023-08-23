@@ -154,7 +154,7 @@ data class TestImportEnv(
 /// Imported Modules START ///
 /* URI: "testimport.uri.eth" */
 @Serializable
-data class TestImportModuleArgsImportedMethod(
+data class TestImportArgsImportedMethod(
     val str: String,
     val optStr: String? = null,
     val u: UInt,
@@ -172,63 +172,78 @@ data class TestImportModuleArgsImportedMethod(
 
 /* URI: "testimport.uri.eth" */
 @Serializable
-data class TestImportModuleArgsAnotherMethod(
+data class TestImportArgsAnotherMethod(
     val arg: List<String>,
 )
 
 /* URI: "testimport.uri.eth" */
 @Serializable
-data class TestImportModuleArgsReturnsArrayOfEnums(
+data class TestImportArgsReturnsArrayOfEnums(
     val arg: String,
 )
 
 /* URI: "testimport.uri.eth" */
-abstract class BaseTestImportModule(
+class TestImport(
+    client: Invoker? = null,
+    env: TestImportEnv? = null,
+    uri: Uri? = null
+) : BaseTestImport(client, env, uri) {
+    override val defaultClient: Invoker by lazy {
+        polywrapClient { addDefaults() }
+    }
+    override val defaultUri: Uri by lazy {
+        Uri("testimport.uri.eth")
+    }
+    override val defaultEnv: TestImportEnv? = null
+}
+
+/* URI: "testimport.uri.eth" */
+abstract class BaseTestImport(
     client: Invoker? = null,
     env: TestImportEnv? = null,
     uri: Uri? = null
 ) {
-    protected abstract val defaultClient: Invoker?
-    protected abstract val defaultUri: Uri?
+    protected abstract val defaultClient: Invoker
+    protected abstract val defaultUri: Uri
     protected abstract val defaultEnv: TestImportEnv?
 
-    protected val client: Invoker = client ?: defaultClient ?: polywrapClient { addDefaults() }
-    protected val uri: Uri = uri ?: defaultUri ?: Uri("testimport.uri.eth")
-    protected val env: TestImportEnv? = env ?: defaultEnv
+    val client: Invoker = client ?: defaultClient
+    val uri: Uri = uri ?: defaultUri
+    val env: TestImportEnv? = env ?: defaultEnv
 
     fun importedMethod(
-        args: TestImportModuleArgsImportedMethod,
+        args: TestImportArgsImportedMethod,
         client: Invoker? = null,
         env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<TestImportObject?> {
         val _client = client ?: this.client
-        val _env = env ?: this.env
         val _uri = uri ?: this.uri
+        val _env = env ?: this.env
         return _client.invoke(_uri, "importedMethod", args, _env)
     }
 
     fun anotherMethod(
-        args: TestImportModuleArgsAnotherMethod,
+        args: TestImportArgsAnotherMethod,
         client: Invoker? = null,
         env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<Int> {
         val _client = client ?: this.client
-        val _env = env ?: this.env
         val _uri = uri ?: this.uri
+        val _env = env ?: this.env
         return _client.invoke(_uri, "anotherMethod", args, _env)
     }
 
     fun returnsArrayOfEnums(
-        args: TestImportModuleArgsReturnsArrayOfEnums,
+        args: TestImportArgsReturnsArrayOfEnums,
         client: Invoker? = null,
         env: TestImportEnv? = null,
         uri: Uri? = null
     ): InvokeResult<List<TestImportEnumReturn?>> {
         val _client = client ?: this.client
-        val _env = env ?: this.env
         val _uri = uri ?: this.uri
+        val _env = env ?: this.env
         return _client.invoke(_uri, "returnsArrayOfEnums", args, _env)
     }
 }

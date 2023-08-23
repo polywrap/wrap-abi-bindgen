@@ -85,7 +85,7 @@ enum class {{to_class_name type}} {
 {{#each methods}}
 /* URI: "{{../uri}}" */
 @Serializable
-{{#if (array_has_length arguments)}}data{{/if}} class {{to_class_name ../type}}Args{{to_class_name name}}(
+{{#if (array_has_length arguments)}}data{{/if}} class {{to_class_name (remove_module_suffix ../type)}}Args{{to_class_name name}}(
     {{#each arguments}}
     val {{detect_keyword name}}: {{nullable_default (to_kotlin (to_graphql_type this))}},
     {{/each}}
@@ -93,30 +93,61 @@ enum class {{to_class_name type}} {
 
 {{/each}}
 /* URI: "{{uri}}" */
-abstract class Base{{to_class_name type}}(
+class {{to_class_name (remove_module_suffix type)}}(
     client: Invoker? = null,
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
     env: {{to_class_name namespace}}Env? = null,
+    {{/if}}
+    uri: Uri? = null
+) : Base{{to_class_name (remove_module_suffix type)}}(client{{#if (import_has_env ../importedEnvTypes namespace)}}, env{{/if}}, uri) {
+    override val defaultClient: Invoker by lazy {
+        polywrapClient { addDefaults() }
+    }
+    override val defaultUri: Uri by lazy {
+        Uri("{{uri}}")
+    }
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
+    override val defaultEnv: {{to_class_name namespace}}Env? = null
+    {{/if}}
+}
+
+/* URI: "{{uri}}" */
+abstract class Base{{to_class_name (remove_module_suffix type)}}(
+    client: Invoker? = null,
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
+    env: {{to_class_name namespace}}Env? = null,
+    {{/if}}
     uri: Uri? = null
 ) {
-    protected abstract val defaultClient: Invoker?
-    protected abstract val defaultUri: Uri?
+    protected abstract val defaultClient: Invoker
+    protected abstract val defaultUri: Uri
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
     protected abstract val defaultEnv: {{to_class_name namespace}}Env?
+    {{/if}}
 
-    protected val client: Invoker = client ?: defaultClient ?: polywrapClient { addDefaults() }
-    protected val uri: Uri = uri ?: defaultUri ?: Uri("{{uri}}")
-    protected val env: {{to_class_name namespace}}Env? = env ?: defaultEnv
+    val client: Invoker = client ?: defaultClient
+    val uri: Uri = uri ?: defaultUri
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
+    val env: {{to_class_name namespace}}Env? = env ?: defaultEnv
+    {{/if}}
     {{#each methods}}
 
     fun {{detect_keyword name}}(
-        args: {{to_class_name ../type}}Args{{to_class_name name}},
+        args: {{to_class_name (remove_module_suffix ../type)}}Args{{to_class_name name}},
         client: Invoker? = null,
+        {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
         env: {{to_class_name ../namespace}}Env? = null,
+        {{/if}}
         uri: Uri? = null
     ): InvokeResult<{{#with return}}{{to_kotlin (to_graphql_type this)}}{{/with}}> {
         val _client = client ?: this.client
-        val _env = env ?: this.env
         val _uri = uri ?: this.uri
+        {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
+        val _env = env ?: this.env
         return _client.invoke(_uri, "{{name}}", args, _env)
+        {{else}}
+        return _client.invoke(_uri, "{{name}}", args)
+        {{/if}}
     }
     {{/each}}
 }

@@ -4,11 +4,13 @@ mod array_has_length;
 mod array_length;
 mod detect_keyword;
 mod detect_keyword_strict;
+mod import_has_env;
 mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod is_soft_keyword;
 mod nullable_default;
+mod remove_module_suffix;
 mod to_class_name;
 mod to_graphql_type;
 mod to_kotlin;
@@ -35,6 +37,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
         Box::new(detect_keyword_strict::detect_keyword_strict)
     );
     handlebars.register_helper(
+        "import_has_env",
+        Box::new(import_has_env::import_has_env)
+    );
+    handlebars.register_helper(
         "is_keyword",
         Box::new(is_keyword::is_keyword)
     );
@@ -53,6 +59,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "nullable_default",
         Box::new(nullable_default::nullable_default)
+    );
+    handlebars.register_helper(
+        "remove_module_suffix",
+        Box::new(remove_module_suffix::remove_module_suffix)
     );
     handlebars.register_helper(
         "to_class_name",
