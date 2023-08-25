@@ -1,9 +1,9 @@
 declare const __wrap_args: any;
 declare const __wrap_method: string;
-declare interface Result {
+declare interface Result<T = any> {
   ok: boolean;
   error: string | undefined;
-  value: any | undefined;
+  value: T | undefined;
 }
 declare const __wrap_subinvoke: (
   uri: string,
