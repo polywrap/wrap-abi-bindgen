@@ -71,14 +71,6 @@ export class Env {
   optMap: Map<string, number | null> | null;
 }
 
-export class TestImport {
-  static uri: string = "testimport.uri.eth";
-
-  public static getImplementations(): string[] {
-    return wrap_getImplementations(this.uri);
-  }
-}
-
 export enum _while {
   _for,
   _in,
