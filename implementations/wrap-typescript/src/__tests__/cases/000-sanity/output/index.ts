@@ -13,7 +13,6 @@ export {
   _else,
   CustomEnum,
   _while,
-  TestImport,
   Env,
 } from "./types";
 

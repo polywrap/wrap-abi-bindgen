@@ -1,3 +1,4 @@
+import { BigInt, BigNumber, JSONString, Bytes } from "./common";
 import * as Types from "./types";
 
 export class Args_moduleMethod {
