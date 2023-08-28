@@ -4,7 +4,7 @@ lazy_static! {
 {{#each methods}}
 export class Args_{{detect_keyword name}} {
   {{#each arguments}}
-  {{detect_keyword name}}: {{to_wasm (to_graphql_type this) true}};
+  {{detect_keyword name}}: {{to_wasm (to_graphql_type this) false}};
   {{/each}}
 }
 {{#if (is_not_last @index ../methods)}}
@@ -26,7 +26,7 @@ export class {{detect_keyword type}} {
   {{#each methods}}
   public {{name}}(
     args: Args_{{detect_keyword name}}
-  ): Result<{{#with return}}{{to_wasm (to_graphql_type this) true}}{{/with}}, string> {
+  ): Result<{{#with return}}{{to_wasm (to_graphql_type this) false}}{{/with}}, string> {
     return __wrap_subinvoke(this.uri, "{{name}}", args);
   }
   {{#if (is_not_last @index ../methods)}}
@@ -42,7 +42,7 @@ export class {{detect_keyword type}} {
   {{#each methods}}
   public static {{name}}(
     args: Args_{{detect_keyword name}}
-  ): Result<{{#with return}}{{to_wasm (to_graphql_type this) true}}{{/with}}, string> {
+  ): Result<{{#with return}}{{to_wasm (to_graphql_type this) false}}{{/with}}, string> {
     return wrap_subinvoke("{{../uri}}", "{{name}}", args);
   }
   {{#if (is_not_last @index ../methods)}}

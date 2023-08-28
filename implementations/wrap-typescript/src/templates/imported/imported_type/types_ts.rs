@@ -1,6 +1,6 @@
 lazy_static! {
   static ref NAME: String = "imported/namespace/types.ts".to_string();
-  static ref SOURCE: String = r#"import { BigInt, BigNumber, JSONString, Bytes } from "../../common
+  static ref SOURCE: String = r#"import { BigInt, BigNumber, JSONString, Bytes } from "../../common"
 {{#each importedEnumTypes}}
 export enum {{detect_keyword type}} {
   {{#each constants}}

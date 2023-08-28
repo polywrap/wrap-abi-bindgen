@@ -10,12 +10,6 @@ export enum TestImport_Enum_Return {
   BYTES,
 }
 
-export class TestImport_AnotherObject {
-  public static uri: string = "testimport.uri.eth";
-
-  prop: string;
-}
-
 export class TestImport_Object {
   public static uri: string = "testimport.uri.eth";
 
@@ -27,6 +21,12 @@ export class TestImport_Object {
   optEnum: TestImport_Enum | null;
   enumArray: Array<TestImport_Enum>;
   optEnumArray: Array<TestImport_Enum | null> | null;
+}
+
+export class TestImport_AnotherObject {
+  public static uri: string = "testimport.uri.eth";
+
+  prop: string;
 }
 
 export class TestImport_Env {

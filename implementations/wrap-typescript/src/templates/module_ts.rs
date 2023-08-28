@@ -6,7 +6,7 @@ import * as Types from "..";
 {{#each methods}}
 export class Args_{{detect_keyword name}} {
   {{#each arguments}}
-  {{detect_keyword name}}: {{to_wasm (to_graphql_type this)}};
+  {{detect_keyword name}}: {{to_wasm (to_graphql_type this) false}};
   {{/each}}
 }
 {{/each}}
@@ -16,7 +16,7 @@ export abstract class ModuleBase {
   abstract {{detect_keyword name}}(
     args: Types.Args_{{detect_keyword name}}{{#with env}},
     env: {{#if required}}Types.Env{{else}}Types.Env | null{{/if}}{{/with}}
-  ): {{#with return}}{{to_wasm (to_graphql_type this)}}{{/with}};
+  ): {{#with return}}{{to_wasm (to_graphql_type this) false}}{{/with}};
   {{#if (is_not_last @index ../methods)}}
 
   {{/if}}

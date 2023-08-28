@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "global.d.ts".to_string();
+  static ref NAME: String = "globals.d.ts".to_string();
   static ref SOURCE: String = r#"declare const __wrap_args: any;
   declare const __wrap_method: string;
   declare interface Result<T = any> {
