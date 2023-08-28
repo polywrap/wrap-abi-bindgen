@@ -9,6 +9,7 @@ export class Args_{{detect_keyword name}} {
   {{detect_keyword name}}: {{to_wasm (to_graphql_type this)}};
   {{/each}}
 }
+{{/each}}
 
 export abstract class ModuleBase {
   {{#each methods}}

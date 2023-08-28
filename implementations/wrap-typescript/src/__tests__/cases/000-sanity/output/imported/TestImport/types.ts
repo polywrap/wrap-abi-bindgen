@@ -1,3 +1,5 @@
+import { BigInt, BigNumber, JSONString, Bytes } from "../../common"
+
 export class TestImport_AnotherObject {
   public static uri: string = "testimport.uri.eth";
 
@@ -7,13 +9,11 @@ export class TestImport_AnotherObject {
 export enum TestImport_Enum {
   STRING,
   BYTES,
-  _MAX_,
 }
 
 export enum TestImport_Enum_Return {
   STRING,
   BYTES,
-  _MAX_,
 }
 
 export class TestImport_Env {

@@ -2,13 +2,40 @@
 extern crate lazy_static;
 
 pub mod wrap;
+use std::collections::HashMap;
+
+use definition_kind::DefinitionKind;
+use serde_json::Value;
 pub use wrap::*;
 
-pub mod partials;
 pub mod templates;
 pub mod helpers;
+mod definition_kind;
 mod renderer;
 use renderer::Renderer;
+
+fn group_by_namespace(json_array: &[Value]) -> HashMap<String, Vec<Value>> {
+  let mut grouped: HashMap<String, Vec<Value>> = HashMap::new();
+
+  for item in json_array.iter() {
+      if let Some(namespace) = item.get("namespace").and_then(Value::as_str) {
+          grouped.entry(namespace.to_string()).or_default().push(item.clone());
+      }
+  }
+
+  grouped
+}
+
+fn group_by_kind(imports: &[Value]) -> HashMap<DefinitionKind, Vec<Value>> {
+  let mut grouped: HashMap<DefinitionKind, Vec<Value>> = HashMap::new();
+
+  for item in imports.iter() {
+      let kind = DefinitionKind::from(item.get("kind").unwrap().as_u64().unwrap() as u32);
+      grouped.entry(kind).or_default().push(item.clone());
+  }
+
+  grouped
+}
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
@@ -41,93 +68,31 @@ impl ModuleTrait for Module {
             )
         });
 
+        output.files.push(File {
+            name: "common.ts".to_string(),
+            data: renderer.render(
+                "common.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+            name: "types.ts".to_string(),
+            data: renderer.render(
+                "types.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+            name: "module.ts".to_string(),
+            data: renderer.render(
+                "module.ts",
+                &wrap_info.abi
+            )
+        });
+
         let abi = wrap_info.abi.as_object().unwrap();
-
-        if let Some(object_types) = abi.get("objectTypes") {
-            let objects = object_types.as_array().unwrap();
-
-            for object in objects.iter() {
-                let dir = Directory {
-                    name: object.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("object_type/index.ts", object)
-                        },
-                        File {
-                            name: "serialization.ts".to_string(),
-                            data: renderer.render("object_type/serialization.ts", object)
-                        }
-                    ),
-                    dirs: vec!()
-                };
-                output.dirs.push(dir);
-            }
-        }
-
-        if let Some(module_type) = abi.get("moduleType") {
-            let dir = Directory {
-                name: "Module".to_string(),
-                files: vec!(
-                    File {
-                        name: "index.ts".to_string(),
-                        data: renderer.render("module_type/index.ts", module_type)
-                    },
-                    File {
-                        name: "module.ts".to_string(),
-                        data: renderer.render("module_type/module.ts", module_type)
-                    },
-                    File {
-                        name: "serialization.ts".to_string(),
-                        data: renderer.render("module_type/serialization.ts", module_type)
-                    },
-                    File {
-                        name: "wrapped.ts".to_string(),
-                        data: renderer.render("module_type/wrapped.ts", module_type)
-                    },
-                ),
-                dirs: vec!()
-            };
-            output.dirs.push(dir);
-        }
-
-        if let Some(enum_types) = abi.get("enumTypes") {
-            let enums = enum_types.as_array().unwrap();
-
-            for it in enums.iter() {
-                let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("enum_type/index.ts", it)
-                        },
-                    ),
-                    dirs: vec!()
-                };
-                output.dirs.push(dir);
-            }
-        }
-
-
-
-        if let Some(interface_types) = abi.get("interfaceTypes") {
-            let interfaces = interface_types.as_array().unwrap();
-
-            for it in interfaces.iter() {
-                let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("interface_type/index.ts", it)
-                        },
-                    ),
-                    dirs: vec!()
-                };
-                output.dirs.push(dir);
-            }
-        }
 
         // imported dirs go within subdirectory
         let mut imported = Directory {
@@ -136,118 +101,86 @@ impl ModuleTrait for Module {
             dirs: vec![],
         };
 
+        let mut imported_objects = Value::Array(vec![]);
+        let mut imported_enums = Value::Array(vec![]);
+        let mut imported_envs = Value::Array(vec![]);
+        let mut imported_modules = Value::Array(vec![]);
+
         if let Some(imported_object_types) = abi.get("importedObjectTypes") {
-            let objects = imported_object_types.as_array().unwrap();
-
-            for object in objects.iter() {
-                let dir = Directory {
-                    name: object.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("imported/object_type/index.ts", object)
-                        },
-                        File {
-                            name: "serialization.ts".to_string(),
-                            data: renderer.render("imported/object_type/serialization.ts", object)
-                        }
-                    ),
-                    dirs: vec!()
-                };
-                imported.dirs.push(dir);
-            }
-        }
-
-        if let Some(imported_module_types) = abi.get("importedModuleTypes") {
-            let modules = imported_module_types.as_array().unwrap();
-
-            for it in modules.iter() {
-                let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("imported/module_type/index.ts", it)
-                        },
-                        File {
-                            name: "serialization.ts".to_string(),
-                            data: renderer.render("imported/module_type/serialization.ts", it)
-                        }
-                    ),
-                    dirs: vec!()
-                };
-                imported.dirs.push(dir);
-            }
+          imported_objects = imported_object_types.clone();
         }
 
         if let Some(imported_enum_types) = abi.get("importedEnumTypes") {
-            let enums = imported_enum_types.as_array().unwrap();
-
-            for it in enums.iter() {
-                let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("imported/enum_type/index.ts", it)
-                        },
-                    ),
-                    dirs: vec!()
-                };
-                imported.dirs.push(dir);
-            }
+          imported_enums = imported_enum_types.clone();
         }
 
         if let Some(imported_env_types) = abi.get("importedEnvTypes") {
-            let envs = imported_env_types.as_array().unwrap();
-
-            for it in envs.iter() {
-                let dir = Directory {
-                    name: it.get("type").unwrap().as_str().unwrap().to_string(),
-                    files: vec!(
-                        File {
-                            name: "index.ts".to_string(),
-                            data: renderer.render("imported/env_type/index.ts", it)
-                        },
-                        File {
-                            name: "serialization.ts".to_string(),
-                            data: renderer.render("imported/env_type/serialization.ts", it)
-                        }
-                    ),
-                    dirs: vec!()
-                };
-                imported.dirs.push(dir);
-            }
+          imported_envs = imported_env_types.clone();
         }
 
-        // add imported dirs to output
-        if abi.get("importedObjectTypes").is_some() ||
-            abi.get("importedModuleTypes").is_some() ||
-            abi.get("importedEnumTypes").is_some() ||
-            abi.get("importedEnvTypes").is_some() {
-            imported.files.push(File {
+        if let Some(imported_module_types) = abi.get("importedModuleTypes") {
+          imported_modules = imported_module_types.clone();
+        }
+
+        let imports_by_namespace = group_by_namespace(
+          &[
+            imported_objects.as_array().unwrap().clone(),
+            imported_enums.as_array().unwrap().clone(),
+            imported_envs.as_array().unwrap().clone(),
+            imported_modules.as_array().unwrap().clone(),
+          ].concat()
+        );
+
+        imports_by_namespace.iter().for_each(|(namespace, imports)| {
+          let imports_by_kind = group_by_kind(&imports);
+
+          let abi_clone = serde_json::from_str::<Value>(&wrap_info.abi.to_string()).unwrap();
+          let mut abi_clone = abi_clone.as_object().unwrap().clone();
+          
+          abi_clone.insert("importedObjectTypes".to_string(), Value::Array(
+            imports_by_kind.get(&DefinitionKind::ImportedObject).unwrap().clone()
+          ));
+
+          abi_clone.insert("importedEnvTypes".to_string(), Value::Array(
+            imports_by_kind.get(&DefinitionKind::ImportedEnv).unwrap().clone()
+          ));
+
+          abi_clone.insert("importedEnumTypes".to_string(), Value::Array(
+            imports_by_kind.get(&DefinitionKind::ImportedEnum).unwrap().clone()
+          ));
+
+          let mut files = vec!(
+            File {
                 name: "index.ts".to_string(),
-                data: renderer.render("imported/index.ts", &wrap_info.abi)
-            });
-            output.dirs.push(imported);
-        }
+                data: renderer.render("imported/namespace/index.ts", &abi_clone)
+            },
+            File {
+                name: "types.ts".to_string(),
+                data: renderer.render("imported/namespace/types.ts", &abi_clone)
+            }
+          );
 
-        if let Some(env_type) = abi.get("envType") {
-            let dir = Directory {
-                name: "Env".to_string(),
-                files: vec!(
-                    File {
-                        name: "index.ts".to_string(),
-                        data: renderer.render("env_type/index.ts", env_type)
-                    },
-                    File {
-                        name: "serialization.ts".to_string(),
-                        data: renderer.render("env_type/serialization.ts", env_type)
-                    },
-                ),
-                dirs: vec!()
-            };
-            output.dirs.push(dir);
+          if let Some(imported_module) = imports_by_kind.get(&DefinitionKind::ImportedModule).unwrap().clone().get(0) {
+            files.push(File {
+              name: "module.ts".to_string(),
+              data: renderer.render("imported/namespace/module.ts", &imported_module)
+            });
+          };
+
+          let dir = Directory {
+              name: namespace.to_string(),
+              files,
+              dirs: vec!()
+          };
+          imported.dirs.push(dir);
+        });
+
+        if imports_by_namespace.keys().len() > 0 {
+          imported.files.push(File {
+              name: "index.ts".to_string(),
+              data: renderer.render("imported/index.ts", &wrap_info.abi)
+          });
+          output.dirs.push(imported);
         }
 
         Ok(output)

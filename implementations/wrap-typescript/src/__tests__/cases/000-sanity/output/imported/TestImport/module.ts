@@ -39,7 +39,9 @@ export class TestImport_Module {
     return __wrap_subinvoke(this.uri, "importedMethod", args);
   }
 
-  public anotherMethod(args: Args_anotherMethod): Result<number> {
+  public anotherMethod(
+    args: Args_anotherMethod
+  ): Result<number> {
     return __wrap_subinvoke(this.uri, "anotherMethod", args);
   }
 

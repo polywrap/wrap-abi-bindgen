@@ -1,5 +1,5 @@
 lazy_static! {
-  static ref NAME: String = "imported/index.ts".to_string();
+  static ref NAME: String = "imported/namespace/index.ts".to_string();
   static ref SOURCE: String = r#"{{#each importedModuleTypes}}
 export * from "./{{type}}";
 {{/each}}

@@ -9,7 +9,6 @@ export class AnotherType {
 export enum CustomEnum {
   STRING,
   BYTES,
-  _MAX_,
 }
 
 export class CustomMapValue {
@@ -74,5 +73,4 @@ export class Env {
 export enum _while {
   _for,
   _in,
-  _MAX_,
 }

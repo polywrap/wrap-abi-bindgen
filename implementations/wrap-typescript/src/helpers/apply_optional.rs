@@ -1,8 +1,6 @@
 use handlebars::handlebars_helper;
 use serde_json::{Value};
 
-use super::is_base_type::is_base_type_fn;
-
 pub fn apply_optional_fn(value: &str, optional: bool, is_enum: bool) -> String {
     if optional {
         return format!("{} | null", value);

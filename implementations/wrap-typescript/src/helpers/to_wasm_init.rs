@@ -1,17 +1,17 @@
 use handlebars::handlebars_helper;
-use serde_json::{Value};
+use serde_json::Value;
 use crate::helpers::util::map_types;
 
 use super::to_wasm::to_wasm_fn;
 use super::detect_keyword::detect_keyword_fn;
 
-pub fn to_wasm_init_fn(value: &str) -> String {
+pub fn to_wasm_init_fn(value: &str, skip_types_prefix: Option<bool>) -> String {
     let mut type_str = String::from(value);
 
     if type_str.chars().last() == Some('!') {
         type_str = (type_str[0..type_str.len() - 1]).to_string();
     } else {
-        let null_type = to_wasm_fn(&type_str.clone());
+        let null_type = to_wasm_fn(&type_str.clone(), skip_types_prefix);
         let null_optional = "| null";
 
         if null_type.ends_with(null_optional) {
@@ -25,8 +25,8 @@ pub fn to_wasm_init_fn(value: &str) -> String {
 
     if type_str.starts_with("Map<") {
         let (key_type, val_type) = map_types(&type_str).unwrap();
-        let wasm_key_type = to_wasm_fn(&key_type);
-        let wasm_val_type = to_wasm_fn(&val_type);
+        let wasm_key_type = to_wasm_fn(&key_type, skip_types_prefix);
+        let wasm_val_type = to_wasm_fn(&val_type, skip_types_prefix);
         return format!("new Map<{}, {}>()", wasm_key_type, wasm_val_type);
     }
 
@@ -51,7 +51,12 @@ pub fn to_wasm_init_fn(value: &str) -> String {
     }
 }
 
-handlebars_helper!(to_wasm_init: |value: Value| {
+handlebars_helper!(to_wasm_init: |value: Value, skip_types_prefix: Option<Value>| {
     let value_str = value.as_str().unwrap();
-    to_wasm_init_fn(value_str)
+    let skip_types_prefix_bool = if let Some(skip_types_prefix) = skip_types_prefix {
+      Some(skip_types_prefix.as_bool().unwrap())
+    } else {
+      None
+    };
+    to_wasm_init_fn(value_str, skip_types_prefix_bool)
 });
