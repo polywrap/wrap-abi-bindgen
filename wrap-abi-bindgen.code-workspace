@@ -13,8 +13,8 @@
         "path": "implementations/app-python"
       },
       {
-          "name": "app-rust",
-          "path": "implementations/app-rust"
+        "name": "app-rust",
+        "path": "implementations/app-rust"
       },
       {
         "name": "app-typescript",

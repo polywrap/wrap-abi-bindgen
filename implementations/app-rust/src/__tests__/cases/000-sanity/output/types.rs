@@ -3,20 +3,8 @@
 
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
-use polywrap::{
-    from_slice,
-    uri,
-    to_vec,
-    Uri,
-    Invoker,
-    PolywrapClient,
-    PolywrapClientConfigBuilder,
-    ClientConfigBuilder,
-    PolywrapClientConfig,
-    SystemClientConfig,
-    Web3ClientConfig,
-    polywrap_core::error::Error
-};
+use polywrap::*;
+use std::result::Result;
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
 use std::sync::Arc;
@@ -254,9 +242,9 @@ impl TestImportModule {
     pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match env {
+        let _env = match &env {
             Some(e) => Some(e.as_slice()),
-            None => match self.env.clone() {
+            None => match &self.env {
                 Some(e) => Some(e.as_slice()),
                 None => None,
             },
@@ -278,9 +266,9 @@ impl TestImportModule {
     pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match env {
+        let _env = match &env {
             Some(e) => Some(e.as_slice()),
-            None => match self.env.clone() {
+            None => match &self.env {
                 Some(e) => Some(e.as_slice()),
                 None => None,
             },
@@ -302,9 +290,9 @@ impl TestImportModule {
     pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
         let _uri = uri.unwrap_or(self.uri.clone());
         let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match env {
+        let _env = match &env {
             Some(e) => Some(e.as_slice()),
-            None => match self.env.clone() {
+            None => match &self.env {
                 Some(e) => Some(e.as_slice()),
                 None => None,
             },

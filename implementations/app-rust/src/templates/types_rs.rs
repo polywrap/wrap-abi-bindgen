@@ -6,10 +6,6 @@ lazy_static! {
 // NOTE: This is an auto-generated file.
 //       All modifications will be overwritten.
 use polywrap::*;
-use polywrap::{
-    core::error::Error,
-    msgpack::from_slice
-};
 use std::result::Result;
 use std::collections::BTreeMap;
 use serde::{Serialize, Deserialize};
