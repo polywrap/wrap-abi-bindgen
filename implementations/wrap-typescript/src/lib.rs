@@ -92,6 +92,14 @@ impl ModuleTrait for Module {
             )
         });
 
+        output.files.push(File {
+          name: "globals.d.ts".to_string(),
+          data: renderer.render(
+              "globals.d.ts",
+              &Value::Null
+          )
+      });
+
         let abi = wrap_info.abi.as_object().unwrap();
 
         // imported dirs go within subdirectory

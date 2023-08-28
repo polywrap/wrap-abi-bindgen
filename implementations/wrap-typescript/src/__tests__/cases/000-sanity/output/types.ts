@@ -1,14 +1,19 @@
 import { BigInt, BigNumber, JSONString, Bytes } from "./common";
 
+export enum CustomEnum {
+  STRING,
+  BYTES,
+}
+
+export enum _while {
+  _for,
+  _in,
+}
+
 export class AnotherType {
   prop: string | null;
   circular: CustomType | null;
   _const: string | null;
-}
-
-export enum CustomEnum {
-  STRING,
-  BYTES,
 }
 
 export class CustomMapValue {
@@ -70,7 +75,10 @@ export class Env {
   optMap: Map<string, number | null> | null;
 }
 
-export enum _while {
-  _for,
-  _in,
+export class TestImport {
+  static uri: string = "testimport.uri.eth"
+
+  public static getImplementations(): string[] {
+    return wrap_getImplementations(this.uri);
+  }
 }

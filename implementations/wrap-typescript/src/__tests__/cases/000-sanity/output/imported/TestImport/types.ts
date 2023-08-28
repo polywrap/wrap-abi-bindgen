@@ -1,11 +1,5 @@
 import { BigInt, BigNumber, JSONString, Bytes } from "../../common"
 
-export class TestImport_AnotherObject {
-  public static uri: string = "testimport.uri.eth";
-
-  prop: string;
-}
-
 export enum TestImport_Enum {
   STRING,
   BYTES,
@@ -16,7 +10,13 @@ export enum TestImport_Enum_Return {
   BYTES,
 }
 
-export class TestImport_Env {
+export class TestImport_AnotherObject {
+  public static uri: string = "testimport.uri.eth";
+
+  prop: string;
+}
+
+export class TestImport_Object {
   public static uri: string = "testimport.uri.eth";
 
   object: TestImport_AnotherObject;
@@ -29,7 +29,7 @@ export class TestImport_Env {
   optEnumArray: Array<TestImport_Enum | null> | null;
 }
 
-export class TestImport_Object {
+export class TestImport_Env {
   public static uri: string = "testimport.uri.eth";
 
   object: TestImport_AnotherObject;
