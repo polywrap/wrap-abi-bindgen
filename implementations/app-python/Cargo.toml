@@ -1,7 +1,7 @@
 [package]
-name = "app-typescript-wrap-abi-bindgen"
+name = "app-python-wrap-abi-bindgen"
 version = "0.1.0"
-description = "Generates TypeScript app bindings from a WRAP ABI"
+description = "Generates Python app bindings from a WRAP ABI"
 authors = ["Polywrap"]
 repository = "https://github.com/polywrap/wrap-abi-bindgen"
 license = "MIT"
