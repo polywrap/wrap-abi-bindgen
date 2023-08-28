@@ -93,36 +93,21 @@ enum class {{to_class_name type}} {
 
 {{/each}}
 /* URI: "{{uri}}" */
-class {{to_class_name (remove_module_suffix type)}}(
-    client: Invoker? = null,
-    {{#if (import_has_env ../importedEnvTypes namespace)}}
-    env: {{to_class_name namespace}}Env? = null,
-    {{/if}}
-    uri: Uri? = null
-) : Base{{to_class_name (remove_module_suffix type)}}(client{{#if (import_has_env ../importedEnvTypes namespace)}}, env{{/if}}, uri) {
-    override val defaultClient: Invoker by lazy {
-        polywrapClient { addDefaults() }
-    }
-    override val defaultUri: Uri by lazy {
-        Uri("{{uri}}")
-    }
-    {{#if (import_has_env ../importedEnvTypes namespace)}}
-    override val defaultEnv: {{to_class_name namespace}}Env? = null
-    {{/if}}
-}
-
-/* URI: "{{uri}}" */
-abstract class Base{{to_class_name (remove_module_suffix type)}}(
+open class {{to_class_name (remove_module_suffix type)}}(
     client: Invoker? = null,
     {{#if (import_has_env ../importedEnvTypes namespace)}}
     env: {{to_class_name namespace}}Env? = null,
     {{/if}}
     uri: Uri? = null
 ) {
-    protected abstract val defaultClient: Invoker
-    protected abstract val defaultUri: Uri
+    protected val defaultClient: Invoker by lazy {
+        polywrapClient { addDefaults() }
+    }
+    protected val defaultUri: Uri by lazy {
+        Uri("{{uri}}")
+    }
     {{#if (import_has_env ../importedEnvTypes namespace)}}
-    protected abstract val defaultEnv: {{to_class_name namespace}}Env?
+    protected val defaultEnv: {{to_class_name namespace}}Env?
     {{/if}}
 
     val client: Invoker = client ?: defaultClient

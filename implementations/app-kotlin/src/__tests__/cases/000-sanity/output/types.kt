@@ -183,29 +183,18 @@ data class TestImportArgsReturnsArrayOfEnums(
 )
 
 /* URI: "testimport.uri.eth" */
-class TestImport(
-    client: Invoker? = null,
-    env: TestImportEnv? = null,
-    uri: Uri? = null
-) : BaseTestImport(client, env, uri) {
-    override val defaultClient: Invoker by lazy {
-        polywrapClient { addDefaults() }
-    }
-    override val defaultUri: Uri by lazy {
-        Uri("testimport.uri.eth")
-    }
-    override val defaultEnv: TestImportEnv? = null
-}
-
-/* URI: "testimport.uri.eth" */
-abstract class BaseTestImport(
+open class TestImport(
     client: Invoker? = null,
     env: TestImportEnv? = null,
     uri: Uri? = null
 ) {
-    protected abstract val defaultClient: Invoker
-    protected abstract val defaultUri: Uri
-    protected abstract val defaultEnv: TestImportEnv?
+    protected val defaultClient: Invoker by lazy {
+        polywrapClient { addDefaults() }
+    }
+    protected val defaultUri: Uri by lazy {
+        Uri("testimport.uri.eth")
+    }
+    protected val defaultEnv: TestImportEnv?
 
     val client: Invoker = client ?: defaultClient
     val uri: Uri = uri ?: defaultUri
