@@ -136,7 +136,7 @@ public enum TestImportEnumReturn: String, Codable {
 // Imported modules START //
 
 // URI: "testimport.uri.eth" //
-public struct ArgsImportedMethod: Codable {
+public struct TestImportArgsImportedMethod: Codable {
     var str: String
     var optStr: String?
     var u: UInt32
@@ -153,28 +153,28 @@ public struct ArgsImportedMethod: Codable {
 }
 
 // URI: "testimport.uri.eth" //
-public struct ArgsAnotherMethod: Codable {
+public struct TestImportArgsAnotherMethod: Codable {
     var arg: Array<String>
 }
 
 // URI: "testimport.uri.eth" //
-public struct ArgsReturnsArrayOfEnums: Codable {
+public struct TestImportArgsReturnsArrayOfEnums: Codable {
     var arg: String
 }
 
 /* URI: "testimport.uri.eth" */
 class TestImport {
-    var client: Invoker? = nil
+    var client: PolywrapClient? = nil
     var env: TestImportEnv? = nil
     var uri: Uri? = nil
 
-    init(client: Invoker? = nil, env: TestImportEnv? = nil, uri: Uri? = nil) {
+    init(client: PolywrapClient? = nil, env: TestImportEnv? = nil, uri: Uri? = nil) {
         self.client = client
         self.env = env
         self.uri = uri
     }
 
-    func getDefaultClient() -> Invoker {
+    func getDefaultClient() -> PolywrapClient {
         if (self.client == nil) {
             self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
         }
@@ -183,14 +183,14 @@ class TestImport {
 
     func getDefaultUri() -> Uri {
         if (self.uri == nil) {
-            self.uri = try Uri("testimport.uri.eth")
+            self.uri = try? Uri("testimport.uri.eth")
         }
         return self.uri!
     }
 
     func importedMethod(
-        args: ArgsImportedMethod,
-        client: Invoker? = nil,
+        args: TestImportArgsImportedMethod,
+        client: PolywrapClient? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> TestImportObject? {
@@ -206,8 +206,8 @@ class TestImport {
     }
 
     func anotherMethod(
-        args: ArgsAnotherMethod,
-        client: Invoker? = nil,
+        args: TestImportArgsAnotherMethod,
+        client: PolywrapClient? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> Int32 {
@@ -223,8 +223,8 @@ class TestImport {
     }
 
     func returnsArrayOfEnums(
-        args: ArgsReturnsArrayOfEnums,
-        client: Invoker? = nil,
+        args: TestImportArgsReturnsArrayOfEnums,
+        client: PolywrapClient? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> Array<TestImportEnumReturn?> {

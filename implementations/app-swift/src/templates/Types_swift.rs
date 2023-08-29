@@ -75,7 +75,7 @@ public enum {{detect_keyword (to_upper type)}}: String, Codable {
 {{#each importedModuleTypes}}
 {{#each methods}}
 // URI: "{{../uri}}" //
-public struct Args{{to_upper name}}: Codable {
+public struct {{to_upper (remove_module_suffix ../type)}}Args{{to_upper name}}: Codable {
     {{#each arguments}}
     var {{ name }}: {{to_swift (to_graphql_type this)}}
     {{/each}}
@@ -84,13 +84,13 @@ public struct Args{{to_upper name}}: Codable {
 {{/each}}
 /* URI: "{{uri}}" */
 class {{to_upper (remove_module_suffix type)}} {
-    var client: Invoker? = nil
+    var client: PolywrapClient? = nil
     {{#if (import_has_env ../importedEnvTypes namespace)}}
     var env: {{to_upper namespace}}Env? = nil
     {{/if}}
     var uri: Uri? = nil
 
-    init(client: Invoker? = nil{{#if (import_has_env ../importedEnvTypes namespace)}}, env: {{to_upper namespace}}Env? = nil{{/if}}, uri: Uri? = nil) {
+    init(client: PolywrapClient? = nil{{#if (import_has_env ../importedEnvTypes namespace)}}, env: {{to_upper namespace}}Env? = nil{{/if}}, uri: Uri? = nil) {
         self.client = client
         {{#if (import_has_env ../importedEnvTypes namespace)}}
         self.env = env
@@ -98,7 +98,7 @@ class {{to_upper (remove_module_suffix type)}} {
         self.uri = uri
     }
 
-    func getDefaultClient() -> Invoker {
+    func getDefaultClient() -> PolywrapClient {
         if (self.client == nil) {
             self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
         }
@@ -107,15 +107,15 @@ class {{to_upper (remove_module_suffix type)}} {
 
     func getDefaultUri() -> Uri {
         if (self.uri == nil) {
-            self.uri = try Uri("{{uri}}")
+            self.uri = try? Uri("{{uri}}")
         }
         return self.uri!
     }
     {{#each methods}}
 
     func {{detect_keyword name}}(
-        args: Args{{to_upper name}},
-        client: Invoker? = nil,
+        args: {{to_upper (remove_module_suffix ../type)}}Args{{to_upper name}},
+        client: PolywrapClient? = nil,
         {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
         env: {{to_upper ../namespace}}Env? = nil,
         {{/if}}
