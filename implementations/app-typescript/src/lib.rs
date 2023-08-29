@@ -38,7 +38,7 @@ impl ModuleTrait for Module {
             name: "types.ts".to_string(),
             data: renderer.render(
                 "types.ts",
-                &wrap_info.abi
+                &wrap_info.abi.to_json()
             )
         });
 
