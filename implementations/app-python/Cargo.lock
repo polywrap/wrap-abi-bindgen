@@ -3,12 +3,13 @@
 version = 3
 
 [[package]]
-name = "app-typescript-wrap-abi-bindgen"
+name = "app-python-wrap-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",
  "lazy_static",
  "polywrap-wasm-rs",
+ "polywrap_msgpack_serde",
  "serde",
  "serde_json",
 ]
@@ -212,14 +213,29 @@ dependencies = [
 
 [[package]]
 name = "polywrap-wasm-rs"
-version = "0.10.5"
+version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bb675089ed7e61f0492789b0cfd197efd4b9239b7b8e2651707dee77f44e679"
+checksum = "86a4242d00d30a6ed07a7f32cb18435c8c0e81cbfffacac5f046b025ca497d0a"
 dependencies = [
  "bigdecimal",
  "byteorder",
  "num-bigint",
  "num-traits",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "polywrap_msgpack_serde"
+version = "0.0.2-beta.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b7d68a93c122fd0de932972a1332e0b2405b729b691fc3c59a482b71d61363af"
+dependencies = [
+ "bigdecimal",
+ "byteorder",
+ "num-bigint",
+ "serde",
+ "serde_bytes",
  "serde_json",
  "thiserror",
 ]
@@ -255,6 +271,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be9b6f69f1dfd54c3b568ffa45c310d6973a5e5148fd40cf515acaf38cf5bc31"
 dependencies = [
  "serde_derive",
+]
+
+[[package]]
+name = "serde_bytes"
+version = "0.11.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ab33ec92f677585af6d88c65593ae2375adde54efdbf16d597f2cbc7a6d368ff"
+dependencies = [
+ "serde",
 ]
 
 [[package]]
