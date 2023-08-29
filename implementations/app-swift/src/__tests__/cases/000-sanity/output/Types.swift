@@ -183,7 +183,7 @@ class TestImport {
 
     func getDefaultUri() -> Uri {
         if (self.uri == nil) {
-            self.uri = Uri("testimport.uri.eth")
+            self.uri = try Uri("testimport.uri.eth")
         }
         return self.uri!
     }
@@ -193,11 +193,16 @@ class TestImport {
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
-    ) -> TestImportObject? {
+    ) throws -> TestImportObject? {
         let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        return _client.invoke(_uri, "importedMethod", args, _env)
+        return try _client.invoke(
+            uri: _uri,
+            method: "importedMethod",
+            args: args,
+            env: _env
+        )
     }
 
     func anotherMethod(
@@ -205,11 +210,16 @@ class TestImport {
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
-    ) -> Int32 {
+    ) throws -> Int32 {
         let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        return _client.invoke(_uri, "anotherMethod", args, _env)
+        return try _client.invoke(
+            uri: _uri,
+            method: "anotherMethod",
+            args: args,
+            env: _env
+        )
     }
 
     func returnsArrayOfEnums(
@@ -217,11 +227,16 @@ class TestImport {
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
-    ) -> Array<TestImportEnumReturn?> {
+    ) throws -> Array<TestImportEnumReturn?> {
         let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        return _client.invoke(_uri, "returnsArrayOfEnums", args, _env)
+        return try _client.invoke(
+            uri: _uri,
+            method: "returnsArrayOfEnums",
+            args: args,
+            env: _env
+        )
     }
 }
 

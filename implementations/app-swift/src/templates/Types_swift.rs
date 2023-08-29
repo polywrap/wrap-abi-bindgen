@@ -103,7 +103,7 @@ class {{to_upper (remove_module_suffix type)}} {
 
     func getDefaultUri() -> Uri {
         if (self.uri == nil) {
-            self.uri = Uri("{{uri}}")
+            self.uri = try Uri("{{uri}}")
         }
         return self.uri!
     }
@@ -114,11 +114,16 @@ class {{to_upper (remove_module_suffix type)}} {
         client: Invoker? = nil,
         env: {{to_upper ../namespace}}Env? = nil,
         uri: Uri? = nil
-    ) -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}} {
+    ) throws -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}} {
         let _client = client ?? self.client ?? getDefaultClient()
         let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        return _client.invoke(_uri, "{{name}}", args, _env)
+        return try _client.invoke(
+            uri: _uri,
+            method: "{{name}}",
+            args: args,
+            env: _env
+        )
     }
     {{/each}}
 }
