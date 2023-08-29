@@ -85,12 +85,16 @@ public struct Args{{to_upper name}}: Codable {
 /* URI: "{{uri}}" */
 class {{to_upper (remove_module_suffix type)}} {
     var client: Invoker? = nil
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
     var env: {{to_upper namespace}}Env? = nil
+    {{/if}}
     var uri: Uri? = nil
 
-    init(client: Invoker? = nil, env: {{to_upper namespace}}Env? = nil, uri: Uri? = nil) {
+    init(client: Invoker? = nil{{#if (import_has_env ../importedEnvTypes namespace)}}, env: {{to_upper namespace}}Env? = nil{{/if}}, uri: Uri? = nil) {
         self.client = client
+        {{#if (import_has_env ../importedEnvTypes namespace)}}
         self.env = env
+        {{/if}}
         self.uri = uri
     }
 
@@ -110,20 +114,30 @@ class {{to_upper (remove_module_suffix type)}} {
     {{#each methods}}
 
     func {{detect_keyword name}}(
-        args: {{to_upper ../type}}Args{{to_upper name}},
+        args: Args{{to_upper name}},
         client: Invoker? = nil,
+        {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
         env: {{to_upper ../namespace}}Env? = nil,
+        {{/if}}
         uri: Uri? = nil
     ) throws -> {{#with return}}{{to_swift (to_graphql_type this)}}{{/with}} {
         let _client = client ?? self.client ?? getDefaultClient()
-        let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
+        {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
+        let _env = env ?? self.env
         return try _client.invoke(
             uri: _uri,
             method: "{{name}}",
             args: args,
             env: _env
         )
+        {{else}}
+        return try _client.invoke(
+            uri: _uri,
+            method: "{{name}}",
+            args: args
+        )
+        {{/if}}
     }
     {{/each}}
 }

@@ -189,14 +189,14 @@ class TestImport {
     }
 
     func importedMethod(
-        args: TestImportModuleArgsImportedMethod,
+        args: ArgsImportedMethod,
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> TestImportObject? {
         let _client = client ?? self.client ?? getDefaultClient()
-        let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
+        let _env = env ?? self.env
         return try _client.invoke(
             uri: _uri,
             method: "importedMethod",
@@ -206,14 +206,14 @@ class TestImport {
     }
 
     func anotherMethod(
-        args: TestImportModuleArgsAnotherMethod,
+        args: ArgsAnotherMethod,
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> Int32 {
         let _client = client ?? self.client ?? getDefaultClient()
-        let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
+        let _env = env ?? self.env
         return try _client.invoke(
             uri: _uri,
             method: "anotherMethod",
@@ -223,14 +223,14 @@ class TestImport {
     }
 
     func returnsArrayOfEnums(
-        args: TestImportModuleArgsReturnsArrayOfEnums,
+        args: ArgsReturnsArrayOfEnums,
         client: Invoker? = nil,
         env: TestImportEnv? = nil,
         uri: Uri? = nil
     ) throws -> Array<TestImportEnumReturn?> {
         let _client = client ?? self.client ?? getDefaultClient()
-        let _env = env ?? self.env
         let _uri = uri ?? self.uri ?? getDefaultUri()
+        let _env = env ?? self.env
         return try _client.invoke(
             uri: _uri,
             method: "returnsArrayOfEnums",

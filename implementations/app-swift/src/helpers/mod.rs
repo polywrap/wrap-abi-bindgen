@@ -3,6 +3,7 @@ use handlebars::Handlebars;
 mod array_has_length;
 mod array_length;
 mod detect_keyword;
+mod import_has_env;
 mod is_keyword;
 mod is_not_first;
 mod is_not_last;
@@ -28,6 +29,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "detect_keyword",
         Box::new(detect_keyword::detect_keyword)
+    );
+    handlebars.register_helper(
+        "import_has_env",
+        Box::new(import_has_env::import_has_env)
     );
     handlebars.register_helper(
         "is_keyword",
