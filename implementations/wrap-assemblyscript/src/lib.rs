@@ -41,7 +41,8 @@ impl ModuleTrait for Module {
             )
         });
 
-        let abi = wrap_info.abi.as_object().unwrap();
+        let abi_value = wrap_info.abi.to_json();
+        let abi = abi_value.as_object().unwrap();
 
         if let Some(object_types) = abi.get("objectTypes") {
             let objects = object_types.as_array().unwrap();
