@@ -1,5 +1,10 @@
 declare const __wrap_args: any;
-declare const __wrap_method: string;
+type WrapMethod =
+| "moduleMethod"
+| "objectMethod"
+| "optionalEnvMethod"
+| "_if"
+declare const __wrap_method: WrapMethod;
 declare interface Result<T = any> {
   ok: boolean;
   error: string | undefined;

@@ -34,7 +34,9 @@ export class Args__if {
 }
 
 export abstract class ModuleBase {
-  abstract moduleMethod(args: Args_moduleMethod): number;
+  abstract moduleMethod(
+    args: Args_moduleMethod
+  ): number;
 
   abstract objectMethod(
     args: Args_objectMethod,
@@ -46,5 +48,7 @@ export abstract class ModuleBase {
     env: Types.Env | null
   ): Types.AnotherType | null;
 
-  abstract _if(args: Args__if): Types._else;
+  abstract _if(
+    args: Args__if
+  ): Types._else;
 }

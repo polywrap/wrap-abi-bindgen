@@ -10,16 +10,6 @@ export enum _while {
   _in,
 }
 
-export class AnotherType {
-  prop: string | null;
-  circular: CustomType | null;
-  _const: string | null;
-}
-
-export class CustomMapValue {
-  foo: string;
-}
-
 export class CustomType {
   str: string;
   optStr: string | null;
@@ -31,7 +21,7 @@ export class CustomType {
   i: number;
   _i8: number;
   _i16: number;
-  _number: number;
+  _i32: number;
   bigint: BigInt;
   optBigint: BigInt | null;
   bignumber: BigNumber;
@@ -63,6 +53,16 @@ export class CustomType {
   mapOfObj: Map<string, AnotherType>;
   mapOfArrOfObj: Map<string, Array<AnotherType>>;
   mapCustomValue: Map<string, CustomMapValue | null>;
+}
+
+export class AnotherType {
+  prop: string | null;
+  circular: CustomType | null;
+  _const: string | null;
+}
+
+export class CustomMapValue {
+  foo: string;
 }
 
 export class _else {

@@ -96,7 +96,7 @@ impl ModuleTrait for Module {
           name: "globals.d.ts".to_string(),
           data: renderer.render(
               "globals.d.ts",
-              &Value::Null
+              &wrap_info.abi
           )
       });
 
@@ -184,9 +184,17 @@ impl ModuleTrait for Module {
         });
 
         if imports_by_namespace.keys().len() > 0 {
+          let namespaces: Vec<String> = 
+            imports_by_namespace.keys().into_iter().map(
+              |k| k.to_string()
+            ).collect();
+
+          let mut namespaces_obj = HashMap::new();
+          namespaces_obj.insert("namespaces".to_string(), namespaces);
+
           imported.files.push(File {
               name: "index.ts".to_string(),
-              data: renderer.render("imported/index.ts", &wrap_info.abi)
+              data: renderer.render("imported/index.ts", &namespaces_obj)
           });
           output.dirs.push(imported);
         }

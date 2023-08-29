@@ -1,17 +1,7 @@
 lazy_static! {
   static ref NAME: String = "imported/namespace/index.ts".to_string();
-  static ref SOURCE: String = r#"{{#each importedModuleTypes}}
-export * from "./{{type}}";
-{{/each}}
-{{#each importedObjectTypes}}
-export * from "./{{type}}";
-{{/each}}
-{{#each importedEnumTypes}}
-export * from "./{{type}}";
-{{/each}}
-{{#each importedEnvTypes}}
-export * from "./{{type}}";
-{{/each}}
+  static ref SOURCE: String = r#"export * from "./module";
+export * from "./types";
 "#.to_string();
 }
 
