@@ -156,12 +156,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
-name = "paste"
-version = "1.0.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de3145af08024dea9fa9914f381a17b8fc6034dfb00f3a84013f7ff43f29ed4c"
-
-[[package]]
 name = "pest"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -212,16 +206,16 @@ dependencies = [
  "handlebars",
  "lazy_static",
  "polywrap-wasm-rs",
- "polywrap_msgpack",
+ "polywrap_msgpack_serde",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "polywrap-wasm-rs"
-version = "0.11.0-pre.4"
+version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da9ecd275ce056e8ecb914b40eb3be076c313cd08a89f87612902827fd276ca9"
+checksum = "86a4242d00d30a6ed07a7f32cb18435c8c0e81cbfffacac5f046b025ca497d0a"
 dependencies = [
  "bigdecimal",
  "byteorder",
@@ -232,13 +226,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "polywrap_msgpack"
-version = "0.1.6-beta.7"
+name = "polywrap_msgpack_serde"
+version = "0.0.2-beta.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9246be57087143f37a00cb244aba3d37e213ab0918fdd054f0b436bb299ca183"
+checksum = "b7d68a93c122fd0de932972a1332e0b2405b729b691fc3c59a482b71d61363af"
 dependencies = [
- "rmp-serde",
- "rmpv",
+ "bigdecimal",
+ "byteorder",
+ "num-bigint",
  "serde",
  "serde_bytes",
  "serde_json",
@@ -261,40 +256,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1b9ab9c7eadfd8df19006f1cf1a4aed13540ed5cbc047010ece5826e10825488"
 dependencies = [
  "proc-macro2",
-]
-
-[[package]]
-name = "rmp"
-version = "0.8.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f9860a6cc38ed1da53456442089b4dfa35e7cedaa326df63017af88385e6b20"
-dependencies = [
- "byteorder",
- "num-traits",
- "paste",
-]
-
-[[package]]
-name = "rmp-serde"
-version = "1.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bffea85eea980d8a74453e5d02a8d93028f3c34725de143085a844ebe953258a"
-dependencies = [
- "byteorder",
- "rmp",
- "serde",
-]
-
-[[package]]
-name = "rmpv"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e0e0214a4a2b444ecce41a4025792fc31f77c7bb89c46d253953ea8c65701ec"
-dependencies = [
- "num-traits",
- "rmp",
- "serde",
- "serde_bytes",
 ]
 
 [[package]]
