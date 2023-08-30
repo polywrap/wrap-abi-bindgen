@@ -99,10 +99,13 @@ class {{to_upper (remove_module_suffix type)}} {
     }
 
     func getDefaultClient() -> PolywrapClient {
-        if (self.client == nil) {
-            self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
+        if let client = self.client {
+            return client
+        } else {
+            let newClient = BuilderConfig().addSystemDefault().addWeb3Default().build()
+            self.client = newClient
+            return newClient
         }
-        return self.client!
     }
 
     func getDefaultUri() -> Uri {
