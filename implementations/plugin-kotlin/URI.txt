@@ -1,1 +1,1 @@
-wrap://ipfs/QmZ6UtYgmmAhaUpXPrgXWs6z4ZdKDDLrCRGF8nb2Y1zkgb
+wrap://http/https://wraps.wrapscan.io/r/polywrap/plugin-kotlin-abi-bindgen@1.0.0
