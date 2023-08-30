@@ -1,0 +1,24 @@
+[package]
+name = "app-rust-wrap-abi-bindgen"
+version = "0.1.0"
+description = "Generates Rust app bindings from a WRAP ABI"
+authors = ["Polywrap"]
+repository = "https://github.com/polywrap/wrap-abi-bindgen"
+license = "MIT"
+edition = "2021"
+
+[dependencies]
+polywrap-wasm-rs = { version = "~0.11.0" }
+polywrap_msgpack_serde = { version = "~0.0.2-beta.5" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0.97" }
+handlebars = { version = "4.3.7" }
+lazy_static = { version = "1.4.0" }
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = 's'
+lto = true
+panic = 'abort'
