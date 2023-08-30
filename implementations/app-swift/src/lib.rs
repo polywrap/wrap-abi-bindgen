@@ -25,12 +25,21 @@ impl ModuleTrait for Module {
         let wrap_info = args.wrap_info;
         let renderer = Renderer::new();
         let mut output = Output::new();
+        let abi = wrap_info.abi.to_json();
+
+        output.files.push(File {
+            name: "Modules.swift".to_string(),
+            data: renderer.render(
+                "Modules.swift",
+                &abi
+            )
+        });
 
         output.files.push(File {
             name: "Types.swift".to_string(),
             data: renderer.render(
                 "Types.swift",
-                &wrap_info.abi.to_json()
+                &abi
             )
         });
 
