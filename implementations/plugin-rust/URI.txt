@@ -1,1 +1,1 @@
-wrap://ipfs/QmRD7Qsfa5XQ48Jgp6STesQNnDN5MPWXHYANgxR1ogMh62
+wrap://http/https://wraps.wrapscan.io/r/polywrap/plugin-rust-abi-bindgen@1.0.0
