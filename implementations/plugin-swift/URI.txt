@@ -1,1 +1,1 @@
-wrap://ipfs/QmePYH48KCaD9WURoGAR9uqqM7s5V6DJe6K6F9TM8hGwLP
+wrap://http/https://wraps.wrapscan.io/r/polywrap/plugin-swift-abi-bindgen@1.0.0
