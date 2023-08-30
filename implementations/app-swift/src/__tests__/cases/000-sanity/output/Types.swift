@@ -164,6 +164,8 @@ public struct TestImportArgsReturnsArrayOfEnums: Codable {
 
 /* URI: "testimport.uri.eth" */
 class TestImport {
+    static let uri: Uri = try! Uri("testimport.uri.eth")
+
     var client: PolywrapClient? = nil
     var env: TestImportEnv? = nil
     var uri: Uri? = nil
@@ -185,10 +187,13 @@ class TestImport {
     }
 
     func getDefaultUri() -> Uri {
-        if (self.uri == nil) {
-            self.uri = try? Uri("testimport.uri.eth")
+        if let uri = self.uri {
+            return uri
+        } else {
+            let newUri = TestImport.uri
+            self.uri = newUri
+            return newUri
         }
-        return self.uri!
     }
 
     func importedMethod(

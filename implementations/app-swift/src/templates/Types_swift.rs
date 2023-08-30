@@ -84,6 +84,8 @@ public struct {{to_upper (remove_module_suffix ../type)}}Args{{to_upper name}}: 
 {{/each}}
 /* URI: "{{uri}}" */
 class {{to_upper (remove_module_suffix type)}} {
+    static let uri: Uri = try! Uri("{{uri}}")
+
     var client: PolywrapClient? = nil
     {{#if (import_has_env ../importedEnvTypes namespace)}}
     var env: {{to_upper namespace}}Env? = nil
@@ -109,10 +111,13 @@ class {{to_upper (remove_module_suffix type)}} {
     }
 
     func getDefaultUri() -> Uri {
-        if (self.uri == nil) {
-            self.uri = try? Uri("{{uri}}")
+        if let uri = self.uri {
+            return uri
+        } else {
+            let newUri = {{to_upper (remove_module_suffix type)}}.uri
+            self.uri = newUri
+            return newUri
         }
-        return self.uri!
     }
     {{#each methods}}
 
