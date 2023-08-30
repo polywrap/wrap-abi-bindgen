@@ -3,11 +3,22 @@ extern crate lazy_static;
 
 pub mod wrap;
 pub use wrap::*;
+use polywrap_wasm_rs::JSON;
+use serde::Serialize;
 
 pub mod templates;
 pub mod helpers;
 mod renderer;
 use renderer::Renderer;
+
+#[derive(Serialize)]
+struct RenderData {
+    version: String,
+    name: String,
+    #[serde(rename = "type")]
+    _type: String,
+    abi: JSON::Value
+}
 
 impl ModuleTrait for Module {
     fn generate_bindings(args: ArgsGenerateBindings) -> Result<Output, String> {
@@ -21,6 +32,13 @@ impl ModuleTrait for Module {
         }
 
         let wrap_info = args.wrap_info;
+        let data = RenderData {
+            version: wrap_info.version,
+            name: wrap_info.name,
+            _type: wrap_info._type,
+            abi: wrap_info.abi.to_json()
+        };
+
         let renderer = Renderer::new();
         let mut output = Output::new();
 
@@ -28,7 +46,7 @@ impl ModuleTrait for Module {
             name: "module.kt".to_string(),
             data: renderer.render(
                 "module.kt",
-                &wrap_info
+                &data
             )
         });
 
@@ -36,7 +54,7 @@ impl ModuleTrait for Module {
             name: "types.kt".to_string(),
             data: renderer.render(
                 "types.kt",
-                &wrap_info
+                &data
             )
         });
 
@@ -44,7 +62,7 @@ impl ModuleTrait for Module {
             name: "wrap.info.kt".to_string(),
             data: renderer.render(
                 "wrap.info.kt",
-                &wrap_info
+                &data
             )
         });
 

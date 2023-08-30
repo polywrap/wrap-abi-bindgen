@@ -22,6 +22,9 @@ impl ModuleTrait for Module {
         }
 
         let wrap_info = args.wrap_info;
+        let abi_value = wrap_info.abi.to_json();
+        let abi = abi_value.as_object().unwrap();
+
         let renderer = Renderer::new();
         let mut output = Output::new();
 
@@ -29,7 +32,7 @@ impl ModuleTrait for Module {
             name: "index.ts".to_string(),
             data: renderer.render(
                 "index.ts",
-                &wrap_info.abi
+                &abi_value
             )
         });
 
@@ -37,11 +40,9 @@ impl ModuleTrait for Module {
             name: "entry.ts".to_string(),
             data: renderer.render(
                 "entry.ts",
-                &wrap_info.abi
+                &abi_value
             )
         });
-
-        let abi = wrap_info.abi.as_object().unwrap();
 
         if let Some(object_types) = abi.get("objectTypes") {
             let objects = object_types.as_array().unwrap();
@@ -227,7 +228,7 @@ impl ModuleTrait for Module {
             abi.get("importedEnvTypes").is_some() {
             imported.files.push(File {
                 name: "index.ts".to_string(),
-                data: renderer.render("imported/index.ts", &wrap_info.abi)
+                data: renderer.render("imported/index.ts", &abi_value)
             });
             output.dirs.push(imported);
         }
