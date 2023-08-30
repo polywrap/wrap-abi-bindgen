@@ -70,12 +70,12 @@ public struct Else: Codable {
 
 // Enums START //
 
-public enum CustomEnum: String, Codable {
+public enum CustomEnum: Int, Codable {
     case STRING
     case BYTES
 }
 
-public enum While: String, Codable {
+public enum While: Int, Codable {
     case _for
     case _in
 }
@@ -120,12 +120,12 @@ public struct TestImportEnv: Codable {
 
 // Imported enums START //
 
-public enum TestImportEnum: String, Codable {
+public enum TestImportEnum: Int, Codable {
     case STRING
     case BYTES
 }
 
-public enum TestImportEnumReturn: String, Codable {
+public enum TestImportEnumReturn: Int, Codable {
     case STRING
     case BYTES
 }
@@ -175,10 +175,13 @@ class TestImport {
     }
 
     func getDefaultClient() -> PolywrapClient {
-        if (self.client == nil) {
-            self.client = BuilderConfig().addSystemDefault().addWeb3Default().build()
+        if let client = self.client {
+            return client
+        } else {
+            let newClient = BuilderConfig().addSystemDefault().addWeb3Default().build()
+            self.client = newClient
+            return newClient
         }
-        return self.client!
     }
 
     func getDefaultUri() -> Uri {
