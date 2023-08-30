@@ -100,18 +100,20 @@ open class {{to_class_name (remove_module_suffix type)}}(
     {{/if}}
     uri: Uri? = null
 ) {
+    companion object {
+        val uri: Uri = Uri("{{uri}}")
+    }
+
     protected val defaultClient: Invoker by lazy {
         polywrapClient { addDefaults() }
     }
-    protected val defaultUri: Uri by lazy {
-        Uri("{{uri}}")
-    }
+    protected val defaultUri: Uri? = null
     {{#if (import_has_env ../importedEnvTypes namespace)}}
-    protected val defaultEnv: {{to_class_name namespace}}Env?
+    protected val defaultEnv: {{to_class_name namespace}}Env? = null
     {{/if}}
 
     val client: Invoker = client ?: defaultClient
-    val uri: Uri = uri ?: defaultUri
+    val uri: Uri = uri ?: defaultUri ?: {{to_class_name (remove_module_suffix type)}}.uri
     {{#if (import_has_env ../importedEnvTypes namespace)}}
     val env: {{to_class_name namespace}}Env? = env ?: defaultEnv
     {{/if}}

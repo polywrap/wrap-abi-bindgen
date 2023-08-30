@@ -188,16 +188,18 @@ open class TestImport(
     env: TestImportEnv? = null,
     uri: Uri? = null
 ) {
+    companion object {
+        val uri: Uri = Uri("testimport.uri.eth")
+    }
+
     protected val defaultClient: Invoker by lazy {
         polywrapClient { addDefaults() }
     }
-    protected val defaultUri: Uri by lazy {
-        Uri("testimport.uri.eth")
-    }
-    protected val defaultEnv: TestImportEnv?
+    protected val defaultUri: Uri? = null
+    protected val defaultEnv: TestImportEnv? = null
 
     val client: Invoker = client ?: defaultClient
-    val uri: Uri = uri ?: defaultUri
+    val uri: Uri = uri ?: defaultUri ?: TestImport.uri
     val env: TestImportEnv? = env ?: defaultEnv
 
     fun importedMethod(
