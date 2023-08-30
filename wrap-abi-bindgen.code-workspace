@@ -9,6 +9,10 @@
         "path": "interface"
       },
       {
+        "name": "app-swift",
+        "path": "implementations/app-swift"
+      },
+      {
         "name": "app-python",
         "path": "implementations/app-python"
       },
