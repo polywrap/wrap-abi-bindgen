@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "app-python-wrap-abi-bindgen"
+name = "app-python-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",

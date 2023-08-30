@@ -1,5 +1,4 @@
 {
-  "name": "plugin-python-wrap-abi-bindgen",
   "private": true,
   "scripts": {
     "codegen": "npx polywrap codegen",

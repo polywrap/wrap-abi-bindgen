@@ -203,7 +203,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "plugin-typescript-wrap-abi-bindgen"
+name = "plugin-typescript-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",

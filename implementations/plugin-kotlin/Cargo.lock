@@ -206,7 +206,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "plugin-kotlin-wrap-abi-bindgen"
+name = "plugin-kotlin-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",

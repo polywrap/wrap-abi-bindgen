@@ -203,7 +203,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "plugin-python-wrap-abi-bindgen"
+name = "plugin-python-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",

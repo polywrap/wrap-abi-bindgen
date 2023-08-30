@@ -1,5 +1,4 @@
 {
-  "name": "app-kotlin-wrap-abi-bindgen",
   "private": true,
   "scripts": {
     "codegen": "npx polywrap codegen",

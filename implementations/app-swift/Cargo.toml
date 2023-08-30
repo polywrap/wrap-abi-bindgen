@@ -1,5 +1,5 @@
 [package]
-name = "app-swift-wrap-abi-bindgen"
+name = "app-swift-abi-bindgen"
 version = "0.1.0"
 description = "Generates Swift app bindings from a WRAP ABI"
 authors = ["Polywrap"]

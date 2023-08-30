@@ -200,7 +200,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "plugin-typescript-wrap-abi-bindgen"
+name = "plugin-swift-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",
