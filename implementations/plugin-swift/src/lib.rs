@@ -21,6 +21,7 @@ impl ModuleTrait for Module {
         }
 
         let wrap_info = args.wrap_info;
+        let abi = wrap_info.abi.to_json();
         let renderer = Renderer::new();
         let mut output = Output::new();
 
@@ -28,7 +29,7 @@ impl ModuleTrait for Module {
             name: "Module.swift".to_string(),
             data: renderer.render(
                 "Module.swift",
-                &wrap_info.abi
+                &abi
             )
         });
 
@@ -36,7 +37,7 @@ impl ModuleTrait for Module {
             name: "Types.swift".to_string(),
             data: renderer.render(
                 "Types.swift",
-                &wrap_info.abi
+                &abi
             )
         });
 

@@ -24,6 +24,9 @@ impl ModuleTrait for Module {
         }
 
         let wrap_info = args.wrap_info;
+        let abi_value = wrap_info.abi.to_json();
+        let abi = abi_value.as_object().unwrap();
+
         let renderer = Renderer::new();
         let mut output = Output::new();
 
@@ -31,7 +34,7 @@ impl ModuleTrait for Module {
             name: "mod.rs".to_string(),
             data: renderer.render(
                 "mod.rs",
-                &wrap_info.abi
+                &abi_value
             )
         });
 
@@ -39,11 +42,9 @@ impl ModuleTrait for Module {
             name: "entry.rs".to_string(),
             data: renderer.render(
                 "entry.rs",
-                &wrap_info.abi
+                &abi_value
             )
         });
-
-        let abi = wrap_info.abi.as_object().unwrap();
 
         let get_dir_name = |value: &JSON::Value| -> String {
             let dir_name = value.get("type").unwrap().as_str().unwrap().to_string();
@@ -212,7 +213,7 @@ impl ModuleTrait for Module {
             abi.get("importedEnvTypes").is_some() {
             imported.files.push(File {
                 name: "mod.rs".to_string(),
-                data: renderer.render("imported/mod.rs", &wrap_info.abi)
+                data: renderer.render("imported/mod.rs", &abi_value)
             });
             output.dirs.push(imported);
         }
