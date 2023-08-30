@@ -22,7 +22,7 @@ public struct {{detect_keyword (to_upper type)}}: Codable {
 // Enums START //
 
 {{#each enumTypes}}
-public enum {{detect_keyword (to_upper type)}}: String, Codable {
+public enum {{detect_keyword (to_upper type)}}: Int, Codable {
     {{#each constants}}
     case {{detect_keyword this}}
     {{/each}}
@@ -60,7 +60,7 @@ public struct {{detect_keyword (to_upper type)}}: Codable {
 // Imported enums START //
 
 {{#each importedEnumTypes}}
-public enum {{detect_keyword (to_upper type)}}: String, Codable {
+public enum {{detect_keyword (to_upper type)}}: Int, Codable {
     {{#each constants}}
     case {{detect_keyword this}}
     {{/each}}
