@@ -9,6 +9,10 @@
         "path": "interface"
       },
       {
+        "name": "app-kotlin",
+        "path": "implementations/app-kotlin"
+      },
+      {
         "name": "app-swift",
         "path": "implementations/app-swift"
       },
