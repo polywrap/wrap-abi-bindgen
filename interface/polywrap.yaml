@@ -1,6 +1,6 @@
 format: 0.3.0
 project:
-  name: wrap-abi-bindgen
+  name: abi-bindgen
   type: interface
 source:
   schema: ./polywrap.graphql

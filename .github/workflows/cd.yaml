@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - wrap-0.1
+      - main
 
 jobs:
   interface:
@@ -36,6 +36,8 @@ jobs:
 
       - name: Deploy
         run: yarn deploy
+        env:
+          POLYWRAP_WRAPSCAN_AUTH_HEADER_PROD: ${{secrets.POLYWRAP_WRAPSCAN_AUTH_HEADER_PROD}}
 
       - name: PR New URI
         uses: peter-evans/create-pull-request@v3
@@ -92,6 +94,8 @@ jobs:
 
       - name: Deploy
         run: yarn deploy
+        env:
+          POLYWRAP_WRAPSCAN_AUTH_HEADER_PROD: ${{secrets.POLYWRAP_WRAPSCAN_AUTH_HEADER_PROD}}
 
       - name: PR New URI
         uses: peter-evans/create-pull-request@v3
