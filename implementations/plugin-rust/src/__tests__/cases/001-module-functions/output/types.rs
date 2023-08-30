@@ -9,7 +9,7 @@ use polywrap_msgpack_serde::{
   to_vec,
   from_slice,
   JSON,
-  bytes::ByteBuf,
+  serde_bytes::ByteBuf,
   JSONString,
   BigNumber
 };
