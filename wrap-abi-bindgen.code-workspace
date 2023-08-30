@@ -13,12 +13,16 @@
         "path": "implementations/app-kotlin"
       },
       {
+        "name": "app-swift",
+        "path": "implementations/app-swift"
+      },
+      {
         "name": "app-python",
         "path": "implementations/app-python"
       },
       {
-          "name": "app-rust",
-          "path": "implementations/app-rust"
+        "name": "app-rust",
+        "path": "implementations/app-rust"
       },
       {
         "name": "app-typescript",
