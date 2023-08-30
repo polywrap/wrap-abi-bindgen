@@ -1,5 +1,5 @@
 [package]
-name = "app-kotlin-wrap-abi-bindgen"
+name = "app-kotlin-abi-bindgen"
 version = "0.1.0"
 description = "Generates Kotlin app bindings from a WRAP ABI"
 authors = ["Polywrap"]

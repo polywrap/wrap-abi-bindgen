@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "app-typescript-wrap-abi-bindgen"
+name = "app-typescript-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",

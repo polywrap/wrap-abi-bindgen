@@ -1,5 +1,5 @@
 [package]
-name = "wrap-rust-wrap-abi-bindgen"
+name = "wrap-rust-abi-bindgen"
 version = "0.1.0"
 description = "Generates Rust wrap bindings from a WRAP ABI"
 authors = ["Polywrap"]

@@ -1,5 +1,5 @@
 [package]
-name = "wrap-assemblyscript-wrap-abi-bindgen"
+name = "wrap-assemblyscript-abi-bindgen"
 version = "0.1.0"
 description = "Generates AssemblyScript wrap bindings from a WRAP ABI"
 authors = ["Polywrap"]
