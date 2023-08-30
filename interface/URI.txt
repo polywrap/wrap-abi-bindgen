@@ -1,1 +1,1 @@
-wrap://ipfs/QmQT29FUG3fy5nwUbyaFpMx2AtBKeVepqH73JU7X3Du5fP
+wrap://http/https://wraps.wrapscan.io/r/polywrap/abi-bindgen@1.0.0
