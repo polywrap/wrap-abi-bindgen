@@ -18,6 +18,9 @@ declare const __wrap_subinvoke: (
   name: string,
   args: any
 ) => Result;
+declare const __wrap_getImplementations: (
+  uri: string
+) => string[];
 declare const __wrap_abort: (args: any) => void;
 "#.to_string();
 }

@@ -34,7 +34,7 @@ export class {{detect_keyword namespace}} {
   {{#with getImplementations}}
   {{#if enabled}}
   public static getImplementations(): string[] {
-    return wrap_getImplementations(this.uri);
+    return __wrap_getImplementations(this.uri);
   }
   {{/if}}
   {{/with}}
