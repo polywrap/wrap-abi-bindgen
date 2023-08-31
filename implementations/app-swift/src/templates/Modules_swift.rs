@@ -55,6 +55,12 @@ class {{to_upper (remove_module_suffix type)}} {
             return newUri
         }
     }
+    {{#if (import_has_env ../importedEnvTypes namespace)}}
+
+    func getDefaultEnv() -> {{to_upper namespace}}Env? {
+        return nil
+    }
+    {{/if}}
     {{#each methods}}
 
     func {{detect_keyword name}}(
@@ -68,7 +74,7 @@ class {{to_upper (remove_module_suffix type)}} {
         let _client = client ?? self.client ?? getDefaultClient()
         let _uri = uri ?? self.uri ?? getDefaultUri()
         {{#if (import_has_env ../../importedEnvTypes ../namespace)}}
-        let _env = env ?? self.env
+        let _env = env ?? self.env ?? getDefaultEnv()
         return try _client.invoke(
             uri: _uri,
             method: "{{name}}",
