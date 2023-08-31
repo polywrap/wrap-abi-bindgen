@@ -67,6 +67,10 @@ class TestImport {
         }
     }
 
+    func getDefaultEnv() -> TestImportEnv? {
+        return nil
+    }
+
     func importedMethod(
         args: TestImportArgsImportedMethod,
         client: PolywrapClient? = nil,
@@ -75,7 +79,7 @@ class TestImport {
     ) throws -> TestImportObject? {
         let _client = client ?? self.client ?? getDefaultClient()
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        let _env = env ?? self.env
+        let _env = env ?? self.env ?? getDefaultEnv()
         return try _client.invoke(
             uri: _uri,
             method: "importedMethod",
@@ -92,7 +96,7 @@ class TestImport {
     ) throws -> Int32 {
         let _client = client ?? self.client ?? getDefaultClient()
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        let _env = env ?? self.env
+        let _env = env ?? self.env ?? getDefaultEnv()
         return try _client.invoke(
             uri: _uri,
             method: "anotherMethod",
@@ -109,7 +113,7 @@ class TestImport {
     ) throws -> Array<TestImportEnumReturn?> {
         let _client = client ?? self.client ?? getDefaultClient()
         let _uri = uri ?? self.uri ?? getDefaultUri()
-        let _env = env ?? self.env
+        let _env = env ?? self.env ?? getDefaultEnv()
         return try _client.invoke(
             uri: _uri,
             method: "returnsArrayOfEnums",
