@@ -5,7 +5,7 @@ pub mod wrap;
 use std::collections::HashMap;
 
 use definition_kind::DefinitionKind;
-use serde_json::Value;
+use serde_json::{Value, Map};
 pub use wrap::*;
 
 pub mod templates;
@@ -51,14 +51,6 @@ impl ModuleTrait for Module {
         let wrap_info = args.wrap_info;
         let renderer = Renderer::new();
         let mut output = Output::new();
-
-        output.files.push(File {
-            name: "index.ts".to_string(),
-            data: renderer.render(
-                "index.ts",
-                &wrap_info.abi
-            )
-        });
 
         output.files.push(File {
             name: "entry.ts".to_string(),
@@ -130,14 +122,27 @@ impl ModuleTrait for Module {
           imported_modules = imported_module_types.clone();
         }
 
+        let all_imports = [
+          imported_objects.as_array().unwrap().clone(),
+          imported_enums.as_array().unwrap().clone(),
+          imported_envs.as_array().unwrap().clone(),
+          imported_modules.as_array().unwrap().clone(),
+        ].concat();
+
         let imports_by_namespace = group_by_namespace(
-          &[
-            imported_objects.as_array().unwrap().clone(),
-            imported_enums.as_array().unwrap().clone(),
-            imported_envs.as_array().unwrap().clone(),
-            imported_modules.as_array().unwrap().clone(),
-          ].concat()
+          &all_imports
         );
+
+        let mut info_for_index_template: Map<String, Value> = Map::new();
+        info_for_index_template.insert("hasImports".to_owned(), Value::Bool(all_imports.len() > 0));
+
+        output.files.push(File {
+          name: "index.ts".to_string(),
+          data: renderer.render(
+              "index.ts",
+              &Value::Object(info_for_index_template)
+          )
+        });
 
         imports_by_namespace.iter().for_each(|(namespace, imports)| {
           let imports_by_kind = group_by_kind(&imports);

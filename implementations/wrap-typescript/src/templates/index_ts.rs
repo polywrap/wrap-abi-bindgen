@@ -2,7 +2,7 @@ lazy_static! {
   static ref NAME: String = "index.ts".to_string();
   static ref SOURCE: String = r#"export * from "./module";
 export * from "./types";
-export * from "./imported";
+{{#if hasImports}}export * from "./imported";{{/if}}
 "#.to_string();
 }
 
