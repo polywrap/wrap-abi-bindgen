@@ -6,7 +6,7 @@ use polywrap_wasm_rs::{
     JSON,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 use crate::AnotherType;
 use crate::CustomEnum;
@@ -36,11 +36,9 @@ pub struct CustomType {
     pub json: JSONString,
     #[serde(rename = "optJson")]
     pub opt_json: Option<JSONString>,
-    #[serde(with = "serde_bytes")]
-    pub bytes: Vec<u8>,
-    #[serde(with = "serde_bytes")]
+    pub bytes: ByteBuf,
     #[serde(rename = "optBytes")]
-    pub opt_bytes: Option<Vec<u8>>,
+    pub opt_bytes: Option<ByteBuf>,
     pub boolean: bool,
     #[serde(rename = "optBoolean")]
     pub opt_boolean: Option<bool>,

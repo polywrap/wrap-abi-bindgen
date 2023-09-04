@@ -11,7 +11,7 @@ use polywrap_wasm_rs::{
     from_slice,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
@@ -20,7 +20,7 @@ use {{_crate}}::{{detect_keyword (to_upper _type)}};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 

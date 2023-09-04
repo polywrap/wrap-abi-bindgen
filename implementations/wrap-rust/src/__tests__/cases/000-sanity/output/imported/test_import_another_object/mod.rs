@@ -9,7 +9,7 @@ use polywrap_wasm_rs::{
     from_slice,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

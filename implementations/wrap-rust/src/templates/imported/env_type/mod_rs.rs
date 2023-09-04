@@ -8,7 +8,7 @@ use polywrap_wasm_rs::{
     JSON,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};

@@ -6,7 +6,7 @@ use polywrap_wasm_rs::{
     JSON,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 use crate::Nested;
 

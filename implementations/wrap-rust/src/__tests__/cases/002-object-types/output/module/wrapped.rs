@@ -9,7 +9,7 @@ use polywrap_wasm_rs::{
     from_slice,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 use crate::module::{ModuleTrait, Module};
 use crate::Arg;

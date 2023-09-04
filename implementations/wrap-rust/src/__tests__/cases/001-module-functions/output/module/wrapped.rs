@@ -9,7 +9,7 @@ use polywrap_wasm_rs::{
     from_slice,
     JSONString,
     BigIntWrapper,
-    serde_bytes
+    ByteBuf
 };
 use crate::module::{ModuleTrait, Module};
 
@@ -44,8 +44,7 @@ pub fn function1_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ArgsFunction2 {
     pub arg1: Option<i32>,
-    #[serde(with = "serde_bytes")]
-    pub arg2: Option<Vec<u8>>,
+    pub arg2: Option<ByteBuf>,
 }
 
 pub fn function2_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
