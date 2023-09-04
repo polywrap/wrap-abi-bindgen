@@ -3,19 +3,7 @@ lazy_static! {
   static ref SOURCE: String = r#"{{#with moduleType}}
 {{#if (array_has_length methods)}}
 use serde::{Deserialize, Serialize};
-use polywrap_msgpack_serde::{
-    from_slice,
-    to_vec,
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
-use polywrap_wasm_rs::{
-    BigInt,
-    BigNumber,
-    Map,
-    JSON,
-    wrap_load_env
-};
+use polywrap_wasm_rs::*;
 use crate::module::{ModuleTrait, Module};
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
