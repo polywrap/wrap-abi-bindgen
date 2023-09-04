@@ -5,7 +5,7 @@ pub mod wrap;
 use std::collections::HashMap;
 
 use definition_kind::DefinitionKind;
-use serde_json::{Value, Map};
+use serde_json::Value;
 pub use wrap::*;
 
 pub mod templates;
@@ -48,49 +48,7 @@ impl ModuleTrait for Module {
             );
         }
 
-        let wrap_info = args.wrap_info;
-        let renderer = Renderer::new();
-        let mut output = Output::new();
-
-        output.files.push(File {
-            name: "entry.ts".to_string(),
-            data: renderer.render(
-                "entry.ts",
-                &wrap_info.abi
-            )
-        });
-
-        output.files.push(File {
-            name: "common.ts".to_string(),
-            data: renderer.render(
-                "common.ts",
-                &wrap_info.abi
-            )
-        });
-
-        output.files.push(File {
-            name: "types.ts".to_string(),
-            data: renderer.render(
-                "types.ts",
-                &wrap_info.abi
-            )
-        });
-
-        output.files.push(File {
-            name: "module.ts".to_string(),
-            data: renderer.render(
-                "module.ts",
-                &wrap_info.abi
-            )
-        });
-
-        output.files.push(File {
-          name: "globals.d.ts".to_string(),
-          data: renderer.render(
-              "globals.d.ts",
-              &wrap_info.abi
-          )
-      });
+        let mut wrap_info = args.wrap_info;
 
         let abi = wrap_info.abi.as_object().unwrap();
 
@@ -133,16 +91,60 @@ impl ModuleTrait for Module {
           &all_imports
         );
 
-        let mut info_for_index_template: Map<String, Value> = Map::new();
-        info_for_index_template.insert("hasImports".to_owned(), Value::Bool(all_imports.len() > 0));
+        let has_imports = all_imports.len() > 0;
+
+        wrap_info.abi.as_object_mut().unwrap().insert("hasImports".to_owned(), Value::Bool(has_imports));
+
+        let renderer = Renderer::new();
+        let mut output = Output::new();
 
         output.files.push(File {
           name: "index.ts".to_string(),
           data: renderer.render(
               "index.ts",
-              &Value::Object(info_for_index_template)
+              &wrap_info.abi
           )
         });
+
+        output.files.push(File {
+            name: "entry.ts".to_string(),
+            data: renderer.render(
+                "entry.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+            name: "common.ts".to_string(),
+            data: renderer.render(
+                "common.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+            name: "types.ts".to_string(),
+            data: renderer.render(
+                "types.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+            name: "module.ts".to_string(),
+            data: renderer.render(
+                "module.ts",
+                &wrap_info.abi
+            )
+        });
+
+        output.files.push(File {
+          name: "globals.d.ts".to_string(),
+          data: renderer.render(
+              "globals.d.ts",
+              &wrap_info.abi
+          )
+      });
 
         imports_by_namespace.iter().for_each(|(namespace, imports)| {
           let imports_by_kind = group_by_kind(&imports);
@@ -151,15 +153,27 @@ impl ModuleTrait for Module {
           let mut abi_clone = abi_clone.as_object().unwrap().clone();
           
           abi_clone.insert("importedObjectTypes".to_string(), Value::Array(
-            imports_by_kind.get(&DefinitionKind::ImportedObject).unwrap().clone()
+            if let Some(objs) = imports_by_kind.get(&DefinitionKind::ImportedObject) {
+              objs.clone()
+            } else {
+              vec![]
+            }
           ));
 
           abi_clone.insert("importedEnvTypes".to_string(), Value::Array(
-            imports_by_kind.get(&DefinitionKind::ImportedEnv).unwrap().clone()
+            if let Some(envs) = imports_by_kind.get(&DefinitionKind::ImportedEnv) {
+              envs.clone()
+            } else {
+              vec![]
+            }
           ));
 
           abi_clone.insert("importedEnumTypes".to_string(), Value::Array(
-            imports_by_kind.get(&DefinitionKind::ImportedEnum).unwrap().clone()
+            if let Some(enums) = imports_by_kind.get(&DefinitionKind::ImportedEnum) {
+              enums.clone()
+            } else {
+              vec![]
+            }
           ));
 
           let mut files = vec!(

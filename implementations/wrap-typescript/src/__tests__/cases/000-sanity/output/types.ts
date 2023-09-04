@@ -1,4 +1,11 @@
 import { BigInt, BigNumber, JSONString, Bytes } from "./common";
+import {
+  TestImport_Object,
+  TestImport_AnotherObject,
+  TestImport_Env,
+  TestImport_Enum,
+  TestImport_Enum_Return,
+} from "./imported";
 
 export enum CustomEnum {
   STRING,
@@ -82,3 +89,5 @@ export class TestImport {
     return __wrap_getImplementations(this.uri);
   }
 }
+
+export * from "./imported";

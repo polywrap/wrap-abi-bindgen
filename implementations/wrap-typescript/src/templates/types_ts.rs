@@ -1,6 +1,19 @@
 lazy_static! {
   static ref NAME: String = "types.ts".to_string();
   static ref SOURCE: String = r#"import { BigInt, BigNumber, JSONString, Bytes } from "./common";
+{{#if hasImports}}
+import {
+  {{#each importedObjectTypes}}
+  {{detect_keyword type}},
+  {{/each}}
+  {{#each importedEnvTypes}}
+  {{detect_keyword type}},
+  {{/each}}
+  {{#each importedEnumTypes}}
+  {{detect_keyword type}},
+  {{/each}}
+} from "./imported";
+{{/if}}
 {{#each enumTypes}}
 
 export enum {{detect_keyword type}} {
@@ -41,6 +54,10 @@ export class {{detect_keyword namespace}} {
   {{/with}}
 }
 {{/each}}
+
+{{#if hasImports}}
+export * from "./imported";
+{{/if}}
 "#.to_string();
 }
 

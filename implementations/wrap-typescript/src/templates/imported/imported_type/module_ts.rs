@@ -40,7 +40,7 @@ export class {{detect_keyword type}} {
   public static {{name}}(
     args: Args_{{detect_keyword name}}
   ): Result<{{#with return}}{{to_wasm (to_graphql_type this) false}}{{/with}}> {
-    return wrap_subinvoke("{{../uri}}", "{{name}}", args);
+    return __wrap_subinvoke("{{../uri}}", "{{name}}", args);
   }
   {{#if (is_not_last @index ../methods)}}
 
