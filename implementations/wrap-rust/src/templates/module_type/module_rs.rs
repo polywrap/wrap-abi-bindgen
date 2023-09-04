@@ -1,7 +1,17 @@
 lazy_static! {
   static ref NAME: String = "module_type/module.rs".to_string();
   static ref SOURCE: String = r#"{{#with moduleType}}
-use polywrap_wasm_rs::*;
+  use polywrap_wasm_rs::{
+    BigInt,
+    BigNumber,
+    Map,
+    JSON,
+    wrap_load_env,
+    to_vec,
+    from_slice,
+    JSONString,
+    BigIntWrapper
+};
 use crate::{
     {{#each methods}}
     Args{{to_upper name}},

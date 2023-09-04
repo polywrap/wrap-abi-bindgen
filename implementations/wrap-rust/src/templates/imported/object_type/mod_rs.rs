@@ -1,7 +1,17 @@
 lazy_static! {
   static ref NAME: String = "imported/object_type/mod.rs".to_string();
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
-use polywrap_wasm_rs::*;
+  use polywrap_wasm_rs::{
+    BigInt,
+    BigNumber,
+    Map,
+    JSON,
+    wrap_load_env,
+    to_vec,
+    from_slice,
+    JSONString,
+    BigIntWrapper
+};
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}
