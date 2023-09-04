@@ -3,9 +3,6 @@ use polywrap_wasm_rs::{
     BigNumber,
     Map,
     JSON,
-    wrap_load_env,
-    to_vec,
-    from_slice,
     JSONString,
     BigIntWrapper
 };

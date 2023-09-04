@@ -10,7 +10,8 @@ use polywrap_wasm_rs::{
     to_vec,
     from_slice,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    serde_bytes
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};

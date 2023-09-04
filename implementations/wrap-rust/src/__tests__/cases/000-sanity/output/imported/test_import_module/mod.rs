@@ -4,11 +4,12 @@ use polywrap_wasm_rs::{
     BigNumber,
     Map,
     JSON,
-    wrap_load_env,
     to_vec,
+    subinvoke,
     from_slice,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    serde_bytes
 };
 use crate::TestImportObject;
 use crate::TestImportEnum;

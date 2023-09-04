@@ -12,7 +12,8 @@ use polywrap_wasm_rs::{
     to_vec,
     from_slice,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    serde_bytes
 };
 use crate::module::{ModuleTrait, Module};
 {{#each (property_deps this)}}

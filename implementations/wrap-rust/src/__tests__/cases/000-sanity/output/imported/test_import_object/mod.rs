@@ -8,7 +8,8 @@ use polywrap_wasm_rs::{
     to_vec,
     from_slice,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    serde_bytes
 };
 use crate::TestImportAnotherObject;
 use crate::TestImportEnum;

@@ -6,11 +6,12 @@ use polywrap_wasm_rs::{
     BigNumber,
     Map,
     JSON,
-    wrap_load_env,
     to_vec,
+    subinvoke,
     from_slice,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    serde_bytes
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
