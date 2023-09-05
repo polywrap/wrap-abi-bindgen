@@ -48,9 +48,9 @@ impl ModuleTrait for Module {
             );
         }
 
-        let mut wrap_info = args.wrap_info;
-
-        let abi = wrap_info.abi.as_object().unwrap();
+        let wrap_info = args.wrap_info;
+        let mut abi_value = wrap_info.abi.to_json();
+        let abi = abi_value.as_object_mut().unwrap();
 
         // imported dirs go within subdirectory
         let mut imported = Directory {
@@ -65,52 +65,55 @@ impl ModuleTrait for Module {
         let mut imported_modules = Value::Array(vec![]);
 
         if let Some(imported_object_types) = abi.get("importedObjectTypes") {
-          imported_objects = imported_object_types.clone();
+            imported_objects = imported_object_types.clone();
         }
 
         if let Some(imported_enum_types) = abi.get("importedEnumTypes") {
-          imported_enums = imported_enum_types.clone();
+            imported_enums = imported_enum_types.clone();
         }
 
         if let Some(imported_env_types) = abi.get("importedEnvTypes") {
-          imported_envs = imported_env_types.clone();
+            imported_envs = imported_env_types.clone();
         }
 
         if let Some(imported_module_types) = abi.get("importedModuleTypes") {
-          imported_modules = imported_module_types.clone();
+            imported_modules = imported_module_types.clone();
         }
 
         let all_imports = [
-          imported_objects.as_array().unwrap().clone(),
-          imported_enums.as_array().unwrap().clone(),
-          imported_envs.as_array().unwrap().clone(),
-          imported_modules.as_array().unwrap().clone(),
+            imported_objects.as_array().unwrap().clone(),
+            imported_enums.as_array().unwrap().clone(),
+            imported_envs.as_array().unwrap().clone(),
+            imported_modules.as_array().unwrap().clone(),
         ].concat();
 
         let imports_by_namespace = group_by_namespace(
-          &all_imports
+            &all_imports
         );
 
         let has_imports = all_imports.len() > 0;
 
-        wrap_info.abi.as_object_mut().unwrap().insert("hasImports".to_owned(), Value::Bool(has_imports));
+        abi.insert(
+            "hasImports".to_owned(),
+            Value::Bool(has_imports)
+        );
 
         let renderer = Renderer::new();
         let mut output = Output::new();
 
         output.files.push(File {
-          name: "index.ts".to_string(),
-          data: renderer.render(
-              "index.ts",
-              &wrap_info.abi
-          )
+            name: "index.ts".to_string(),
+            data: renderer.render(
+                "index.ts",
+                &abi
+            )
         });
 
         output.files.push(File {
             name: "entry.ts".to_string(),
             data: renderer.render(
                 "entry.ts",
-                &wrap_info.abi
+                &abi
             )
         });
 
@@ -118,7 +121,7 @@ impl ModuleTrait for Module {
             name: "common.ts".to_string(),
             data: renderer.render(
                 "common.ts",
-                &wrap_info.abi
+                &abi
             )
         });
 
@@ -126,16 +129,16 @@ impl ModuleTrait for Module {
             name: "types.ts".to_string(),
             data: renderer.render(
                 "types.ts",
-                &wrap_info.abi
+                &abi
             )
         });
 
-        if wrap_info.abi.as_object().unwrap().get("moduleType").is_some() {
+        if abi.get("moduleType").is_some() {
           output.files.push(File {
             name: "module.ts".to_string(),
             data: renderer.render(
                 "module.ts",
-                &wrap_info.abi
+                &abi
             )
           });
         }
@@ -144,80 +147,80 @@ impl ModuleTrait for Module {
           name: "globals.d.ts".to_string(),
           data: renderer.render(
               "globals.d.ts",
-              &wrap_info.abi
+              &abi
           )
         });
 
         imports_by_namespace.iter().for_each(|(namespace, imports)| {
-          let imports_by_kind = group_by_kind(&imports);
+            let imports_by_kind = group_by_kind(&imports);
 
-          let abi_clone = serde_json::from_str::<Value>(&wrap_info.abi.to_string()).unwrap();
-          let mut abi_clone = abi_clone.as_object().unwrap().clone();
-          
-          abi_clone.insert("importedObjectTypes".to_string(), Value::Array(
-            if let Some(objs) = imports_by_kind.get(&DefinitionKind::ImportedObject) {
-              objs.clone()
-            } else {
-              vec![]
-            }
-          ));
+            let abi_clone = serde_json::from_str::<Value>(&abi_value.to_string()).unwrap();
+            let mut abi_clone = abi_clone.as_object().unwrap().clone();
 
-          abi_clone.insert("importedEnvTypes".to_string(), Value::Array(
-            if let Some(envs) = imports_by_kind.get(&DefinitionKind::ImportedEnv) {
-              envs.clone()
-            } else {
-              vec![]
-            }
-          ));
+            abi_clone.insert("importedObjectTypes".to_string(), Value::Array(
+                if let Some(objs) = imports_by_kind.get(&DefinitionKind::ImportedObject) {
+                    objs.clone()
+                } else {
+                    vec![]
+                }
+            ));
 
-          abi_clone.insert("importedEnumTypes".to_string(), Value::Array(
-            if let Some(enums) = imports_by_kind.get(&DefinitionKind::ImportedEnum) {
-              enums.clone()
-            } else {
-              vec![]
-            }
-          ));
+            abi_clone.insert("importedEnvTypes".to_string(), Value::Array(
+                if let Some(envs) = imports_by_kind.get(&DefinitionKind::ImportedEnv) {
+                    envs.clone()
+                } else {
+                    vec![]
+                }
+            ));
 
-          let mut files = vec!(
-            File {
-                name: "index.ts".to_string(),
-                data: renderer.render("imported/namespace/index.ts", &abi_clone)
-            },
-            File {
-                name: "types.ts".to_string(),
-                data: renderer.render("imported/namespace/types.ts", &abi_clone)
-            }
-          );
+            abi_clone.insert("importedEnumTypes".to_string(), Value::Array(
+                if let Some(enums) = imports_by_kind.get(&DefinitionKind::ImportedEnum) {
+                    enums.clone()
+                } else {
+                    vec![]
+                }
+            ));
 
-          if let Some(imported_module) = imports_by_kind.get(&DefinitionKind::ImportedModule).unwrap().clone().get(0) {
-            files.push(File {
-              name: "module.ts".to_string(),
-              data: renderer.render("imported/namespace/module.ts", &imported_module)
-            });
-          };
+            let mut files = vec!(
+              File {
+                  name: "index.ts".to_string(),
+                  data: renderer.render("imported/namespace/index.ts", &abi_clone)
+              },
+              File {
+                  name: "types.ts".to_string(),
+                  data: renderer.render("imported/namespace/types.ts", &abi_clone)
+              }
+            );
 
-          let dir = Directory {
-              name: namespace.to_string(),
-              files,
-              dirs: vec!()
-          };
-          imported.dirs.push(dir);
+            if let Some(imported_module) = imports_by_kind.get(&DefinitionKind::ImportedModule).unwrap().clone().get(0) {
+                files.push(File {
+                    name: "module.ts".to_string(),
+                    data: renderer.render("imported/namespace/module.ts", &imported_module)
+                });
+            };
+
+            let dir = Directory {
+                name: namespace.to_string(),
+                files,
+                dirs: vec!()
+            };
+            imported.dirs.push(dir);
         });
 
         if imports_by_namespace.keys().len() > 0 {
-          let namespaces: Vec<String> = 
-            imports_by_namespace.keys().into_iter().map(
-              |k| k.to_string()
-            ).collect();
+            let namespaces: Vec<String> =
+                imports_by_namespace.keys().into_iter().map(
+                    |k| k.to_string()
+                ).collect();
 
-          let mut namespaces_obj = HashMap::new();
-          namespaces_obj.insert("namespaces".to_string(), namespaces);
+            let mut namespaces_obj = HashMap::new();
+            namespaces_obj.insert("namespaces".to_string(), namespaces);
 
-          imported.files.push(File {
-              name: "index.ts".to_string(),
-              data: renderer.render("imported/index.ts", &namespaces_obj)
-          });
-          output.dirs.push(imported);
+            imported.files.push(File {
+                name: "index.ts".to_string(),
+                data: renderer.render("imported/index.ts", &namespaces_obj)
+            });
+            output.dirs.push(imported);
         }
 
         Ok(output)
