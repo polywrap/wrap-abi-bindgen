@@ -1,14 +1,6 @@
 pub mod entry;
-
+pub mod prelude;
 pub mod module;
-pub use module::{
-    Module,
-    ModuleTrait,
-    function1_wrapped,
-    ArgsFunction1,
-    function2_wrapped,
-    ArgsFunction2
-};
 
 // Override print!(...) & println!(...) macros
 #[macro_export]

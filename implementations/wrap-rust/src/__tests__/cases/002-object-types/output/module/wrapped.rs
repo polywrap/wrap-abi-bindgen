@@ -12,7 +12,7 @@ use polywrap_wasm_rs::{
     JSON,
     wrap_load_env
 };
-use crate::module::{ModuleTrait, Module};
+use crate::{ModuleTrait, Module};
 use crate::Arg;
 use crate::Output;
 

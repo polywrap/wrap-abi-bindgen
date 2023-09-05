@@ -1,5 +1,6 @@
 mod entry_rs;
 mod mod_rs;
+mod prelude_rs;
 mod enum_type;
 mod env_type;
 mod interface_type;
@@ -15,6 +16,7 @@ pub struct Template {
 pub fn load_templates() -> Vec<Template> {
     vec!(
         mod_rs::load(),
+        prelude_rs::load(),
         entry_rs::load(),
         enum_type::mod_rs::load(),
         env_type::mod_rs::load(),
