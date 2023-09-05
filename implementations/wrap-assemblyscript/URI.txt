@@ -1,1 +1,1 @@
-wrap://ipfs/QmYY9GB9MCUzUquxfQwZSzLennuvmVoSo7Cym7X1AcSLVK
+wrap://http/https://wraps.wrapscan.io/r/polywrap/wrap-assemblyscript-abi-bindgen@1.0.0

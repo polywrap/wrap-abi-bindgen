@@ -1,1 +1,1 @@
-#import * from "wrap://ens/wraps.eth:abi-bindgen@0.1"
+#import * from "wrapscan.io/polywrap/abi-bindgen@1.0"

@@ -200,7 +200,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "plugin-typescript-wrap-abi-bindgen"
+name = "plugin-swift-abi-bindgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",
@@ -213,9 +213,9 @@ dependencies = [
 
 [[package]]
 name = "polywrap-wasm-rs"
-version = "0.10.6"
+version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5cadd481ec2355b12d3dba7a80f40ec2271bf961e0024f1e27afdf1d47cb6b65"
+checksum = "86a4242d00d30a6ed07a7f32cb18435c8c0e81cbfffacac5f046b025ca497d0a"
 dependencies = [
  "bigdecimal",
  "byteorder",
@@ -227,9 +227,9 @@ dependencies = [
 
 [[package]]
 name = "polywrap_msgpack_serde"
-version = "0.0.2-beta.5"
+version = "0.0.2-beta.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "efb55e4b83dd7fb9d547792aa65d68698e3b16b3c0e26bb2846c576b4c994c9f"
+checksum = "b7d68a93c122fd0de932972a1332e0b2405b729b691fc3c59a482b71d61363af"
 dependencies = [
  "bigdecimal",
  "byteorder",

@@ -1,8 +1,8 @@
 name: CI
 on:
-  push: 
+  push:
     branches:
-      - wrap-0.1
+      - main
   pull_request:
 
 jobs:
