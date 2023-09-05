@@ -130,13 +130,15 @@ impl ModuleTrait for Module {
             )
         });
 
-        output.files.push(File {
+        if wrap_info.abi.as_object().unwrap().get("moduleType").is_some() {
+          output.files.push(File {
             name: "module.ts".to_string(),
             data: renderer.render(
                 "module.ts",
                 &wrap_info.abi
             )
-        });
+          });
+        }
 
         output.files.push(File {
           name: "globals.d.ts".to_string(),
@@ -144,7 +146,7 @@ impl ModuleTrait for Module {
               "globals.d.ts",
               &wrap_info.abi
           )
-      });
+        });
 
         imports_by_namespace.iter().for_each(|(namespace, imports)| {
           let imports_by_kind = group_by_kind(&imports);

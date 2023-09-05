@@ -1,6 +1,7 @@
 lazy_static! {
   static ref NAME: String = "globals.d.ts".to_string();
-  static ref SOURCE: String = r#"declare const __wrap_args: any;
+  static ref SOURCE: String = r#"{{#if moduleType}}
+declare const __wrap_args: any;
 type WrapMethod =
 {{#with moduleType}}
 {{#each methods}}
@@ -8,6 +9,7 @@ type WrapMethod =
 {{/each}}
 {{/with}}
 declare const __wrap_method: WrapMethod;
+{{/if}}
 declare interface Result<T = any> {
   ok: boolean;
   error: string | undefined;
