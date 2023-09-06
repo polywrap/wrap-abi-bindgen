@@ -1,1 +1,1 @@
-wrap://http/http.wrappers.dev/u/test/wrap-typescript-wrap-abi-bindgen
+wrap://http/https://wraps.wrapscan.io/r/polywrap/wrap-typescript-abi-bindgen@1.0.0
