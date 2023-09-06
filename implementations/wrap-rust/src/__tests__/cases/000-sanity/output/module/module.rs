@@ -17,7 +17,7 @@ use crate::{
 use crate::CustomEnum;
 use crate::AnotherType;
 use crate::Else;
-use crate::env::Env;
+use crate::Env;
 
 pub struct Module;
 
