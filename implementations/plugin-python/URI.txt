@@ -1,1 +1,1 @@
-wrap://http/https://wraps.wrapscan.io/r/polywrap/plugin-python-abi-bindgen@1.0.0
+wrap://ipfs/QmQ1ge6JDK9QcJEP1YE2nWJcWJU7xoN7KN9yTFvZ12LyuN

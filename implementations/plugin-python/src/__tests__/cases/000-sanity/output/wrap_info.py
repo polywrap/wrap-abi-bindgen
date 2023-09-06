@@ -1193,6 +1193,7 @@ abi = json.loads("""
             "type": "[AnotherType]"
           }
         ],
+        "comment": "objectMethod docstring \\n is multiline.",
         "env": {
           "required": true
         },
