@@ -13,6 +13,13 @@ use std::sync::Arc;
 
 pub type BigInt = String;
 
+#[derive(Clone)]
+pub struct InvokeOptions {
+    pub uri: Option<Uri>,
+    pub client: Option<Arc<dyn Invoker>>,
+    pub env: Option<Vec<u8>> 
+}
+
 // Env START //
 
 {{#with envType}}
@@ -29,7 +36,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 
 {{#each objectTypes}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{detect_keyword (to_upper type)}} {
+pub struct {{remove_module_suffix (detect_keyword (to_upper type))}} {
     {{#each properties}}
     {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
@@ -41,7 +48,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 
 {{#each enumTypes}}
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-pub enum {{detect_keyword (to_upper type)}} {
+pub enum {{remove_module_suffix (detect_keyword (to_upper type))}} {
     {{#each constants}}
     {{detect_keyword this}},
     {{/each}}
@@ -54,7 +61,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 
 {{#each importedObjectTypes}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{detect_keyword (to_upper type)}} {
+pub struct {{remove_module_suffix (detect_keyword (to_upper type))}} {
     {{#each properties}}
     {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
@@ -64,9 +71,9 @@ pub struct {{detect_keyword (to_upper type)}} {
 
 // Imported envs START //
 
-{{#each importedEnvType}}
+{{#each importedEnvTypes}}
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{detect_keyword (to_upper type)}} {
+pub struct {{remove_module_suffix (detect_keyword (to_upper type))}} {
     {{#each properties}}
     {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
@@ -78,7 +85,7 @@ pub struct {{detect_keyword (to_upper type)}} {
 
 {{#each importedEnumTypes}}
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-pub enum {{detect_keyword (to_upper type)}} {
+pub enum {{remove_module_suffix (detect_keyword (to_upper type))}} {
     {{#each constants}}
     {{detect_keyword this}},
     {{/each}}
@@ -93,7 +100,7 @@ pub enum {{detect_keyword (to_upper type)}} {
 {{#each methods}}
 // URI: "{{../uri}}" //
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct {{to_upper ../type}}Args{{to_upper name}} {
+pub struct {{remove_module_suffix (to_upper ../type) }}Args{{to_upper name}} {
     {{#each arguments}}
     {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
@@ -101,40 +108,59 @@ pub struct {{to_upper ../type}}Args{{to_upper name}} {
 
 {{/each}}
 #[derive(Clone)]
-pub struct {{detect_keyword (to_upper type)}} {
-    uri: Uri,
-    invoker: Arc<dyn Invoker>,
-    env: Option<Vec<u8>>
+pub struct {{remove_module_suffix (detect_keyword (to_upper type))}} {
+    pub uri: Uri,
+    pub invoker: Arc<dyn Invoker>,
+    pub env: Option<Vec<u8>>
 }
 
-impl {{detect_keyword (to_upper type)}} {
-    pub fn new(uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> {{detect_keyword (to_upper type)}} {
+impl {{remove_module_suffix (detect_keyword (to_upper type))}} {
+    pub fn new(invoke_options: Option<InvokeOptions>) -> {{remove_module_suffix (detect_keyword (to_upper type))}} {
         let mut config = PolywrapClientConfig::new();
         config.add(SystemClientConfig::default().into());
         config.add(Web3ClientConfig::default().into());
         let client = PolywrapClient::new(config.build());
 
-        let _uri = uri.unwrap_or(uri!("{{uri}}"));
-        let _invoker = invoker.unwrap_or(Arc::new(client));
-        let _env = env;
+        let default_client = Arc::new(client);
+        let default_uri = uri!("{{uri}}");
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let _uri = if let Some(uri) = invoke_option.uri {
+                uri
+            } else {
+                default_uri
+            };
 
-        {{detect_keyword (to_upper type)}} {
+            let _invoker = if let Some(invoker) = invoke_option.client {
+                invoker
+            } else {
+                default_client
+            };
+
+            (_uri, _invoker, invoke_option.env)
+        } else {
+            (default_uri, default_client as Arc<dyn Invoker>, None)
+        };
+
+        {{remove_module_suffix (detect_keyword (to_upper type))}} {
             uri: _uri,
             invoker: _invoker,
             env: _env,
         }
     }
 
+    pub fn default_uri() -> Uri {
+        uri!("{{uri}}")
+    }
+
     {{#each methods}}
-    pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{to_upper ../type}}Args{{to_upper name}}, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, Error> {
-        let _uri = uri.unwrap_or(self.uri.clone());
-        let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match &env {
-            Some(e) => Some(e.as_slice()),
-            None => match &self.env {
-                Some(e) => Some(e.as_slice()),
-                None => None,
-            },
+    pub fn {{detect_keyword (to_lower name)}}(&self, args: &{{ remove_module_suffix (to_upper ../type) }}Args{{to_upper name}}, invoke_options: Option<InvokeOptions>) -> Result<{{#with return}}{{to_rust (to_graphql_type this)}}{{/with}}, Error> {
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let uri = invoke_option.uri.clone().unwrap_or_else(|| self.uri.clone());
+            let invoker = invoke_option.client.clone().unwrap_or_else(|| self.invoker.clone());
+            let env = invoke_option.env.clone().or_else(|| self.env.clone());
+            (uri, invoker, env)
+        } else {
+            (self.uri.clone(), self.invoker.clone(), self.env.clone())
         };
 
         let serialized_args = to_vec(&args).unwrap();
@@ -143,7 +169,7 @@ impl {{detect_keyword (to_upper type)}} {
             &_uri,
             "{{name}}",
             opt_args,
-            _env,
+            _env.as_ref().map(|v| v.as_slice()),
             None
         )?;
 
@@ -164,6 +190,6 @@ use super::Template;
 pub fn load() -> Template {
     Template {
         name: &*NAME,
-        source: &*SOURCE
+        source: &*SOURCE,
     }
 }

@@ -11,6 +11,13 @@ use std::sync::Arc;
 
 pub type BigInt = String;
 
+#[derive(Clone)]
+pub struct InvokeOptions {
+    pub uri: Option<Uri>,
+    pub client: Option<Arc<dyn Invoker>>,
+    pub env: Option<Vec<u8>> 
+}
+
 // Env START //
 
 // Env END //

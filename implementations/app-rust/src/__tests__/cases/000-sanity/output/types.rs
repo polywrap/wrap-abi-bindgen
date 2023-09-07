@@ -11,6 +11,13 @@ use std::sync::Arc;
 
 pub type BigInt = String;
 
+#[derive(Clone)]
+pub struct InvokeOptions {
+    pub uri: Option<Uri>,
+    pub client: Option<Arc<dyn Invoker>>,
+    pub env: Option<Vec<u8>> 
+}
+
 // Env START //
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -155,6 +162,23 @@ pub struct TestImportAnotherObject {
 
 // Imported envs START //
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct TestImportEnv {
+    pub object: TestImportAnotherObject,
+    #[serde(rename = "optObject")]
+    pub opt_object: Option<TestImportAnotherObject>,
+    #[serde(rename = "objectArray")]
+    pub object_array: Vec<TestImportAnotherObject>,
+    #[serde(rename = "optObjectArray")]
+    pub opt_object_array: Option<Vec<Option<TestImportAnotherObject>>>,
+    pub en: TestImportEnum,
+    #[serde(rename = "optEnum")]
+    pub opt_enum: Option<TestImportEnum>,
+    #[serde(rename = "enumArray")]
+    pub enum_array: Vec<TestImportEnum>,
+    #[serde(rename = "optEnumArray")]
+    pub opt_enum_array: Option<Vec<Option<TestImportEnum>>>,
+}
 // Imported envs END //
 
 // Imported enums START //
@@ -177,7 +201,7 @@ pub enum TestImportEnumReturn {
 
 // URI: "testimport.uri.eth" //
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct TestImportModuleArgsImportedMethod {
+pub struct TestImportArgsImportedMethod {
     pub str: String,
     #[serde(rename = "optStr")]
     pub opt_str: Option<String>,
@@ -204,50 +228,69 @@ pub struct TestImportModuleArgsImportedMethod {
 
 // URI: "testimport.uri.eth" //
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct TestImportModuleArgsAnotherMethod {
+pub struct TestImportArgsAnotherMethod {
     pub arg: Vec<String>,
 }
 
 // URI: "testimport.uri.eth" //
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct TestImportModuleArgsReturnsArrayOfEnums {
+pub struct TestImportArgsReturnsArrayOfEnums {
     pub arg: String,
 }
 
 #[derive(Clone)]
-pub struct TestImportModule {
-    uri: Uri,
-    invoker: Arc<dyn Invoker>,
-    env: Option<Vec<u8>>
+pub struct TestImport {
+    pub uri: Uri,
+    pub invoker: Arc<dyn Invoker>,
+    pub env: Option<Vec<u8>>
 }
 
-impl TestImportModule {
-    pub fn new(uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> TestImportModule {
+impl TestImport {
+    pub fn new(invoke_options: Option<InvokeOptions>) -> TestImport {
         let mut config = PolywrapClientConfig::new();
         config.add(SystemClientConfig::default().into());
         config.add(Web3ClientConfig::default().into());
         let client = PolywrapClient::new(config.build());
 
-        let _uri = uri.unwrap_or(uri!("testimport.uri.eth"));
-        let _invoker = invoker.unwrap_or(Arc::new(client));
-        let _env = env;
+        let default_client = Arc::new(client);
+        let default_uri = uri!("testimport.uri.eth");
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let _uri = if let Some(uri) = invoke_option.uri {
+                uri
+            } else {
+                default_uri
+            };
 
-        TestImportModule {
+            let _invoker = if let Some(invoker) = invoke_option.client {
+                invoker
+            } else {
+                default_client
+            };
+
+            (_uri, _invoker, invoke_option.env)
+        } else {
+            (default_uri, default_client as Arc<dyn Invoker>, None)
+        };
+
+        TestImport {
             uri: _uri,
             invoker: _invoker,
             env: _env,
         }
     }
 
-    pub fn imported_method(&self, args: &TestImportModuleArgsImportedMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Option<TestImportObject>, Error> {
-        let _uri = uri.unwrap_or(self.uri.clone());
-        let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match &env {
-            Some(e) => Some(e.as_slice()),
-            None => match &self.env {
-                Some(e) => Some(e.as_slice()),
-                None => None,
-            },
+    pub fn default_uri() -> Uri {
+        uri!("testimport.uri.eth")
+    }
+
+    pub fn imported_method(&self, args: &TestImportArgsImportedMethod, invoke_options: Option<InvokeOptions>) -> Result<Option<TestImportObject>, Error> {
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let uri = invoke_option.uri.clone().unwrap_or_else(|| self.uri.clone());
+            let invoker = invoke_option.client.clone().unwrap_or_else(|| self.invoker.clone());
+            let env = invoke_option.env.clone().or_else(|| self.env.clone());
+            (uri, invoker, env)
+        } else {
+            (self.uri.clone(), self.invoker.clone(), self.env.clone())
         };
 
         let serialized_args = to_vec(&args).unwrap();
@@ -256,22 +299,21 @@ impl TestImportModule {
             &_uri,
             "importedMethod",
             opt_args,
-            _env,
+            _env.as_ref().map(|v| v.as_slice()),
             None
         )?;
 
         from_slice(result.as_slice()).map_err(Error::MsgpackError)
     }
 
-    pub fn another_method(&self, args: &TestImportModuleArgsAnotherMethod, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<i32, Error> {
-        let _uri = uri.unwrap_or(self.uri.clone());
-        let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match &env {
-            Some(e) => Some(e.as_slice()),
-            None => match &self.env {
-                Some(e) => Some(e.as_slice()),
-                None => None,
-            },
+    pub fn another_method(&self, args: &TestImportArgsAnotherMethod, invoke_options: Option<InvokeOptions>) -> Result<i32, Error> {
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let uri = invoke_option.uri.clone().unwrap_or_else(|| self.uri.clone());
+            let invoker = invoke_option.client.clone().unwrap_or_else(|| self.invoker.clone());
+            let env = invoke_option.env.clone().or_else(|| self.env.clone());
+            (uri, invoker, env)
+        } else {
+            (self.uri.clone(), self.invoker.clone(), self.env.clone())
         };
 
         let serialized_args = to_vec(&args).unwrap();
@@ -280,22 +322,21 @@ impl TestImportModule {
             &_uri,
             "anotherMethod",
             opt_args,
-            _env,
+            _env.as_ref().map(|v| v.as_slice()),
             None
         )?;
 
         from_slice(result.as_slice()).map_err(Error::MsgpackError)
     }
 
-    pub fn returns_array_of_enums(&self, args: &TestImportModuleArgsReturnsArrayOfEnums, uri: Option<Uri>, invoker: Option<Arc<dyn Invoker>>, env: Option<Vec<u8>>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
-        let _uri = uri.unwrap_or(self.uri.clone());
-        let _invoker = invoker.unwrap_or(self.invoker.clone());
-        let _env = match &env {
-            Some(e) => Some(e.as_slice()),
-            None => match &self.env {
-                Some(e) => Some(e.as_slice()),
-                None => None,
-            },
+    pub fn returns_array_of_enums(&self, args: &TestImportArgsReturnsArrayOfEnums, invoke_options: Option<InvokeOptions>) -> Result<Vec<Option<TestImportEnumReturn>>, Error> {
+        let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
+            let uri = invoke_option.uri.clone().unwrap_or_else(|| self.uri.clone());
+            let invoker = invoke_option.client.clone().unwrap_or_else(|| self.invoker.clone());
+            let env = invoke_option.env.clone().or_else(|| self.env.clone());
+            (uri, invoker, env)
+        } else {
+            (self.uri.clone(), self.invoker.clone(), self.env.clone())
         };
 
         let serialized_args = to_vec(&args).unwrap();
@@ -304,7 +345,7 @@ impl TestImportModule {
             &_uri,
             "returnsArrayOfEnums",
             opt_args,
-            _env,
+            _env.as_ref().map(|v| v.as_slice()),
             None
         )?;
 
