@@ -52,6 +52,10 @@
         "name": "wrap-rust",
         "path": "implementations/wrap-rust"
       },
+      {
+        "name": "wrap-typescript",
+        "path": "implementations/wrap-typescript"
+      },
   ],
   "settings": {
       "files.exclude": {

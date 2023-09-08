@@ -62,10 +62,6 @@ type Module @imports(
     mapOfArrOfObj: Map! @annotate(type: "Map<String!, [AnotherType!]!>!")
   ): Int!
 
-  """
-  objectMethod docstring
-  is multiline.
-  """ 
   objectMethod(
     object: AnotherType!
     optObject: AnotherType
