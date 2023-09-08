@@ -15,7 +15,7 @@ use polywrap_wasm_rs::{
     BigIntWrapper,
     ByteBuf
 };
-use crate::module::{ModuleTrait, Module};
+use crate::{ModuleTrait, Module};
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}

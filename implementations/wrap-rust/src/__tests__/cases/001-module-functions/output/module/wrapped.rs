@@ -11,7 +11,7 @@ use polywrap_wasm_rs::{
     BigIntWrapper,
     ByteBuf
 };
-use crate::module::{ModuleTrait, Module};
+use crate::{ModuleTrait, Module};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ArgsFunction1 {

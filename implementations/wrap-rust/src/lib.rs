@@ -46,6 +46,14 @@ impl ModuleTrait for Module {
             )
         });
 
+        output.files.push(File {
+            name: "prelude.rs".to_string(),
+            data: renderer.render(
+                "prelude.rs",
+                &abi_value
+            )
+        });
+
         let get_dir_name = |value: &JSON::Value| -> String {
             let dir_name = value.get("type").unwrap().as_str().unwrap().to_string();
             _to_lower(&dir_name)
