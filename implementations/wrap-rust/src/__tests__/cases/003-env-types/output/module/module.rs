@@ -13,7 +13,7 @@ use crate::{
     ArgsMethodRequireEnv,
     ArgsMethodOptionalEnv,
 };
-use crate::env::Env;
+use crate::Env;
 
 pub struct Module;
 

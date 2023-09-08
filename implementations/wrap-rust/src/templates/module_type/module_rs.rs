@@ -20,7 +20,7 @@ use crate::{
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
 {{/each}}
 {{#with ../envType}}
-use crate::env::Env;
+use crate::Env;
 {{/with}}
 
 pub struct Module;
