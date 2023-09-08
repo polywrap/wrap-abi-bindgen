@@ -50,12 +50,12 @@ impl ModuleTrait for Module {
                         data: renderer.render("embed/mod.rs", embed)
                     },
                     File {
-                        name: "wrap.info".to_string(),
-                        data: renderer.render("embed/wrap.info", embed)
+                        name: "wrap_info.rs".to_string(),
+                        data: renderer.render("embed/wrap_info.rs", embed)
                     },
                     File {
-                        name: "wrap.wasm".to_string(),
-                        data: renderer.render("embed/wrap.wasm", embed)
+                        name: "wrap_wasm.rs".to_string(),
+                        data: renderer.render("embed/wrap_wasm.rs", embed)
                     },
                 ),
                 dirs: vec!()

@@ -10,7 +10,7 @@ pub fn load_templates() -> Vec<Template> {
     vec!(
         mod_rs::load(),
         embed::mod_rs::load(),
-        embed::wrap_info::load(),
-        embed::wrap_wasm::load(),
+        embed::wrap_info_rs::load(),
+        embed::wrap_wasm_rs::load(),
     )
 }

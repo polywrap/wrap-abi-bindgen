@@ -9,10 +9,13 @@ lazy_static! {
 // URI: "{{uri}}" //
 
 use core::file_reader::SimpleFileReader;
-use wasm::{wasm_package::WasmPackage, wasm_wrapper::WasmWrapper, wasm_module::{SerializedWasmModule, WasmModule}};
+use wasm::{wasm_package::WasmPackage, wasm_wrapper::WasmWrapper};
 use std::sync::Arc;
-use super::wrap_info::WRAP_INFO;
-use super::wrap_wasm::WRAP_WASM;
+
+mod wrap_info;
+mod wrap_wasm;
+use wrap_info::WRAP_INFO;
+use wrap_wasm::WRAP_WASM;
 
 pub fn lazy_loaded_wasm_package() -> WasmPackage {
     WasmPackage::from_bytecode(
