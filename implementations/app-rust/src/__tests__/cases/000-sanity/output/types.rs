@@ -18,6 +18,14 @@ pub struct InvokeOptions {
     pub env: Option<Vec<u8>> 
 }
 
+fn get_default_client() -> Arc<PolywrapClient> {
+    let mut config = PolywrapClientConfig::new();
+    config.add(SystemClientConfig::default().into());
+    config.add(Web3ClientConfig::default().into());
+    let client = PolywrapClient::new(config.build());
+    Arc::new(client)
+}
+
 // Env START //
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -247,12 +255,6 @@ pub struct TestImport {
 
 impl TestImport {
     pub fn new(invoke_options: Option<InvokeOptions>) -> TestImport {
-        let mut config = PolywrapClientConfig::new();
-        config.add(SystemClientConfig::default().into());
-        config.add(Web3ClientConfig::default().into());
-        let client = PolywrapClient::new(config.build());
-
-        let default_client = Arc::new(client);
         let default_uri = uri!("testimport.uri.eth");
         let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
             let _uri = if let Some(uri) = invoke_option.uri {
@@ -264,12 +266,12 @@ impl TestImport {
             let _invoker = if let Some(invoker) = invoke_option.client {
                 invoker
             } else {
-                default_client
+                get_default_client()
             };
 
             (_uri, _invoker, invoke_option.env)
         } else {
-            (default_uri, default_client as Arc<dyn Invoker>, None)
+            (default_uri, get_default_client() as Arc<dyn Invoker>, None)
         };
 
         TestImport {

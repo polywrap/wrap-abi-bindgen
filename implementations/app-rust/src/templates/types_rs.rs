@@ -20,6 +20,14 @@ pub struct InvokeOptions {
     pub env: Option<Vec<u8>> 
 }
 
+fn get_default_client() -> Arc<PolywrapClient> {
+    let mut config = PolywrapClientConfig::new();
+    config.add(SystemClientConfig::default().into());
+    config.add(Web3ClientConfig::default().into());
+    let client = PolywrapClient::new(config.build());
+    Arc::new(client)
+}
+
 // Env START //
 
 {{#with envType}}
@@ -116,12 +124,6 @@ pub struct {{remove_module_suffix (detect_keyword (to_upper type))}} {
 
 impl {{remove_module_suffix (detect_keyword (to_upper type))}} {
     pub fn new(invoke_options: Option<InvokeOptions>) -> {{remove_module_suffix (detect_keyword (to_upper type))}} {
-        let mut config = PolywrapClientConfig::new();
-        config.add(SystemClientConfig::default().into());
-        config.add(Web3ClientConfig::default().into());
-        let client = PolywrapClient::new(config.build());
-
-        let default_client = Arc::new(client);
         let default_uri = uri!("{{uri}}");
         let (_uri, _invoker, _env) = if let Some(invoke_option) = invoke_options {
             let _uri = if let Some(uri) = invoke_option.uri {
@@ -133,12 +135,12 @@ impl {{remove_module_suffix (detect_keyword (to_upper type))}} {
             let _invoker = if let Some(invoker) = invoke_option.client {
                 invoker
             } else {
-                default_client
+                get_default_client()
             };
 
             (_uri, _invoker, invoke_option.env)
         } else {
-            (default_uri, default_client as Arc<dyn Invoker>, None)
+            (default_uri, get_default_client() as Arc<dyn Invoker>, None)
         };
 
         {{remove_module_suffix (detect_keyword (to_upper type))}} {

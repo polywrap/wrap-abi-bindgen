@@ -18,6 +18,14 @@ pub struct InvokeOptions {
     pub env: Option<Vec<u8>> 
 }
 
+fn get_default_client() -> Arc<PolywrapClient> {
+    let mut config = PolywrapClientConfig::new();
+    config.add(SystemClientConfig::default().into());
+    config.add(Web3ClientConfig::default().into());
+    let client = PolywrapClient::new(config.build());
+    Arc::new(client)
+}
+
 // Env START //
 
 // Env END //
