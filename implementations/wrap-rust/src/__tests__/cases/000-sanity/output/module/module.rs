@@ -1,12 +1,10 @@
-use polywrap_msgpack_serde::{
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
-    JSON
+    JSON,
+    JSONString,
+    BigIntWrapper
 };
 use crate::{
     ArgsModuleMethod,

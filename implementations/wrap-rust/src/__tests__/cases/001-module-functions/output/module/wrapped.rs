@@ -1,16 +1,15 @@
 use serde::{Deserialize, Serialize};
-use polywrap_msgpack_serde::{
-    from_slice,
-    to_vec,
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
     JSON,
-    wrap_load_env
+    wrap_load_env,
+    to_vec,
+    from_slice,
+    JSONString,
+    BigIntWrapper,
+    ByteBuf
 };
 use crate::{ModuleTrait, Module};
 
@@ -45,8 +44,7 @@ pub fn function1_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ArgsFunction2 {
     pub arg1: Option<i32>,
-    #[serde(with = "serde_bytes")]
-    pub arg2: Option<Vec<u8>>,
+    pub arg2: Option<ByteBuf>,
 }
 
 pub fn function2_wrapped(args: &[u8], env_size: u32) -> Vec<u8> {

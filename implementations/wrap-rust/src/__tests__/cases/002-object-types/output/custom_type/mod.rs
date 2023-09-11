@@ -1,13 +1,12 @@
 use serde::{Serialize, Deserialize};
-use polywrap_msgpack_serde::{
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
-    JSON
+    JSON,
+    JSONString,
+    BigIntWrapper,
+    ByteBuf
 };
 use crate::AnotherType;
 use crate::CustomMapValue;
@@ -36,11 +35,9 @@ pub struct CustomType {
     pub json: JSONString,
     #[serde(rename = "optJson")]
     pub opt_json: Option<JSONString>,
-    #[serde(with = "serde_bytes")]
-    pub bytes: Vec<u8>,
-    #[serde(with = "serde_bytes")]
+    pub bytes: ByteBuf,
     #[serde(rename = "optBytes")]
-    pub opt_bytes: Option<Vec<u8>>,
+    pub opt_bytes: Option<ByteBuf>,
     pub boolean: bool,
     #[serde(rename = "optBoolean")]
     pub opt_boolean: Option<bool>,
