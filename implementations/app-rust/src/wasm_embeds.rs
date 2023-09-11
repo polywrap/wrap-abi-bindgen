@@ -4,7 +4,7 @@ pub use crate::wrap::*;
 
 pub fn generate_embeds(embeds_json: JSON::Value) -> Result<Directory, String> {
     let embeds: Vec<EmbedWasmEmbed> = JSON::from_value(embeds_json).map_err(|e| e.to_string())?;
-    let embed_output: EmbedBindgenOutput = EmbedModule::generate_embeds(&ArgsGenerateEmbeds { embeds })?;
+    let embed_output: EmbedOutput = EmbedModule::generate_embeds(&ArgsGenerateEmbeds { embeds })?;
 
     Ok(Directory {
         name: "embeds".to_string(),
@@ -13,7 +13,7 @@ pub fn generate_embeds(embeds_json: JSON::Value) -> Result<Directory, String> {
     })
 }
 
-fn map_files(files: Vec<EmbedBindgenFile>) -> Vec<File> {
+fn map_files(files: Vec<EmbedFile>) -> Vec<File> {
     files.iter().map(|file| {
         File {
             name: file.name.clone(),
@@ -22,7 +22,7 @@ fn map_files(files: Vec<EmbedBindgenFile>) -> Vec<File> {
     }).collect()
 }
 
-fn map_dirs(dirs: Vec<EmbedBindgenDirectory>) -> Vec<Directory> {
+fn map_dirs(dirs: Vec<EmbedDirectory>) -> Vec<Directory> {
     dirs.iter().map(|dir| {
         Directory {
             name: dir.name.clone(),

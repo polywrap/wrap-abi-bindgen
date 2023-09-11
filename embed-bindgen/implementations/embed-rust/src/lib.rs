@@ -11,14 +11,14 @@ use renderer::Renderer;
 use crate::helpers::to_lower::_to_lower;
 
 impl ModuleTrait for Module {
-    fn generate_embeds(args: ArgsGenerateEmbeds) -> Result<BindgenOutput, String> {
+    fn generate_embeds(args: ArgsGenerateEmbeds) -> Result<Output, String> {
         let renderer = Renderer::new();
-        let mut output = BindgenOutput::new();
+        let mut output = Output::new();
 
         let embeds_json = serde_json::to_value(args.embeds).map_err(|e| e.to_string())?;
         let embeds = embeds_json.as_array().ok_or("embeds must be an array".to_string())?;
 
-        output.files.push(BindgenFile {
+        output.files.push(File {
             name: "mod.rs".to_string(),
             data: renderer.render(
                 "mod.rs",
@@ -30,18 +30,18 @@ impl ModuleTrait for Module {
             let dirname = embed["namespace"].as_str().unwrap().to_string();
             let formatted_dirname = _to_lower(&dirname);
 
-            let dir = BindgenDirectory {
+            let dir = Directory {
                 name: formatted_dirname,
                 files: vec!(
-                    BindgenFile {
+                    File {
                         name: "mod.rs".to_string(),
                         data: renderer.render("embed/mod.rs", embed)
                     },
-                    BindgenFile {
+                    File {
                         name: "wrap_info.rs".to_string(),
                         data: renderer.render("embed/wrap_info.rs", embed)
                     },
-                    BindgenFile {
+                    File {
                         name: "wrap_wasm.rs".to_string(),
                         data: renderer.render("embed/wrap_wasm.rs", embed)
                     },

@@ -1,6 +1,6 @@
 format: 0.5.0
 project:
-  name: embed-rust-bindgen
+  name: rust-embed-bindgen
   type: wasm/rust
 source:
   module: ./Cargo.toml
