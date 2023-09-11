@@ -4,6 +4,9 @@ lazy_static! {
 ///       All modifications will be overwritten.
 
 pub mod types;
+{{#if embeds}}
+pub mod embeds;
+{{/if}}
 "#.to_string();
 }
 

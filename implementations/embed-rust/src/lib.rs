@@ -15,24 +15,8 @@ impl ModuleTrait for Module {
         let renderer = Renderer::new();
         let mut output = BindgenOutput::new();
 
-        // let context = match args.context {
-        //     Some(context) => context.to_json(),
-        //     None => return Err("Missing context".to_string())
-        // };
-        //
-        // let embeds_value = match context.get("embeds") {
-        //     Some(embeds) => embeds,
-        //     None => return Err("Missing 'embeds' in context".to_string())
-        // };
-        //
-        // let embeds = match embeds_value.as_array() {
-        //     Some(embeds) => embeds,
-        //     None => return Err("'embeds' must be an array".to_string())
-        // };
-
         let embeds_json = serde_json::to_value(args.embeds).map_err(|e| e.to_string())?;
         let embeds = embeds_json.as_array().ok_or("embeds must be an array".to_string())?;
-
 
         output.files.push(BindgenFile {
             name: "mod.rs".to_string(),

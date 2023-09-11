@@ -1,1 +1,2 @@
 #import * from "wrapscan.io/polywrap/abi-bindgen@1.0"
+#import { Module, WasmEmbed } into Embed from "wrapscan.io/polywrap/embed-rust-bindgen@1.0"

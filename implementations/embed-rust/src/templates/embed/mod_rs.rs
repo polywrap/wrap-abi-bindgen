@@ -8,8 +8,8 @@ lazy_static! {
 
 // URI: "{{uri}}" //
 
-use core::file_reader::SimpleFileReader;
-use wasm::{wasm_package::WasmPackage, wasm_wrapper::WasmWrapper};
+use polywrap::core::file_reader::SimpleFileReader;
+use polywrap::wasm::{wasm_package::WasmPackage, wasm_wrapper::WasmWrapper};
 use std::sync::Arc;
 
 mod wrap_info;
@@ -26,7 +26,7 @@ pub fn lazy_loaded_wasm_package() -> WasmPackage {
 }
 
 pub fn wasm_wrapper() -> WasmWrapper {
-    WasmWrapper::try_from_bytecode(WRAP_WASM, Arc::new(SimpleFileReader::new())).unwrap()
+    WasmWrapper::try_from_bytecode(&WRAP_WASM, Arc::new(SimpleFileReader::new())).unwrap()
 }
 "#.to_string();
 }
