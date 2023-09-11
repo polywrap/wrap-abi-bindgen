@@ -1,21 +1,14 @@
-import { Output, WrapInfo } from "./wrap";
+import { Output } from "./wrap";
 import { loadTestCases, TestCase } from "./cases";
 import { orderOutput } from "./output";
 
 import { PolywrapClient } from "@polywrap/client-js";
-import { parseSchema } from "@polywrap/schema-parse";
 import diff from "jest-diff";
 import path from "path";
 import fs from "fs";
+import {WasmEmbed} from "./util";
 
 jest.setTimeout(60000);
-
-interface WasmEmbed {
-  uri: string;
-  namespace: string;
-  wrapInfo: number[];
-  wrapWasm: number[];
-}
 
 describe("e2e", () => {
 
@@ -32,37 +25,25 @@ describe("e2e", () => {
 
   for (const testCase of testCases) {
     it(testCase.name, async () => {
-      const abi = parseSchema(testCase.input);
-
-      const wrapInfo: WrapInfo = {
-        version: "0.1",
-        name: testCase.name,
-        type: "plugin",
-        abi: JSON.stringify(abi),
-      }
-
       const embeds: WasmEmbed[] = [
-        {
-          uri: "testimport.uri.eth",
-          namespace: "TestImport",
-          wrapInfo: [1, 2, 3],
-          wrapWasm: [4, 5, 6]
-        },
-        {
-          uri: "secondtestimport.uri.eth",
-          namespace: "SecondTestImport",
-          wrapInfo: [7, 8, 9],
-          wrapWasm: [10, 11, 12]
-        }
-      ]
+      {
+        uri: "testimport.uri.eth",
+        namespace: "TestImport",
+        wrapInfo: Uint8Array.from([1, 2, 3]),
+        wrapWasm: Uint8Array.from([4, 5, 6])
+      },
+      {
+        uri: "secondtestimport.uri.eth",
+        namespace: "SecondTestImport",
+        wrapInfo: Uint8Array.from([7, 8, 9]),
+        wrapWasm: Uint8Array.from([10, 11, 12])
+      }
+    ]
 
       const result = await client.invoke<Output>({
         uri: wrapperUri,
-        method: "generateBindings",
-        args: {
-          wrapInfo,
-          context: JSON.stringify({ embeds })
-        }
+        method: "generateEmbeds",
+        args: { embeds }
       });
 
       if (!result.ok) fail(result.error);

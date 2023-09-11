@@ -79,6 +79,7 @@ dependencies = [
  "polywrap-wasm-rs",
  "polywrap_msgpack_serde",
  "serde",
+ "serde_bytes",
  "serde_json",
 ]
 

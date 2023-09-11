@@ -1,1 +1,14 @@
-#import * from "wrapscan.io/polywrap/abi-bindgen@1.0"
+#import { Output, File, Directory } into Bindgen from "wrapscan.io/polywrap/abi-bindgen@1.0"
+
+type Module {
+    generateEmbeds(
+        embeds: [WasmEmbed!]!
+    ): Bindgen_Output!
+}
+
+type WasmEmbed {
+    uri: String!
+    namespace: String!
+    wrapInfo: Bytes!
+    wrapWasm: Bytes!
+}
