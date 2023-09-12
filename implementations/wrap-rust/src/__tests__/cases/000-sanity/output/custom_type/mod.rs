@@ -102,7 +102,7 @@ impl CustomType {
             opt_bignumber: None,
             json: JSONString::from(JSON::Value::Null),
             opt_json: None,
-            bytes: vec![],
+            bytes: ByteBuf::new(),
             opt_bytes: None,
             boolean: false,
             opt_boolean: None,

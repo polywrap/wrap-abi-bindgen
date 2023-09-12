@@ -4,7 +4,8 @@ use polywrap_wasm_rs::{
     Map,
     JSON,
     JSONString,
-    BigIntWrapper
+    BigIntWrapper,
+    ByteBuf
 };
 use crate::{
     ArgsMethodNoEnv,

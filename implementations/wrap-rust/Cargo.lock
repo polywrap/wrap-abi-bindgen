@@ -208,9 +208,9 @@ dependencies = [
 
 [[package]]
 name = "polywrap-wasm-rs"
-version = "0.11.3"
+version = "0.11.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "819bb6e958130c56bc134782aaa78532629c5f85dc3d04a396490b85180f983c"
+checksum = "1d87b6cd0d02a94d35d7adb34f49260767b622aff0e9ad4cbda8e8a5540a54af"
 dependencies = [
  "byteorder",
  "polywrap_msgpack_serde",
@@ -369,6 +369,7 @@ dependencies = [
  "handlebars",
  "lazy_static",
  "polywrap-wasm-rs",
+ "polywrap_msgpack_serde",
  "serde",
  "serde_json",
 ]
