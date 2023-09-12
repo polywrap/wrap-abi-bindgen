@@ -34,7 +34,7 @@ pub fn _to_rust_init(value: &str) -> String {
         "UInt" | "UInt8" | "UInt16" | "UInt32" | "UInt64" => optional_modifier("0", optional),
         "String" => optional_modifier("String::new()", optional),
         "Boolean" => optional_modifier("false", optional),
-        "Bytes" => optional_modifier("vec![]", optional),
+        "Bytes" => optional_modifier("ByteBuf::new()", optional),
         "BigInt" => optional_modifier("BigIntWrapper(BigInt::default())", optional),
         "BigNumber" => optional_modifier("BigNumber::default()", optional),
         "JSON" => optional_modifier("JSONString::from(JSON::Value::Null)", optional),
