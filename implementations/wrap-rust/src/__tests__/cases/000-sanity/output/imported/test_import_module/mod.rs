@@ -1,16 +1,15 @@
 use serde::{Serialize, Deserialize};
-use polywrap_msgpack_serde::{
-    from_slice,
-    to_vec,
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
     JSON,
-    subinvoke
+    to_vec,
+    subinvoke,
+    from_slice,
+    JSONString,
+    BigIntWrapper,
+    ByteBuf
 };
 use crate::TestImportObject;
 use crate::TestImportEnum;

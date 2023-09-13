@@ -136,3 +136,5 @@ dist/
 # wasm-bindgen artifacts
 bg_*.js
 bg_*.ts
+
+build

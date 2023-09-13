@@ -1,15 +1,14 @@
 lazy_static! {
   static ref NAME: String = "object_type/mod.rs".to_string();
   static ref SOURCE: String = r#"use serde::{Serialize, Deserialize};
-use polywrap_msgpack_serde::{
-    wrappers::polywrap_json::JSONString,
-    wrappers::polywrap_bigint::BigIntWrapper
-};
 use polywrap_wasm_rs::{
     BigInt,
     BigNumber,
     Map,
-    JSON
+    JSON,
+    JSONString,
+    BigIntWrapper,
+    ByteBuf
 };
 {{#each (property_deps this)}}
 use {{_crate}}::{{detect_keyword (to_upper _type)}};
@@ -18,7 +17,7 @@ use {{_crate}}::{{detect_keyword (to_upper _type)}};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct {{detect_keyword (to_upper type)}} {
     {{#each properties}}
-    {{#with scalar}}{{serde_annotate_if_bytes type}}{{/with}}{{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
+    {{serde_rename_if_case_mismatch name}}pub {{detect_keyword (to_lower name)}}: {{to_rust (to_graphql_type this)}},
     {{/each}}
 }
 

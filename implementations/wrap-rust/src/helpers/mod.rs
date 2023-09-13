@@ -7,7 +7,6 @@ mod is_keyword;
 mod is_not_first;
 mod is_not_last;
 mod property_deps;
-mod serde_annotate_if_bytes;
 mod serde_keyword;
 mod serde_rename_if_case_mismatch;
 mod to_graphql_type;
@@ -47,10 +46,6 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "property_deps",
         Box::new(property_deps::property_deps)
-    );
-    handlebars.register_helper(
-        "serde_annotate_if_bytes",
-        Box::new(serde_annotate_if_bytes::serde_annotate_if_bytes)
     );
     handlebars.register_helper(
         "serde_keyword",
