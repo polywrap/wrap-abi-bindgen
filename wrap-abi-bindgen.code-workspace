@@ -55,23 +55,12 @@
       {
         "name": "wrap-typescript",
         "path": "implementations/wrap-typescript"
-      },
-      {
-        "name": "embed-bindgen-interface",
-        "path": "embed-bindgen/interface"
-      },
-      {
-        "name": "rust-embed-bindgen",
-        "path": "embed-bindgen/implementations/embed-rust"
       }
-
   ],
   "settings": {
       "files.exclude": {
         "**/interface/*": true,
-        "**/implementations/*": true,
-        "**/embed-bindgen/interface/*": true,
-        "**/embed-bindgen/implementations/*": true,
+        "**/implementations/*": true
       },
       "liveServer.settings.multiRootWorkspaceName": "root",
   }
