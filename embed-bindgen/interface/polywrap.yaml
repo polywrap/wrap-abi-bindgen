@@ -1,6 +1,0 @@
-format: 0.3.0
-project:
-  name: embed-bindgen
-  type: interface
-source:
-  schema: ./polywrap.graphql

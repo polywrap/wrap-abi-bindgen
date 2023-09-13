@@ -1,1 +1,0 @@
-pub const WRAP_WASM: [u8; 3] = [10,11,12];

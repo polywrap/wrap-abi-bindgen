@@ -1,6 +1,0 @@
-node_modules
-.polywrap
-target
-workflows/output.json
-wrap
-debug
