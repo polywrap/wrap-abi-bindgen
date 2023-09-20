@@ -1,32 +1,16 @@
-# Default
-* @dOrgJelli @krisbitney
+* @dOrgJelli @krisbitney @Niraj-Kamdar
 
-# Interface
-interface @krisbitney
-
-# Typescript App Binding
-implementations/app-typescript @krisbitney @Niraj-Kamdar @nerfZael @cbrzn
-
-# Python App Binding
+interface @krisbitney @dOrgJelli
+implementations/app-kotlin @krisbitney
 implementations/app-python @Niraj-Kamdar
-
-# Rust App Binding
 implementations/app-rust @namesty @cbrzn
-
-# Kotlin Plugin Binding
+implementations/app-swift @cbrzn
+implementations/app-typescript @dOrgJelli @nerfZael @pileks
 implementations/plugin-kotlin @krisbitney
-
-# Typescript Plugin Binding
-implementations/plugin-typescript @krisbitney @Niraj-Kamdar @nerfZael @cbrzn
-
-# Python Plugin Binding
 implementations/plugin-python @Niraj-Kamdar
-
-# Rust Plugin Binding
-implementations/plugin-rust @namesty @cbrzn
-
-# Assemblyscript Wrap Binding
-implementations/wrap-typescript @dOrgJelli @krisbitney @nerfZael @Niraj-Kamdar
-
-# Rust Wrap Binding
-implementations/wrap-rust  @dOrgJelli @krisbitney @nerfZael @Niraj-Kamdar @cbrzn
+implementations/plugin-rust @namesty @cbrzn @nerfZael
+implementations/plugin-swift @cbrzn
+implementations/plugin-typescript @dOrgJelli @nerfZael @pileks
+implementations/wrap-assemblyscript @dOrgJelli
+implementations/wrap-rust @namesty @dOrgJelli
+implementations/wrap-typescript @nerfZael @namesty
