@@ -9,8 +9,9 @@ mod is_not_last;
 mod pretty;
 mod remove_module_suffix;
 mod serde_rename_if_case_mismatch;
+mod to_bytes;
 mod to_graphql_type;
-mod to_lower;
+pub mod to_lower;
 mod to_upper;
 mod to_rust;
 mod to_abstract_type;
@@ -54,6 +55,10 @@ pub fn register(handlebars: &mut Handlebars) -> () {
     handlebars.register_helper(
         "serde_rename_if_case_mismatch",
         Box::new(serde_rename_if_case_mismatch::serde_rename_if_case_mismatch)
+    );
+    handlebars.register_helper(
+        "to_bytes",
+        Box::new(to_bytes::to_bytes)
     );
     handlebars.register_helper(
         "to_graphql_type",

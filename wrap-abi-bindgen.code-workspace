@@ -55,7 +55,7 @@
       {
         "name": "wrap-typescript",
         "path": "implementations/wrap-typescript"
-      },
+      }
   ],
   "settings": {
       "files.exclude": {

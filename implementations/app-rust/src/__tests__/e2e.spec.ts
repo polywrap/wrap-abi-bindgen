@@ -34,10 +34,27 @@ describe("e2e", () => {
         abi: JSON.stringify(abi),
       }
 
+      const embeds = testCase.name === "003-embeds"
+        ? [
+            {
+            uri: "testimport.uri.eth",
+            namespace: "TestImport",
+            wrapInfo: [1, 2, 3],
+            wrapWasm: [4, 5, 6]
+          },
+          {
+            uri: "secondtestimport.uri.eth",
+            namespace: "SecondTestImport",
+            wrapInfo: [7, 8, 9],
+            wrapWasm: [10, 11, 12]
+          }
+        ]
+        : undefined;
+
       const result = await client.invoke<Output>({
         uri: wrapperUri,
         method: "generateBindings",
-        args: { wrapInfo }
+        args: { wrapInfo, context: JSON.stringify({ embeds: embeds }) }
       });
 
       if (!result.ok) fail(result.error);
