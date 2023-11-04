@@ -1,3 +1,6 @@
+// Disable unused code warnings for this entire module
+#![allow(unused)]
+
 pub mod entry;
 pub mod prelude;
 pub mod module;
