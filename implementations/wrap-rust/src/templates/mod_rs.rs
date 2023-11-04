@@ -43,6 +43,6 @@ use super::Template;
 pub fn load() -> Template {
     Template {
         name: &*NAME,
-        source: &*SOURCE,
+        source: &*SOURCE
     }
 }
