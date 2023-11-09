@@ -1,6 +1,9 @@
 lazy_static! {
   static ref NAME: String = "mod.rs".to_string();
-  static ref SOURCE: String = r#"pub mod entry;
+  static ref SOURCE: String = r#"// Disable unused code warnings for this entire module
+#![allow(unused)]
+  
+pub mod entry;
 pub mod prelude;
 {{#each objectTypes}}
 pub mod {{detect_keyword (to_lower type)}};
